@@ -1,5 +1,19 @@
 from django.db import models
-    
+
+class DefaultUsers(models.Model):
+    number = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    school_selected = models.TextField()
+    course = models.TextField()
+    type = models.CharField(max_length=255)   
+    location = models.CharField(max_length=255)
+     
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'DefaultUsers'
+        
 class Subject(models.Model):
     subject_code = models.CharField(max_length=50)
     subject_name = models.CharField(max_length=50)
@@ -88,6 +102,7 @@ class StudentGroupType(models.Model):
 
     class Meta:
         db_table = 'StudentGroupType'
+        
 
     def __str__(self):
         return self.name
@@ -111,7 +126,6 @@ class Student(models.Model):
     name = models.CharField(max_length=50)
     registration_no = models.CharField(max_length=50)
     group = models.ForeignKey(StudentGroup, on_delete= models.CASCADE)
-
     def __str__(self):
         return self.name
 

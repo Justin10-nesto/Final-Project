@@ -20,41 +20,164 @@
 </head>
 <body>
 
-<div class="main-wrapper login-body">
-<div class="login-wrapper">
-<div class="container">
-<div class="loginbox">
-<div class="login-right">
-<div class="login-right-wrap">
-<h1>Register</h1>
-<p class="account-subtitle">Access to our dashboard</p>
+    <div class="row">
+        <div class="col-sm-12">
+           <div class="card">
+              <div class="card-body">
+                 <form method="POST" action="{% url 'searchUserSelected' %}">
+                    <div class="row">
+                       <div class="col-12">
+                          <h5 class="form-title"><span>Student Information</span></h5>
+                       </div>                       
+                       {% csrf_token %}
+                       <div class="col-12 col-sm-6">
+                         <div class="form-group">
+                            <label>Category</label>                           
+                            <select class="form-control" name= "Category">
+                               <option>Select Category</option>
+                               <option>Seconary Education</option>
+                               <option>Advanced Seconary Education</option>
+                             </select>
+                         </div>
+                      </div> 
+                      
+                      <div class="col-12 col-sm-6">
+                       <div class="form-group">
+                          <label>Index Number</label>
+                          <input type="text" name = "index_number"class="form-control">
+                       </div>
+                    </div>
+         
+                  <div class="col-12">
+                     <input type="submit" class="btn btn-primary" value="Search">
+                     </div>
+                  </div>
+                 </form>
+                 
+                  
+               {% if user_info %}
+                     <div class="row">
+                        <div class="col-12">
+                           <h5 class="form-title"><span>Student Comfirmations</span></h5>
+                        </div>                       
+                   
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Index Number: </label>
+                           <label>{{user_info.number}}</label>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Full Name: </label>
+                           <label>{{user_info.name}}</label>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                         <div class="form-group">
+                            <label>School selected: </label>
+                            <label>{{user_info.school_selected}}</label>
+                         </div>
+                      </div>
+                      <div class="col-12 col-sm-6">
+                          <div class="form-group">
+                             <label>Course selected: </label>
+                             <label>{{user_info.course}}</label>
+                          </div>
+                       </div>
+                      <div class="col-12 col-sm-6">
+                          <div class="form-group">
+                             <label>Type: </label>
+                             <label>{{user_info.type}}</label>
+                          </div>
+                       </div>
+                       <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label>Location: </label>
+                              <label>{{user_info.location}}</label>
+                           </div>
+                        </div>
+<!--                         
+                  <div class="col-12">
+                     <button class="btn btn-primary" onclick="accept()">Accept</button>
+                     <button class="btn btn-primary">Change Information</button>
+                     </div> -->
+                     </div>
+                 <form method="POST" action="{% url 'submitRegistration' %}">             
+                  {% csrf_token %}
+                  <div class="row" id="Accept">
+                     <div class="col-12">
+                     </div><div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Student Index number</label>
+                           <input type="text" name="index_number" value="{{user_info.number}}" class="form-control">
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Email</label>
+                           <input type="email" name="email" class="form-control">
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Date of Birth</label>
+                           <div>
+                              <input type="date" name="bod" class="form-control">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Class</label>
+                           <input type="text" name="class_level" class="form-control">
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Phone Number</label>
+                           <input type="tel" name="phone_no" class="form-control">
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label>Password</label>
+                           <div>
+                              <input type="password" name="password" class="form-control">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group mb-0">
+                     <input class="btn btn-primary btn-block" value="Register" type="submit">
+                     </div>
+                     </div>
+                     </form>
+                     {% endif %}
 
-<form action="https://preschool.dreamguystech.com/html-template/login.html">
-<div class="form-group">
-<input class="form-control" type="text" placeholder="Name">
-</div>
-<div class="form-group">
-<input class="form-control" type="text" placeholder="Email">
-</div>
-<div class="form-group">
-<input class="form-control" type="text" placeholder="Password">
-</div>
-<div class="form-group">
-<input class="form-control" type="text" placeholder="Confirm Password">
-</div>
-<div class="form-group mb-0">
-<button class="btn btn-primary btn-block" type="submit">Register</button>
-</div>
-</form>
-
-<div class="text-center dont-have">Already have an account? <a href="{% url 'loginPage' %}">Login</a></div>
+                     
+                     <div class="text-center dont-have">Already have an account? <a href="{% url 'loginPage' %}">Login</a></div>
+                     </div>
+                  </div>
+                
+                </div>
+             
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div>
-
+<script>
+    divaccept = document.getElementById('Accept');
+   function accept(){
+      divaccept.style.display = 'block';
+     
+   }
+</script>
 
 <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 
