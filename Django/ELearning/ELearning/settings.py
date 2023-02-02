@@ -33,18 +33,29 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+SHARED_APPS = [
+    'django_tenants',  # mandatory
     'schools',
-    'Student',
-    'Admin'
+# you must list the app where your tenant model resides in
+
+    'django.contrib.contenttypes',
+
+    # everything below here is optional
+    'django.contrib.auth',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
 ]
+TENANT_APPS = [
+    # your tenant-specific apps
+    'Student',
+    'schools',
+    
+]
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
@@ -139,3 +150,9 @@ STATICFILES_DIRS = ('%s\STATIC'%BASE),
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TENANT_MODEL = "schools.Client" # app.Model
+
+TENANT_DOMAIN_MODEL = "schools.Domain"  # app.Model
+
+PG_EXTRA_SEARCH_PATHS = ['extensions']  

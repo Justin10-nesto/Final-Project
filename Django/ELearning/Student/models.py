@@ -7,9 +7,6 @@ class DefaultUsers(models.Model):
     course = models.TextField()
     type = models.CharField(max_length=255)   
     location = models.CharField(max_length=255)
-     
-    def __str__(self):
-        return self.name
 
     class Meta:
         db_table = 'DefaultUsers'
@@ -19,7 +16,7 @@ class Subject(models.Model):
     subject_name = models.CharField(max_length=50)
     
     def __str__(self):
-        return self.subject_name
+        return self.subject_code
 
 class NotesFiles(models.Model):
     title_of_documment = models.CharField(max_length=50)
@@ -27,7 +24,7 @@ class NotesFiles(models.Model):
     documment = models.FileField(upload_to=None )
     
     def __str__(self):
-        return self.subject_name
+        return self.title_of_documment
  
 class Notes(models.Model):
     title = models.CharField(max_length=50)
@@ -107,8 +104,6 @@ class StudentGroupType(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("StudentGroupType_detail", kwargs={"pk": self.pk})
 
 class StudentGroup(models.Model):
     name = models.CharField(max_length=50)
@@ -119,8 +114,6 @@ class StudentGroup(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("StudentGroup_detail", kwargs={"pk": self.pk})
     
 class Student(models.Model):
     name = models.CharField(max_length=50)
@@ -129,5 +122,3 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse("Student_detail", kwargs={"pk": self.pk})
