@@ -1,4 +1,29 @@
 from django.db import models
+from schools.models import Subject, Department
+
+from django.contrib.auth.models import AbstractUser,AbstractBaseUser,User
+
+class User(AbstractBaseUser):
+ 
+   middle_name = models.CharField(max_length=255)
+  
+   Registration_number = models.CharField(max_length=255,unique=True)
+   email = models.EmailField(max_length=255,unique=True)
+   password = models.CharField(max_length=255)
+   gender = models.CharField(max_length=10)
+   Phone_number = models.IntegerField(null=True,blank=True)
+   img = models.CharField(max_length=255)
+   department = models.ForeignKey(Department,on_delete = models.CASCADE, null=True,blank=True)
+
+   username = None
+
+   USERNAME_FIELD ='Registration_number'
+
+   REQUIRED_FIELDS = []
+   def __str__(sellf):
+        return sellf.Registration_number
+#    class Meta:
+#         db_table = "User"
 
 class DefaultUsers(models.Model):
     number = models.CharField(max_length=50)
@@ -8,15 +33,10 @@ class DefaultUsers(models.Model):
     type = models.CharField(max_length=255)   
     location = models.CharField(max_length=255)
 
+
     class Meta:
         db_table = 'DefaultUsers'
         
-class Subject(models.Model):
-    subject_code = models.CharField(max_length=50)
-    subject_name = models.CharField(max_length=50)
-    
-    def __str__(self):
-        return self.subject_code
 
 class NotesFiles(models.Model):
     title_of_documment = models.CharField(max_length=50)

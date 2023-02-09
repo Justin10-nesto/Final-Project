@@ -1,0 +1,109 @@
+
+{% load static %} {% include "includes/header.html" %} 
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .main-table{
+        width: 90%;
+        margin: 1% 5%;
+        border: none; 
+    }
+    .main-table tr{
+        height: 280px;
+    }
+    .main-table tr video{
+        width: 100%;
+        height: 280px;
+    }
+    .minor{
+        width: 25%;
+    }
+    .content{
+        margin: 5px;
+    }
+    
+   .important-links a{
+        width: 200px;
+        text-align: center;
+        background-color: blue;
+        color: white;
+        margin: 30px;
+        
+        height: 30px;
+        padding: 4px;
+        text-decoration: none;
+        border-radius: 18px;
+    }
+    .important-links{
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+</style>
+{% include "includes/sidebar.html" %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+    <div class="page-header">
+    <div class="row align-items-center">
+    <div class="col">
+    <h3 class="page-title">Departments</h3>
+    <ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+    <li class="breadcrumb-item active">{{subject.subject_code}} {{subject.subject_name}}</li>
+    </ul>
+    </div>
+    <div class="col-auto text-right float-right ml-auto">
+    <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+    <a href="{% url 'DepartmentAdd' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+    </div>
+    </div>
+    </div>
+    
+    <div class="row">
+    <table class="main-table">
+        <tr>
+            <td colspan="2">
+                <video 
+                src="video.mp4" controls >
+                Tutorial</video>
+                <div class="important-links">
+                    <a href="">course Description</a>
+                    <a href="">notes</a>
+                    <a href="">Assigments</a>
+                    <a href="">Anounciments</a>
+                    <a href="">Books and References</a>
+                    <a href="">Discussions</a>
+                </div>
+                
+            </td>
+        </tr>
+      
+        <tr>
+            <td class="minor">
+                <h1>Topics to be covered</h1>
+                <div class="content">
+                    <input type="checkbox" name="module_1">introduction to Chemistry
+                </div>
+                <div class="content">
+                    <input type="checkbox" name="module_1">introduction to Chemistry
+                </div><div class="content">
+                    <input type="checkbox" name="module_1">introduction to Chemistry
+                </div><div class="content">
+                    <input type="checkbox" name="module_1">introduction to Chemistry
+                </div><div class="content">
+                    <input type="checkbox" name="module_1">introduction to Chemistry
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    {% load static %} {% include "includes/footer.html" %}

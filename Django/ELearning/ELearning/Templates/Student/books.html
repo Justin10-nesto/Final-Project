@@ -1,0 +1,44 @@
+{% load static %} {% include "includes/elearning-template.html" %} 
+<div class="card-body">
+    <div class="table-responsive">
+        <br>
+        <br>
+        <h1 align = "center">Books Available</h1>
+       <table class="table table-hover table-center mb-0 datatable">
+          <thead>
+             <tr>
+                <th>ID</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th class="text-right">Action</th>
+             </tr>
+          </thead>
+          <tbody>
+            {% for book in books %}
+             <tr>
+                <td>
+                  {{book.id}}
+                </td>
+                <td>{{book.bookool_name}}</td>
+                <td>{{book.bookoo_logo}}</td>
+                <td>{{book.bookool_level}}</td>
+                <td>{{book.bookool_adress}}</td>
+                <td>{{book.head_of_bookool}}</td>
+                <td class="text-right">
+                   <div class="actions">
+                     <a href="">
+                      <i class="fas fa-pen"></i>
+                      </a>
+                   
+                   </div>
+                </td>
+             </tr>
+             {% endfor %}
+          </tbody>
+       </table>
+    </div>
+ </div>
+</div>
+{% include "includes/footer.html" %}

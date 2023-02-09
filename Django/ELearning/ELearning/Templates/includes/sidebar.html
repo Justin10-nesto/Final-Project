@@ -28,7 +28,7 @@
              </li>
              <li class="nav-item dropdown has-arrow">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="Ryan Taylor"></span>
+                <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{request.user.username}}"></span>
                 </a>
                 <div class="dropdown-menu">
                    <div class="user-header">
@@ -36,13 +36,13 @@
                          <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
                       </div>
                       <div class="user-text">
-                         <h6>Ryan Taylor</h6>
+                         <h6>{{request.user.username}}</h6>
                          <p class="text-muted mb-0">Administrator</p>
                       </div>
                    </div>
                    <a class="dropdown-item" href="profile.html">My Profile</a>
                    <a class="dropdown-item" href="inbox.html">Inbox</a>
-                   <a class="dropdown-item" href="login.html">Logout</a>
+                   <a class="dropdown-item" href="{% url 'logoutPage' %}">Logout</a>
                 </div>
              </li>
           </ul>
@@ -67,7 +67,7 @@
                      <a href="#"><i class="fas fa-user-graduate"></i> <span> Schools</span> <span class="menu-arrow"></span></a>
                      <ul>
                         <li><a href="{% url 'schoollist' %}">School List</a></li>
-                        <li><a href="{% url 'studentAdd' %}">School Add</a></li>
+                        <li><a href="{% url 'schoolAdd' %}">School Add</a></li>
                      </ul>
                   </li>
                    <li class="submenu">
@@ -89,27 +89,31 @@
                    <li class="submenu">
                       <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
                       <ul>
-                         <li><a href="departments.html">Department List</a></li>
-                         <li><a href="add-department.html">Department Add</a></li>
-                         <li><a href="edit-department.html">Department Edit</a></li>
+                         <li><a href="{% url 'Departmentlist' %}">Department List</a></li>
+                         <li><a href="{% url 'DepartmentAdd' %}">Department Add</a></li>
                       </ul>
                    </li>
+                   <li class="submenu">
+                     <a href="#"><i class="fas fa-book-reader"></i> <span> Levels</span> <span class="menu-arrow"></span></a>
+                     <ul>
+                        <li><a href="{% url 'SchoolLevellist' %}">Level List</a></li>
+                        <li><a href="{% url 'SchoolLevelAdd' %}">Level Add</a></li>
+                     </ul>
+                  </li>
+              
                    <li class="submenu">
                       <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                       <ul>
-                         <li><a href="subjects.html">Subject List</a></li>
-                         <li><a href="add-subject.html">Subject Add</a></li>
-                         <li><a href="edit-subject.html">Subject Edit</a></li>
+                         <li><a href="{% url 'Subjectlist' %}">Subject List</a></li>
+                         <li><a href="{% url 'SubjectAdd' %}">Subject Add</a></li>
                       </ul>
                    </li>
-                   
+
                    <li class="submenu">
-                     <a href="#"><i class="fas fa-user-graduate"></i> <span> books & notes</span> <span class="menu-arrow"></span></a>
+                     <a href="#"><i class="fas fa-book-reader"></i> <span>Class</span> <span class="menu-arrow"></span></a>
                      <ul>
-                        <li><a href="books & notess.html">books & notes List</a></li>
-                        <li><a href="books & notes-details.html">books & notes View</a></li>
-                        <li><a href="add-books & notes.html">books & notes Add</a></li>
-                        <li><a href="edit-books & notes.html">books & notes Edit</a></li>
+                        <li><a href="{% url 'StudentClasslist' %}">Class List</a></li>
+                        <li><a href="{% url 'StudentClassAdd' %}">Class Add</a></li>
                      </ul>
                   </li>
                   <li class="submenu">
@@ -133,16 +137,13 @@
                       <span>Management</span>
                    </li>
                    <li>
-                      <a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
-                   </li>
-                   <li>
-                      <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
-                   </li>
-                   <li>
-                      <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
+                      <a href="{% url 'examList' %}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
                    </li>
                    <li>
                       <a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
+                   </li>
+                   <li>
+                      <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Anounciments</span></a>
                    </li>
                    <li>
                       <a href="library.html"><i class="fas fa-book"></i><span>User Profile</span></a>
