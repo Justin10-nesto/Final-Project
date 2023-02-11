@@ -28,27 +28,31 @@
                                        <th>Subject Code</th>
                                        <th>Subject Name</th>
                                        <th>Department</th>
+                                       <th>Topic</th>
                                        <th class="text-right">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    {% for Subject in Subjects %}
+                                    {% for subject in Subjects %}
                                     <tr>
                                        <td>
-                                          <a href="{% url 'ElearningPage' Subject.id %}">{{Subject.subject_code}}</a>
+                                          <a href="{% url 'Topiclist' subject.id %}">{{subject.subject_code}}</a>
                                           </td>
                                        <td>
                                           <h2>
-                                             {{Subject.subject_name}}
+                                             {{subject.subject_name}}
                                           </h2>
                                        </td>
-                                       <td>{{Subject.department}}</td>
+                                       <td>{{subject.department}}</td>
+                                       <td>
+                                          <a href=""><i class="fas fa-plus"></i></a>
+                                       </td>
                                        <td class="text-right">
                                           <div class="actions">
-                                             <a href="{% url 'SubjectEdit' Subject.id %}" class="btn btn-sm bg-success-light mr-2">
+                                             <a href="{% url 'SubjectEdit' subject.id %}" class="btn btn-sm bg-success-light mr-2">
                                              <i class="fas fa-pen"></i>
                                              </a>
-                                             <a href="{% url 'SubjectDelete' Subject.id %}" class="btn btn-sm bg-danger-light">
+                                             <a href="{% url 'SubjectDelete' subject.id %}" class="btn btn-sm bg-danger-light">
                                              <i class="fas fa-trash"></i>
                                              </a>
                                           </div>

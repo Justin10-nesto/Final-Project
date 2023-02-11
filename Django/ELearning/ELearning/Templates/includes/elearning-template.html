@@ -14,6 +14,8 @@
        </div>
        <div class="row">
           <div class="col-sm-12">
+            <h1 align="center">{{topic.name}}</h1>
+
              <div class="card card-table">
                 <div class="card-body">
                    <div class="table-responsive">
@@ -21,37 +23,37 @@
                          <thead>
                             <tr>
                                <th>
-                                <a href="{% url 'NotesPage' subject.id %}">
+                                <a href="{% url 'NotesPage' subject.id topic.id %}">
                                  Notes
                                  </a>
                                </th>                               
                                <th>
-                                <a href="{% url 'booksPage' subject.id %}">
+                                <a href="{% url 'booksPage' subject.id  topic.id %}">
                                  Books
                                  </a>
                                </th>                               
                                <th>
-                                <a href="{% url 'assigmentsPage' subject.id %}">
+                                <a href="{% url 'assigmentsPage' subject.id topic.id %}">
                                  Assigments
                                  </a>
                                </th>                               
                                <th>
-                                <a href="{% url 'ElearningPage' subject.id %}">
+                                <a href="">
                                  Tutorials
                                  </a>
                                </th>                               
                                <th>
-                                <a href="{% url 'discussionsPage' subject.id %}">
+                                <a href="{% url 'discussionsPage' subject.id topic.id %}">
                                 Discussions
                                 </a>
                                </th>                               
                                <th>
-                                <a href="{% url 'groupsPage' subject.id %}">
+                                <a href="{% url 'groupsPage' subject.id topic.id %}">
                                 Groups
                                 </a>
                                </th>                               
                                <th>
-                                <a href="{% url 'anauncementPage' subject.id %}">
+                                <a href="{% url 'anauncementPage' subject.id topic.id %}">
                                 Anounciments
                                 </a>
                                </th>  

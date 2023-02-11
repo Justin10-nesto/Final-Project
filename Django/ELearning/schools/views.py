@@ -7,8 +7,7 @@ def view_schools(request, id):
     context = {'school_info':school_info}
     return render(request, 'UAA/view-school.html', context)
 
-def schoolList(request):
-    
+def schoolList(request): 
     school_info = School.objects.all()
     context = {'school_info':school_info}
     return render(request, 'Admin/list-school.html', context)
@@ -62,7 +61,10 @@ def DepartmentEdit(request, id):
         department_start_date = request.POST.get('department_start_date')
         department_Hod = request.POST.get('department_Hod')
         department = Department.objects.filter(id=id).first()
-        department.update(department_name,department_Hod,  department_start_date)
+        department.name=department_name
+        department.department_Hod=department_Hod
+        department.start_date=department_start_date
+        department.save()
         return redirect('Departmentlist')
     
     department = Department.objects.filter(id=id).first()
@@ -102,7 +104,8 @@ def SubjectEdit(request, id):
         Subject_obj = Subject.objects.filter(id=id).first()
 
         department_selected = Department.objects.filter(id=department).first()
-        subect = Subject_obj.update(subject_code, subject_name)
+        Subject_obj.subject_code = subject_code
+        Subject_obj.subject_name = subject_name
         Subject_obj.department = department_selected
         subect_obj.save()
         return redirect('Subjectlist')
@@ -136,8 +139,8 @@ def SchoolLevelEdit(request, id):
     if request.method == "POST":
         name = request.POST.get('name')
         SchoolLevel_obj = SchoolLevel.objects.filter(id=id).first()
-        level = SchoolLevel_obj.update(name = name)
-        level.save()
+        SchoolLevel_obj.name = name
+        SchoolLevel_obj.save()
         return redirect('SchoolLevellist')
     
     schoolLevel = SchoolLevel.objects.filter(id=id).first()

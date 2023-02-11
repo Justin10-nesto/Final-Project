@@ -7,6 +7,7 @@ class School(TenantMixin):
     school_level = models.CharField(max_length=100)
     school_adress = models.CharField(max_length=100)
     head_of_school = models.TextField()
+    is_active = models.BooleanField(default=True)
     created_on = models.DateField(auto_now_add=True)
 
     # default true, schema will be automatically created and synced when it is saved

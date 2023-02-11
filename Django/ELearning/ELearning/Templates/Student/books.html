@@ -3,6 +3,11 @@
     <div class="table-responsive">
         <br>
         <br>
+        
+        <div class="col-auto text-right float-right ml-auto">
+         <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+         <a href="{% url 'BooksAdd' subject.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+      </div>
         <h1 align = "center">Books Available</h1>
        <table class="table table-hover table-center mb-0 datatable">
           <thead>
@@ -29,7 +34,7 @@
                 <td class="text-right">
                    <div class="actions">
                      <a href="">
-                      <i class="fas fa-pen"></i>
+                      <i class="fas fa-download"></i>
                       </a>
                    
                    </div>

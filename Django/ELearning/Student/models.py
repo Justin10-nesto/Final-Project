@@ -53,23 +53,19 @@ class Notes(models.Model):
     
     def __str__(self):
         return self.title
+    
+class Book(models.Model):
+    name = models.CharField(max_length=50)
+    author = models.CharField(max_length=255)
+    type = models.CharField(max_length=50)
+    description = models.TextField(null=True)
+    file = models.FileField()
 
-class Topics(models.Model):
+
+class Topic(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
-    marks = models.BigIntegerField()
-    notes =models.ForeignKey(Notes, on_delete = models.CASCADE)
-    file =models.ForeignKey(NotesFiles, on_delete = models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
-    
-    def __str__(self):
-        return self.name
-    
-class SubTopic(models.Model):
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=255)
-    marks = models.BigIntegerField()
-    subject = models.ForeignKey(Topics, on_delete = models.CASCADE)
     
     def __str__(self):
         return self.name
@@ -104,10 +100,13 @@ class AssigmentType(models.Model):
     
 class Assigment(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=50)
-    comment = models.TextField(null=True)
-    subtopic = models.OneToOneField(SubTopic, on_delete = models.CASCADE)
-    status = models.ForeignKey(Status, on_delete= models.CASCADE)
+    description = models.TextField()
+    task = models.TextField(null=True)
+    date = models.DateField()
+    time = models.TimeField()
+    Weight = models.IntegerField()
+    subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete = models.CASCADE)
     type = models.ForeignKey(AssigmentType, on_delete= models.CASCADE)
 
     

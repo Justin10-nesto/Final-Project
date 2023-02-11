@@ -40,8 +40,7 @@ vALLOWED_HOSTS = []
 # Application definition
 SHARED_APPS = [
     'django_tenants',  # mandatory
-    'jazzmin',
-
+    'Student',
     'schools',
 # you must list the app where your tenant model resides in
 
@@ -56,7 +55,6 @@ SHARED_APPS = [
 ]
 TENANT_APPS = [
     # your tenant-specific apps
-    'Student',
     'schools',
     
 ]
@@ -66,6 +64,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
+    'ELearning.middleware.TanantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -153,6 +152,28 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ('%s/static'%BASE),
+
+STATICFILES_FINDERS = [
+    "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+
+# or this way
+
+STATICFILES_FINDERS.insert(0, "django_tenants.staticfiles.finders.TenantFileSystemFinder")
+
+
+MULTITENANT_STATICFILES_DIRS = [
+    ('%s/static'%BASE),
+]
+
+
+
+STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
+
+MULTITENANT_RELATIVE_STATIC_ROOT = ""  # (default: create sub-directory for each tenant)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -17,17 +17,30 @@ urlpatterns = [
     path('examList', views.examList, name = 'examList'),
     path('MakeApointmentAdd', views.MakeApointmentAdd, name = 'MakeApointmentAdd'),
     
-    path('ElearningPage/<str:id>', views.ElearningPage, name="ElearningPage"),
-    path('booksPage/<str:id>', views.booksPage, name="booksPage"),
+    path('TopicList/<str:sid>', views.TopicList, name ='Topiclist' ),
+    path('TopicAdd/<str:sid>', views.TopicAdd, name ='TopicAdd'),
+    path('TopicEdit/<str:sid>/<str:id>', views.TopicEdit, name ='TopicEdit'),
+    path('TopicDelete/<str:sid>/<str:id>', views.TopicDelete, name ='TopicDelete'),
+
+    path('ElearningPage/<str:sid>/<str:tid>', views.ElearningPage, name="ElearningPage"),
     
-    path('assigmentsPage/<str:id>', views.assigmentsPage, name="assigmentsPage"),
-    path('AddAssigment/<str:sid>', views.AddAssigment, name="AddAssigment"),
+    path('booksPage/<str:sid>/<str:tid>', views.booksPage, name="booksPage"),
+    path('BooksAdd/<str:sid>', views.BooksAdd, name ='BooksAdd'),
+    path('BooksEdit/<str:sid>/<str:id>', views.BooksEdit, name ='BooksEdit'),
+    path('BooksDelete/<str:sid>/<str:id>', views.BooksDelete, name ='BooksDelete'),
+
+    path('assigmentsPage<str:sid>/<str:tid>', views.assigmentsPage, name="assigmentsPage"),
+    path('AddAssigment/<str:sid>', views.AssigmentsAdd, name="AddAssigment"),
+    path('AssigmentsEdit/<str:sid>/<str:id>', views.AssigmentsEdit, name ='AssigmentsEdit'),
+    path('AssigmentsDelete/<str:sid>/<str:id>', views.AssigmentsDelete, name ='AssigmentsDelete'),
+
+    
     path('UploadAssigments/<str:sid>/<str:aid>', views.UploadAssigments, name="UploadAssigments"),
     path('marksAssigments/<str:sid>/<str:aid>', views.marksAssigments, name="marksAssigments"),
     path('AddAssigmentMarks/<str:sid>', views.AddAssigmentMarks, name="AddAssigmentMarks"),
 
-    path('NotesPage/<str:id>', views.NotesPage, name="NotesPage"),
-    path('discussionsPage/<str:id>', views.discussionsPage, name="discussionsPage"),
-    path('groupsPage/<str:id>', views.groupsPage, name="groupsPage"),
-    path('anauncementPage/<str:id>', views.anauncementPage, name="anauncementPage"),
+    path('NotesPage/<str:sid>/<str:tid>', views.NotesPage, name="NotesPage"),
+    path('discussionsPage/<str:sid>/<str:tid>', views.discussionsPage, name="discussionsPage"),
+    path('groupsPage/<str:sid>/<str:tid>', views.groupsPage, name="groupsPage"),
+    path('anauncementPage/<str:sid>/<str:tid>', views.anauncementPage, name="anauncementPage"),
 ]
