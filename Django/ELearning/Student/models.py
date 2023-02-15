@@ -1,29 +1,7 @@
 from django.db import models
-from schools.models import Subject, Department
+from schools.models import Subject, Department, SchoolLevel, StudentClass
 
 from django.contrib.auth.models import AbstractUser,AbstractBaseUser,User
-
-class User(AbstractBaseUser):
- 
-   middle_name = models.CharField(max_length=255)
-  
-   Registration_number = models.CharField(max_length=255,unique=True)
-   email = models.EmailField(max_length=255,unique=True)
-   password = models.CharField(max_length=255)
-   gender = models.CharField(max_length=10)
-   Phone_number = models.IntegerField(null=True,blank=True)
-   img = models.CharField(max_length=255)
-   department = models.ForeignKey(Department,on_delete = models.CASCADE, null=True,blank=True)
-
-   username = None
-
-   USERNAME_FIELD ='Registration_number'
-
-   REQUIRED_FIELDS = []
-   def __str__(sellf):
-        return sellf.Registration_number
-#    class Meta:
-#         db_table = "User"
 
 class DefaultUsers(models.Model):
     number = models.CharField(max_length=50)
@@ -54,13 +32,6 @@ class Notes(models.Model):
     def __str__(self):
         return self.title
     
-class Book(models.Model):
-    name = models.CharField(max_length=50)
-    author = models.CharField(max_length=255)
-    type = models.CharField(max_length=50)
-    description = models.TextField(null=True)
-    file = models.FileField()
-
 
 class Topic(models.Model):
     name = models.CharField(max_length=50)
@@ -92,7 +63,7 @@ class Status(models.Model):
         return self.name
 
 class AssigmentType(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     weight = models.BigIntegerField()
     
     def __str__(self):
@@ -113,6 +84,16 @@ class Assigment(models.Model):
     def __str__(self):
         return self.name
     
+class Book(models.Model):
+    name = models.CharField(max_length=50)
+    author = models.CharField(max_length=255)
+    type = models.CharField(max_length=50)
+    description = models.TextField(null=True)
+    file = models.FileField()
+    topic = models.ForeignKey(Topic, on_delete = models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
+
+
 class StudentGroupType(models.Model):
     name = models.CharField(max_length=50)
 
@@ -133,11 +114,26 @@ class StudentGroup(models.Model):
     def __str__(self):
         return self.name
 
+
+class Course(models.Model):
+    name = models.CharField(max_length=255)
+    department = models.ForeignKey(Department, on_delete= models.CASCADE, null =True)
+    
+    def __str__(self):
+        return self.name
     
 class Student(models.Model):
     name = models.CharField(max_length=50)
     registration_no = models.CharField(max_length=50)
-    group = models.ForeignKey(StudentGroup, on_delete= models.CASCADE)
+    index_number = models.CharField(max_length=255)
+    gender = models.CharField(max_length=20)
+    date_of_birth = models.DateField()
+    phone_number = models.CharField(max_length=15, null=True)
+    location = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    course = models.ForeignKey(Course, on_delete = models.CASCADE)
+    classCurrent = models.ForeignKey(StudentClass, on_delete = models.CASCADE)
+    group = models.ForeignKey(StudentGroup, on_delete= models.CASCADE, null=True)
     def __str__(self):
         return self.name
 

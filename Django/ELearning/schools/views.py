@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import School, Domain, Department, Subject, SchoolLevel, StudentClass
+from .models import Department, Subject, SchoolLevel, StudentClass
+from Student.models import Course
 from django_tenants.utils import schema_context
 
 def view_schools(request, id):
@@ -190,3 +191,44 @@ def StudentClassDelete(request, id):
     studentClass =StudentClass.objects.filter(id = id).first()
     studentClass.delete()
     return redirect('StudentClasslist')
+
+
+def CourseList(request):
+    Courses = Course.objects.all()
+    context = {'Courses':Courses}
+    return render(request, 'Admin/list-Course.html', context)
+
+def CourseAdd(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        department = request.POST.get('department')
+        department_selected = Department.objects.filter(id=department).first()
+        Course = Course.objects.create(name=name, department=department_selected)
+        return redirect('Courselist')
+    department = Department.objects.all()
+    context = {'department':department}
+  
+    return render(request, 'Admin/add-Course.html', context)
+
+def CourseEdit(request, id):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        department = request.POST.get('department')
+        
+        Course_obj = Course.objects.filter(id=id).first()
+
+        department_selected = Department.objects.filter(id=department).first()
+        Course_obj.name = name
+        Course_obj.department = department_selected
+        Course_obj.save()
+        return redirect('Courselist')
+    
+    Courses = Course.objects.filter(id=id).first()
+    department = Department.objects.all()
+    context = {'department':department, 'Courses':Courses}
+    return render(request, 'Admin/edit-Course.html', context)
+
+def CourseDelete(request, id):
+    Course =Course.objects.filter(id = id).first().delete()
+    return redirect('Courselist')
+

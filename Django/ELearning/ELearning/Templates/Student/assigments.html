@@ -1,49 +1,107 @@
-{% load static %} {% include "includes/elearning-template.html" %} 
+{% load static %} {% include "includes/elearning-template.html" %}
 <style>
-    h1{
-        text-align: center;
-        color: blue;
-        font-family: 'Times New Roman', Times, serif;
-        margin: 10px 0;
-    }
-    p{
-        font-size: 16px;
-        margin: 3px 10px;
-    }
+  h1 {
+    text-align: center;
+    color: blue;
+    font-family: "Times New Roman", Times, serif;
+    margin: 10px 0;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 3px 10px;
+  }
 </style>
-<br>
-<br>
+<br />
+<br />
 <div class="col-auto text-right float-right ml-auto">
-    <a href="{% url 'marksAssigments' subject.id 1 %}" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> marks</a>
-    <a href="{% url 'AddAssigment' subject.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+  <a
+    href="{% url 'marksAssigments' subject.id 1 %}"
+    class="btn btn-outline-primary mr-2"
+    ><i class="fas fa-download"></i> marks</a
+  >
+  <a href="{% url 'AddAssigment' subject.id topic.id %}" class="btn btn-primary"
+    ><i class="fas fa-plus"></i
+  ></a>
+</div>
+<h1 align="center">Previous Assigments</h1>
+<p>
+  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
+  <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023
+  <span class="badge badge-danger">not Submitted</span> <b>score: 0</b>
+</p>
+
+<h1 align="center">Submitted Assigments</h1>
+<p>
+  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
+  <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023
+  <span class="badge badge-success">Submitted</span> <b>score: not weighted</b>
+</p>
+
+<h1 align="center">Late Submitted Assigments</h1>
+<p>
+  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
+  <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023
+  <span class="badge badge-danger">late submissions</span>
+  <b>score: not weighted</b>
+</p>
+
+<h1 align="center">Current Assigment s</h1>
+{% for ass in assigment %}
+<p>
+  <a href="{% url 'UploadAssigments' subject.id topic.id ass.id %}"
+    >{{ass.name}} :
+  </a>
+  <b>{{ass.topic.name}} </b> {{ass.description}} to be Submitted on {{ass.date}}
+  at {{ass.time}}
+</p>
+
+{% endfor %}
+<br><br>
+
+<div class="card card-table">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover table-center mb-0 datatable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Assigment Name</th>
+            <th>Description</th>
+            <th>Time</th>
+            <th>Submissions</th>
+            <th>Marked</th>
+            <th class="text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ass in assigment %}
+          <tr>
+            <td>{{ass.id}}</td>
+            <td>{{ass.name}}</td>
+            <td>{{ass.description}}</td>
+            <td>{{ass.date}} {{ass.time}}</td>
+            <td></td>
+            <td></td>
+            <td class="text-right">
+              <div class="actions">
+                <a
+                  href="{% url 'AssigmentsEdit' subject.id topic.id ass.id %}"
+                  class="btn btn-sm bg-success-light mr-2"
+                >
+                  <i class="fas fa-pen"></i>
+                </a>
+                <a href="{% url 'AssigmentsDelete' subject.id ass.id %}" class="btn btn-sm bg-danger-light">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-<h1 align = "center">Previous Assigments</h1>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023  <span class="badge badge-danger">not Submitted</span>  <b>score: 0</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023  <span class="badge badge-danger">not Submitted</span>  <b>score: 0</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023  <span class="badge badge-danger">not Submitted</span>  <b>score: 0</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023  <span class="badge badge-danger">not Submitted</span>  <b>score: 0</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023  <span class="badge badge-danger">not Submitted</span>  <b>score: 0</b></p>
-
-<h1 align = "center">Submitted Assigments</h1>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-success">Submitted</span>  <b>score: not weighted</b></p>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-success">Submitted</span>  <b>score: not weighted</b></p>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-success">Submitted</span>  <b>score: not weighted</b></p>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-success">Submitted</span>  <b>score: not weighted</b></p>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-success">Submitted</span>  <b>score: not weighted</b></p>
-<h1 align = "center">Late Submitted Assigments</h1>
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-danger">late submissions</span>  <b>score: not weighted</b></p>
- 
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-danger">late submissions</span>  <b>score: not weighted</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-danger">late submissions</span>  <b>score: not weighted</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-danger">late submissions</span>  <b>score: not weighted</b></p>
-
-<p><a href="{% url 'UploadAssigments' subject.id 1 %}">Assigment 1:</a> <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023 <span class="badge badge-danger">late submissions</span>  <b>score: not weighted</b></p>
-
-<h1 align = "center">Current Assigment s</h1>
+  </div>
+</div>
 {% include "includes/footer.html" %}

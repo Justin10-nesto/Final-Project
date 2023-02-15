@@ -129,8 +129,12 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label>Class</label>
-                           <input type="text" name="class_level" class="form-control">
+                           <label>Class</label>                           
+                           <select class="form-control" name= "class_level">
+                              {% for class_ in current_class %}
+                              <option value="{{class_.id}}">{{class_.name}}</option>
+                              {% endfor %}
+                           </select>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">

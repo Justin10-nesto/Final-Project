@@ -28,5 +28,10 @@ urlpatterns = [
     path('StudentClassAdd', views.StudentClassAdd, name ='StudentClassAdd'),
     path('StudentClassEdit/<str:id>', views.StudentClassEdit, name ='StudentClassEdit'),
     path('StudentClassDelete/<str:id>', views.StudentClassDelete, name ='StudentClassDelete'),
+    
+    path('CourseList', views.CourseList, name ='Courselist'),
+    path('CourseAdd', views.CourseAdd, name ='CourseAdd'),
+    path('CourseEdit/<str:id>', views.CourseEdit, name ='CourseEdit'),
+    path('CourseDelete/<str:id>', views.CourseDelete, name ='CourseDelete'),
 
 ]

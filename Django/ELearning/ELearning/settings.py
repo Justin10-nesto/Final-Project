@@ -34,37 +34,22 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-vALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
-# Application definition
-SHARED_APPS = [
-    'django_tenants',  # mandatory
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'Student',
     'schools',
-# you must list the app where your tenant model resides in
-
-    'django.contrib.contenttypes',
-
-    # everything below here is optional
-    'django.contrib.auth',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.admin',
 ]
-TENANT_APPS = [
-    # your tenant-specific apps
-    'schools',
-    
-]
-
-INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 
 MIDDLEWARE = [
-    'django_tenants.middleware.main.TenantMainMiddleware',
-    'ELearning.middleware.TanantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,16 +85,13 @@ WSGI_APPLICATION = 'ELearning.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',
+        'ENGINE': 'django.db.backends.postgresql',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
         'NAME': 'elearning'
     }
 }
-DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter',
-)
 
 
 
@@ -153,37 +135,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ('%s/static'%BASE),
 
-STATICFILES_FINDERS = [
-    "django_tenants.staticfiles.finders.TenantFileSystemFinder",  # Must be first
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
-]
-
-# or this way
-
-STATICFILES_FINDERS.insert(0, "django_tenants.staticfiles.finders.TenantFileSystemFinder")
-
-
-MULTITENANT_STATICFILES_DIRS = [
-    ('%s/static'%BASE),
-]
-
-
-
-STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
-
-MULTITENANT_RELATIVE_STATIC_ROOT = ""  # (default: create sub-directory for each tenant)
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-TENANT_MODEL = "schools.School" # app.Model
-
-TENANT_DOMAIN_MODEL = "schools.Domain"  # app.Model
-
-TENANT_COLOR_ADMIN_APPS = False
-
-PG_EXTRA_SEARCH_PATHS = ['extensions']  

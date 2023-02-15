@@ -1,5 +1,11 @@
-{% load static %} {% include "includes/elearning-template.html" %}
-
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+    <div class="page-header">
+    <div class="row align-items-center">
+    <div class="col">
+    
 <div class="card-body">
     <form method="POST">
         {% csrf_token %}

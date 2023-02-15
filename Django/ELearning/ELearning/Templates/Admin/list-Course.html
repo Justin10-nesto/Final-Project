@@ -5,15 +5,15 @@
        <div class="page-header">
           <div class="row align-items-center">
              <div class="col">
-                <h3 class="page-title">Students</h3>
+                <h3 class="page-title">Courses</h3>
                 <ul class="breadcrumb">
                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                   <li class="breadcrumb-item active">Students</li>
+                   <li class="breadcrumb-item active">Courses</li>
                 </ul>
              </div>
              <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'studentAdd' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                <a href="{% url 'CourseAdd' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
              </div>
           </div>
        </div>
@@ -26,40 +26,29 @@
                          <thead>
                             <tr>
                                <th>ID</th>
-                               <th>Name</th>
-                               <th>Gender</th>
-                               <th>Course</th>
-                               <th>Class</th>
-                               <th>DOB</th>
-                               <th>Mobile Number</th>
+                               <th>Course Name</th>
+                               <th>Department</th>
                                <th class="text-right">Action</th>
                             </tr>
                          </thead>
                          <tbody>
-                           {% for st in stud %}
+                           {% for sch in Courses %}
                             <tr>
-                               <td>{{st.registration_no}}</td>
                                <td>
-                                  <h2 class="table-avatar">
-                                     <a href="student-details.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image"></a>
-                                     <a href="student-details.html">{{st.name}}</a>
-                                  </h2>
+                                 {{sch.id}}
                                </td>
-                               <td>{{st.gender}}</td>
-                               <td>{{st.course.name}}</td>
-                               <td>{{st.classCurrent.name}}</td>
-                               <td>{{st.date_of_birth}}</td>
-                               <td>{{st.phone_number}}</td>
-                               <td>{{st.course.name}}</td>
-                               <td>{{st.gender}}</td>
+                               <td>
+                                 {{sch.name}}
+                               </td>
+                               <td>{{sch.department.name}}</td>
                                <td class="text-right">
                                   <div class="actions">
-                                     <a href="{% url 'studentEdit' st.id %}" class="btn btn-sm bg-success-light mr-2">
+                                    <a href="{% url 'CourseEdit' sch.id %}">
                                      <i class="fas fa-pen"></i>
                                      </a>
-                                     <a href="{% url 'studentDelete' st.id %}" class="btn btn-sm bg-danger-light">
-                                     <i class="fas fa-trash"></i>
-                                     </a>
+                                  
+                                     <a href="{% url 'CourseDelete' sch.id %}" class="btn btn-sm bg-danger-light">
+                                       <i class="fas fa-trash"></i>
                                   </div>
                                </td>
                             </tr>
@@ -69,7 +58,6 @@
                    </div>
                 </div>
              </div>
-             
           </div>
        </div>
     </div>

@@ -15,12 +15,6 @@
 </div>
 <div class="col-12 col-sm-6">
 <div class="form-group">
-<label>Sub Topic</label>
-<input type="text" name="sub_Topic" class="form-control">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
 <label>Description</label>
 <input type="text" name="Description" class="form-control">
 </div>
@@ -54,8 +48,8 @@
 <label>Category</label>
 <select name="Category" class="form-control">
     <option>Select Category</option>
-    {% for dep in Category %}
-    <option value="{{dep.id}}">{{dep.name}}</option>
+    {% for ass in assigment %}
+    <option value="{{ass.id}}">{{ass.name}}</option>
     {% endfor %}
  </select>
 </div>

@@ -1,21 +1,22 @@
 from django.db import models
-from django_tenants.models import TenantMixin, DomainMixin
+# from django_tenants.models import TenantMixin, DomainMixin
 
-class School(TenantMixin):
-    school_name = models.CharField(max_length=100)
-    schoo_logo =  models.CharField(max_length=100)
-    school_level = models.CharField(max_length=100)
-    school_adress = models.CharField(max_length=100)
-    head_of_school = models.TextField()
-    is_active = models.BooleanField(default=True)
-    created_on = models.DateField(auto_now_add=True)
+# class School(TenantMixin):
+#     school_name = models.CharField(max_length=100)
+#     schoo_logo =  models.CharField(max_length=100)
+#     school_level = models.CharField(max_length=100)
+#     school_adress = models.CharField(max_length=100)
+#     head_of_school = models.TextField()
+#     is_active = models.BooleanField(default=True)
+#     created_on = models.DateField(auto_now_add=True)
 
-    # default true, schema will be automatically created and synced when it is saved
-    auto_create_schema = True
-    auto_drop_schema = True
+#     # default true, schema will be automatically created and synced when it is saved
+#     auto_create_schema = True
+#     auto_drop_schema = True
     
-class Domain(DomainMixin):
-    pass
+# class Domain(DomainMixin):
+#     pass
+
 
 class Department(models.Model):
     name = models.CharField(max_length=100)

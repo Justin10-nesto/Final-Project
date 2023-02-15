@@ -16,13 +16,6 @@
                         </div>
                         <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                        <label>Sub Topic</label>
-                                        <input type="text" value="{{assigments.subtopic}}" name="sub_Topic"
-                                                class="form-control">
-                                </div>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                                <div class="form-group">
                                         <label>Description</label>
                                         <input type="text" value="{{assigments.description}}" name="Description"
                                                 class="form-control">
@@ -59,7 +52,7 @@
                                         <label>Category</label>
                                         <select name="Category" class="form-control">
                                                 <option>Select Category</option>
-                                                {% for dep in Category %}
+                                                {% for dep in assigment %}
                                                 <option value="{{dep.id}}">{{dep.name}}</option>
                                                 {% endfor %}
                                         </select>

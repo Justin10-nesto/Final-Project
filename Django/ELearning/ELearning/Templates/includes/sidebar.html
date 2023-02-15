@@ -5,10 +5,10 @@
        <div class="header">
           <div class="header-left">
              <a href="index.html" class="logo">
-             <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+             <img src="{% static 'admin/dist/img/avatar.png' %}" alt="Logo">
              </a>
              <a href="index.html" class="logo logo-small">
-             <img src="{% static 'assets/img/logo-white.png' %}" alt="Logo" width="30" height="30">
+             <img src="{% static 'admin/dist/img/avatar.png' %}" alt="Logo" width="30" height="30">
              </a>
              
           </div>
@@ -117,6 +117,14 @@
                         <li><a href="{% url 'StudentClassAdd' %}">Class Add</a></li>
                      </ul>
                   </li>
+
+                  <li class="submenu">
+                    <a href="#"><i class="fas fa-book-reader"></i> <span>Course</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                       <li><a href="{% url 'Courselist' %}">Course List</a></li>
+                       <li><a href="{% url 'CourseAdd' %}">Course Add</a></li>
+                    </ul>
+                 </li>
                   <li class="submenu">
                     <a href="#"><i class="fas fa-user-graduate"></i> <span> Results</span> <span class="menu-arrow"></span></a>
                     <ul>

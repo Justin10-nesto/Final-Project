@@ -25,7 +25,8 @@
 <div class="col-auto text-right float-right ml-auto">
     <a href="add-exam.html" class="btn btn-primary"><i class="fas fa-plus"></i></a>
     </div>
-<h1 align = "center">Assigments 1</h1>
-<h2>introduction to chemistry <b>weight 15marks</b> <small><i>submissions date 21-09-2003</i></small></h2>
-<p>explain types and main importance of studying chemistry</p>
+<h1 align = "center">{{assigments.name}}</h1>
+<h2>{{assigments.topic.name}} <b>weight {{assigments.Weight}}marks</b> <small><i>submissions date {{assigments.date}} {{assigments.time}}</i></small></h2>
+<p><i>Instruction: </i> {{assigments.description}}</p>
+<p>{{assigments.task}}</p>
 {% include "includes/footer.html" %}
