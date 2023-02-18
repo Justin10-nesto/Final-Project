@@ -1,5 +1,5 @@
 from django.db import models
-from schools.models import Subject, Department, SchoolLevel, StudentClass
+from schools.models import Subject, Course, Department, SchoolLevel, StudentClass
 
 from django.contrib.auth.models import AbstractUser,AbstractBaseUser,User
 
@@ -89,13 +89,13 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
     type = models.CharField(max_length=50)
     description = models.TextField(null=True)
-    file = models.FileField()
+    file = models.FileField(upload_to='Books')
     topic = models.ForeignKey(Topic, on_delete = models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
 
 
 class StudentGroupType(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
 
     class Meta:
         db_table = 'StudentGroupType'
@@ -107,21 +107,17 @@ class StudentGroupType(models.Model):
 
 class StudentGroup(models.Model):
     name = models.CharField(max_length=50)
-    subject = models.ForeignKey(Subject, on_delete= models.CASCADE)
+    description = models.TextField(null=True)
+    file = models.FileField(upload_to='Groups', null=True)
     type = models.ForeignKey(StudentGroupType, on_delete= models.CASCADE)
-    assignent = models.ForeignKey(Assigment, on_delete= models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete= models.CASCADE)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+
 
     def __str__(self):
         return self.name
 
 
-class Course(models.Model):
-    name = models.CharField(max_length=255)
-    department = models.ForeignKey(Department, on_delete= models.CASCADE, null =True)
-    
-    def __str__(self):
-        return self.name
-    
 class Student(models.Model):
     name = models.CharField(max_length=50)
     registration_no = models.CharField(max_length=50)
@@ -137,3 +133,9 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
+
+class StudentClassManyToMany(models.Model):
+    classCurrent = models.ForeignKey(StudentClass, on_delete = models.CASCADE)
+    student = models.ForeignKey(Student, on_delete= models.CASCADE, null=True)
+    def __str__(self):
+        return self.student.name

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Department, Subject, SchoolLevel, StudentClass
+from schools.models import Department, Subject, SchoolLevel, StudentClass, CourseSubject
+from Student.models import Student,DefaultUsers, Book, Assigment, AssigmentType, Topic
 from Student.models import Course
-from django_tenants.utils import schema_context
+from django.contrib.auth.models import User
 
 def view_schools(request, id):
     school_info = School.objects.filter(id = id).first()
@@ -78,8 +79,12 @@ def DepartmentDelete(request, id):
 
 
 def SubjectList(request):
+    user_id = request.user.id
+    user = User.objects.filter(id = user_id).first() 
+    student_info = Student.objects.filter(user=user).first()
     Subjects = Subject.objects.all()
-    context = {'Subjects':Subjects}
+    # stud_subjects = CourseSubject.objects.filter(course=student_info.course, studentClass = student_info.classCurrent)
+    context = {'Subjects':Subjects, }
     return render(request, 'Admin/list-subject.html', context)
 
 def SubjectAdd(request):

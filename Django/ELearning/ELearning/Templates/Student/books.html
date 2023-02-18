@@ -9,10 +9,12 @@
          <a href="{% url 'BooksAdd' subject.id topic.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
       </div>
         <h1 align = "center">Books Available</h1>
-       <table class="table table-hover table-center mb-0 datatable">
-          <thead>
+        <div class="card card-table">
+         <div class="card-body">
+            <div class="table-responsive">
+               <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
              <tr>
-                <th>ID</th>
                 <th>Book Name</th>
                 <th>Author</th>
                 <th>Type</th>
@@ -23,20 +25,22 @@
           <tbody>
             {% for book in books %}
              <tr>
-                <td>
-                  {{book.id}}
-                </td>
-                <td>{{book.bookool_name}}</td>
-                <td>{{book.bookoo_logo}}</td>
-                <td>{{book.bookool_level}}</td>
-                <td>{{book.bookool_adress}}</td>
-                <td>{{book.head_of_bookool}}</td>
+                <td>{{book.name}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.type}}</td>
+                <td>{{book.description}}</td>
                 <td class="text-right">
                    <div class="actions">
-                     <a href="">
+                     <a href="{{book.file.url}}">
                       <i class="fas fa-download"></i>
                       </a>
-                   
+                        <a href="{% url 'BooksEdit' subject.id topic.id book.id %}">
+                         <i class="fas fa-pen"></i>
+                         </a>
+                      
+                         <a href="{% url 'BooksDelete' subject.id topic.id book.id %}" class="btn btn-sm bg-danger-light">
+                           <i class="fas fa-trash"></i>
+                      
                    </div>
                 </td>
              </tr>

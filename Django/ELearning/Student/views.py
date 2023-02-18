@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 import pandas as pd
-from Student.models import Student,DefaultUsers, Book, Assigment, AssigmentType, Topic, Course
+from Student.models import Student,DefaultUsers, Book, Assigment, StudentGroup, StudentGroupType, AssigmentType, Topic, StudentClassManyToMany
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from schools.models import Subject, Department, StudentClass
+from schools.models import Subject, Department, StudentClass, Course
 import random
 
 # Create your views here.
@@ -52,7 +52,9 @@ def submitRegistration(request):
                                          phone_number=phone_no, 
                                          user=user_info_details, 
                                          course=course, 
-                                         classCurrent=current_class)
+                                         classCurrent=current_class,
+                                         )
+        StudentClassManyToMany.objects.create(classCurrent = current_class, student= student)
         return redirect('loginPage')
     
 def registerPage(request):
@@ -168,7 +170,8 @@ def booksPage(request, sid, tid):
     subject =Subject.objects.filter(id = sid).first()
 
     topic = Topic.objects.filter(id = tid).first()
-    context = {'topic':topic, 'subject':subject}
+    books = Book.objects.filter(topic=topic, subject=subject)
+    context = {'topic':topic, 'subject':subject, 'books':books}
     return render(request, 'Student/books.html', context)
  
 def BooksAdd(request, sid, tid):
@@ -177,11 +180,11 @@ def BooksAdd(request, sid, tid):
         author = request.POST.get('author')
         description = request.POST.get('description')
         type = request.POST.get('type')
-        file = request.POST.get('file')
+        file_data = request.FILES['file']
         subject =Subject.objects.filter(id = sid).first()
         topic = Topic.objects.filter(id = tid).first()
-        books = Book.objects.create(name=name, author=author, type=type, description=description, file= file, topic = topic, subject= subject)
-        return redirect('booksPage')
+        books = Book.objects.create(name=name, author=author, type=type, description=description, file= file_data, topic = topic, subject= subject)
+        return redirect(f'../../booksPage/{sid}/{tid}')
     
     department = Department.objects.all()
     topic = Topic.objects.filter(id = tid).first()
@@ -196,21 +199,20 @@ def BooksEdit(request, sid, tid, id):
         author = request.POST.get('author')
         description = request.POST.get('description')
         type = request.POST.get('type')
-        file = request.POST.get('file')
+        file_data = request.FILES['file']
             
         subject =Subject.objects.filter(id = sid).first()
         topic = Topic.objects.filter(id = tid).first()
         Books_obj = Book.objects.filter(id=id).first()
-        level = Books_obj.update(name = name)
         Books_obj.name=name 
         Books_obj.author=author 
         Books_obj.type=type 
         Books_obj.description=description 
-        Books_obj.file= file
+        Books_obj.file= file_data
         Books_obj.subject = subject
         Books_obj.topic = topic
         Books_obj.save()
-        return redirect('booksPage')
+        return redirect(f'../../booksPage/{sid}/{tid}')
     
     books = Book.objects.filter(id=id).first()
     subject =Subject.objects.filter(id = sid).first()
@@ -218,10 +220,10 @@ def BooksEdit(request, sid, tid, id):
     context = {'books':books, 'subject':subject}
     return render(request, 'Student/edit-Books.html', context)
 
-def BooksDelete(request, sid, id):
+def BooksDelete(request, sid, tid,  id):
     books =Book.objects.filter(id = id).first()
     books.delete()
-    return redirect('booksPage')
+    return redirect(f'../../booksPage/{sid}/{tid}')
 
 
 def assigmentsPage(request, sid, tid):
@@ -329,7 +331,74 @@ def groupsPage(request, sid, tid):
     topic = Topic.objects.filter(id = tid).first()
     context = {'topic':topic, 'subject':subject}
     return render(request, 'Student/groups.html', context)
- 
+
+def groupAdd(request, sid):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        logo = request.FILES['logo']
+        description = request.POST.get('description')
+        type = request.POST.get('type')
+        participants = request.POST.get('participants')
+        
+        group_type = StudentGroupType.object.filter(id = type).first()
+        subject = Subject.objects.filter(id = sid).first()
+        for user_id in participants:
+            uuser_data = User.objects.filter(id= user_id).first()
+            StudentGroup.objects.create(name = name, description= description, file = file, type= group_type, subject = subject, user = user_data)
+        return redirect(f'../../groupPage/{sid}/{tid}')
+    
+    
+    try:
+        groups_dtype = ['Public', 'Private']
+        for i in groups_dtype:
+            StudentGroupType.objects.create(name=i)
+    except:
+        pass
+    
+    user_id = request.user.id
+    student_info = Student.objects.filter(id = user_id).first()
+
+    subject =Subject.objects.filter(id = sid).first()
+    users = Student.objects.all()
+    assigment = AssigmentType.objects.all()
+    context = {'subject':subject, 'users':users}
+    return render(request, 'Student/create-group.html', context)
+
+def groupEdit(request, sid, id):
+    if request.method == "POST":
+        Assigment_number = request.POST.get('Assigment_number')
+        sub_Topic_id = request.POST.get('sub_Topic')
+        Description = request.POST.get('Description')
+        Weight = request.POST.get('Weight')
+        task = request.POST.get('Task')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        Category = request.POST.get('Category')
+        
+        subject = Subject.objects.filter(id = sid).first()
+        topic = Topic.objects.filter(id = tid).first()
+        type_assigment = AssigmentType.objects.filter(id = Category).first()
+        assigment = Assigment.objects.filter(id = id).first()
+        assigment.name = Assigment_number
+        assigment.description=Description
+        assigment.task = task
+        assigment.date = date
+        assigment.time = time
+        assigment.subject = subject
+        assigment.Weight =Weight
+        assigment. topic = topic
+        assigment.type= type_assigment
+        assigment.save()
+        return redirect(f'../../../groupPage/{sid}/{tid}')
+    
+    subject =Subject.objects.filter(id = sid).first()
+    context = {'subject':subject, 'group':group, }
+    return render(request, 'Student/edit-group.html', context)
+
+def groupDelete(request, sid):
+    Assigment.objects.filter(id = id).first().delete()
+    return redirect(f'../../groupPage/{sid}/')
+
 def anauncementPage(request, sid, tid):
     subject =Subject.objects.filter(id = sid).first()
     topic = Topic.objects.filter(id = tid).first()

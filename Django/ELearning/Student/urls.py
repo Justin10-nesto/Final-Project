@@ -30,10 +30,10 @@ urlpatterns = [
     path('booksPage/<str:sid>/<str:tid>', views.booksPage, name="booksPage"),
     path('BooksAdd/<str:sid>/<str:tid>', views.BooksAdd, name ='BooksAdd'),
     path('BooksEdit/<str:sid>/<str:tid>/<str:id>', views.BooksEdit, name ='BooksEdit'),
-    path('BooksDelete/<str:sid>/<str:id>', views.BooksDelete, name ='BooksDelete'),
+    path('BooksDelete/<str:sid>/<str:tid>/<str:id>', views.BooksDelete, name ='BooksDelete'),
 
     path('assigmentsPage/<str:sid>/<str:tid>', views.assigmentsPage, name="assigmentsPage"),
-    path('AddAssigment<str:sid>/<str:tid>', views.AssigmentsAdd, name="AddAssigment"),
+    path('AddAssigment/<str:sid>/<str:tid>', views.AssigmentsAdd, name="AddAssigment"),
     path('AssigmentsEdit/<str:sid>/<str:tid>/<str:id>', views.AssigmentsEdit, name ='AssigmentsEdit'),
     path('AssigmentsDelete/<str:sid>/<str:id>', views.AssigmentsDelete, name ='AssigmentsDelete'),
 
@@ -44,6 +44,11 @@ urlpatterns = [
 
     path('NotesPage/<str:sid>/<str:tid>', views.NotesPage, name="NotesPage"),
     path('discussionsPage/<str:sid>/<str:tid>', views.discussionsPage, name="discussionsPage"),
+    
     path('groupsPage/<str:sid>/<str:tid>', views.groupsPage, name="groupsPage"),
+     path('Addgroup/<str:sid>', views.groupAdd, name="Addgroup"),
+    path('groupsEdit/<str:sid>/<str:id>', views.groupEdit, name ='groupsEdit'),
+    path('groupsDelete/<str:sid>/<str:id>', views.groupDelete, name ='groupsDelete'),
+
     path('anauncementPage/<str:sid>/<str:tid>', views.anauncementPage, name="anauncementPage"),
 ]
