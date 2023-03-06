@@ -19,19 +19,20 @@
                <div class="row align-items-center">
                   <div class="col-auto profile-image">
                      <a href="#">
-                     <img class="rounded-circle" alt="User Image" src="{% static 'assets/img/profiles/avatar-02.jpg' %}">
-                     </a>
+                        <img class="rounded-circle" alt="User Image"
+                        {% if student_data.photo %}
+                           src="{% static student_data.photo.url %}">
+                           {% else %}
+                           src="{% static 'assets/img/profiles/avatar-02.jpg' %}">
+                           {% endif %}
+ 
+                        </a>
                   </div>
                   <div class="col ml-md-n2 profile-user-info">
-                     <h4 class="user-name mb-0">John Doe</h4>
-                     <h6 class="text-muted">UI/UX Design Team</h6>
-                     <div class="user-Location"><i class="fas fa-map-marker-alt"></i> Florida, United States</div>
-                     <div class="about-text">Lorem ipsum dolor sit amet.</div>
-                  </div>
-                  <div class="col-auto profile-btn">
-                     <a href="#" class="btn btn-primary">
-                     Edit
-                     </a>
+                     <h4 class="user-name mb-0">{{student_data.name}}</h4>
+                     <h6 class="text-muted">Reg No: {{student_data.registration_no}}</h6>
+                     <div class="user-Location"> {{student_data.classCurrent.name}} {{student_data.course.name}}</div>
+                     <div class="about-text">{{student_data.date_created}}.</div>
                   </div>
                </div>
             </div>
@@ -53,31 +54,38 @@
                            <div class="card-body">
                               <h5 class="card-title d-flex justify-content-between">
                                  <span>Personal Details</span>
-                                 <a class="edit-link" data-toggle="modal" href="#edit_personal_details"><i class="far fa-edit mr-1"></i>Edit</a>
+                                 <a class="edit-link" data-toggle="modal" data-target="#modal-default"
+                                    href="#edit_personal_details"><i class="far fa-edit mr-1"></i>Edit</a>
                               </h5>
                               <div class="row">
-                                 <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Name</p>
-                                 <p class="col-sm-9">John Doe</p>
+                                 <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3"></p>
+                                 <p class="col-sm-9 mb-0"></p>
+                              </div>
+                              <div class="row">
+                                 <p class="col-sm-3 text-muted text-sm-left mb-0 mb-sm-3">Name</p>
+                                 <p class="col-sm-9 mb-0">{{student_data.name}}</p>
                               </div>
                               <div class="row">
                                  <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Date of Birth</p>
-                                 <p class="col-sm-9">24 Jul 1983</p>
+                                 <p class="col-sm-9 mb-0">{{student_data.date_of_birth}}</p>
                               </div>
                               <div class="row">
                                  <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Email ID</p>
-                                 <p class="col-sm-9"><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="711b1e191f151e14311409101c011d145f121e1c">[email&#160;protected]</a></p>
+                                 <p class="col-sm-9 mb-0"><a href=""
+                                       class="__cf_email__">{{student_data.user.email}}</a></p>
                               </div>
                               <div class="row">
                                  <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Mobile</p>
-                                 <p class="col-sm-9">305-310-5857</p>
+                                 <p class="col-sm-9 mb-0">{{student_data.phone_number}}</p>
                               </div>
                               <div class="row">
-                                 <p class="col-sm-3 text-muted text-sm-right mb-0">Address</p>
-                                 <p class="col-sm-9 mb-0">4663 Agriculture Lane,<br>
-                                    Miami,<br>
-                                    Florida - 33165,<br>
-                                    United States.
-                                 </p>
+                                 <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Index Number</p>
+                                 <p class="col-sm-9 mb-0">{{student_data.index_number}}</p>
+                              </div>
+
+                              <div class="row">
+                                 <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Date Joined</p>
+                                 <p class="col-sm-9">{{student_data.date_created}}</p>
                               </div>
                            </div>
                         </div>
@@ -87,27 +95,11 @@
                            <div class="card-body">
                               <h5 class="card-title d-flex justify-content-between">
                                  <span>Account Status</span>
-                                 <a class="edit-link" href="#"><i class="far fa-edit mr-1"></i> Edit</a>
                               </h5>
-                              <button class="btn btn-success" type="button"><i class="fe fe-check-verified"></i> Active</button>
-                           </div>
-                        </div>
-                        <div class="card">
-                           <div class="card-body">
-                              <h5 class="card-title d-flex justify-content-between">
-                                 <span>Skills </span>
-                                 <a class="edit-link" href="#"><i class="far fa-edit mr-1"></i> Edit</a>
-                              </h5>
-                              <div class="skill-tags">
-                                 <span>Html5</span>
-                                 <span>CSS3</span>
-                                 <span>WordPress</span>
-                                 <span>Javascript</span>
-                                 <span>Android</span>
-                                 <span>iOS</span>
-                                 <span>Angular</span>
-                                 <span>PHP</span>
-                              </div>
+                              {% if request.user.is_active %}
+                              <button class="btn btn-success" type="button"><i class="fe fe-check-verified"></i>
+                                 Active</button>
+                              {% endif %}
                            </div>
                         </div>
                      </div>
@@ -119,18 +111,15 @@
                         <h5 class="card-title">Change Password</h5>
                         <div class="row">
                            <div class="col-md-10 col-lg-6">
-                              <form>
-                                 <div class="form-group">
-                                    <label>Old Password</label>
-                                    <input type="password" class="form-control">
-                                 </div>
+                              <form method="POST" action="{% url 'changePassword' %}">
+                                 {% csrf_token %}
                                  <div class="form-group">
                                     <label>New Password</label>
-                                    <input type="password" class="form-control">
+                                    <input type="password" name="password1" class="form-control">
                                  </div>
                                  <div class="form-group">
                                     <label>Confirm Password</label>
-                                    <input type="password" class="form-control">
+                                    <input type="password" name="password2" class="form-control">
                                  </div>
                                  <button class="btn btn-primary" type="submit">Save Changes</button>
                               </form>
@@ -145,4 +134,41 @@
    </div>
 </div>
 </div>
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Information</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form action="{% url 'updateStudent' %}" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+               <label>Email</label>
+               <input type="email" name="email" class="form-control">
+         </div>
+            <div class="form-group">
+               <label>Phone Number</label>
+               <div>
+                  <input type="tel" name="phone_no" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>Photo</label>
+                  <div>
+                     <input type="file" name="file" class="form-control">
+                  </div>
+            
+      <div class="modal-footer justify-content-between">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <input type="submit" class="btn btn-primary" value="Save changes">
+       </div>
+         </form>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+
 {% load static %} {% include "includes/footer.html" %}

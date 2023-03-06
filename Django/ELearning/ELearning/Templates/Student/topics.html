@@ -57,9 +57,48 @@
                          </tbody>
                       </table>
                    </div>
-                </div>
+                </div>   
              </div>
+         </div>
+             <div class="row">
+             <h3 class="page-title">Groups</h3>
+             </div>
+             <div class="col-auto text-right float-right ml-auto">
+               <div class="compose-btn">
+                   <a href="{% url 'Addgroup' subject.id %}" class="btn btn-primary btn-block">
+                       Create Group
+                   </a>
+               </div>
+             </div>
+       </div>
+             
+       {% for gr in groups %}
+       <div class="row">
+          <div class="col-sm-12">
+                   <p><li class="active">
+                     <div class="col-auto text-right float-left ml-12">
+                       <a href="{% url 'groupContent' gr.id %}">
+                           <span class="user-img"><img class="rounded-circle"
+                                   src="{% static gr.file.url %}" width="31"
+                                   alt="{{request.user.username}}">
+                           </span>
+                        {{gr.name}} <span class="mail-count">(<b>5</b>)</span>
+                       </a>
+                     </div>
+                       <div class="col-auto text-right float-left ml-12">
+                             <a href="{% url 'JoinToGroup' gr.id %}" class="btn btn-primary">
+                                 Join Group
+                             </a>
+                       </div>
+       
+                   </li>
+                   
+                  </p>
+               </ul>
+           </div>
+           
           </div>
+          {% endfor %}
        </div>
     </div>
 {% load static %} {% include "includes/footer.html" %}

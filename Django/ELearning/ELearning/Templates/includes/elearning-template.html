@@ -38,25 +38,20 @@
                                  </a>
                                </th>                               
                                <th>
-                                <a href="">
+                                <a href="{% url 'TutorialPage' subject.id  topic.id %}">
                                  Tutorials
                                  </a>
                                </th>                               
                                <th>
                                 <a href="{% url 'discussionsPage' subject.id topic.id %}">
-                                Discussions
-                                </a>
-                               </th>                               
-                               <th>
-                                <a href="{% url 'groupsPage' subject.id topic.id %}">
-                                Groups
-                                </a>
-                               </th>                               
-                               <th>
-                                <a href="{% url 'anauncementPage' subject.id topic.id %}">
-                                Anounciments
+                                Q & A
                                 </a>
                                </th>  
+                               <th>
+                                 <a href="{% url 'anauncementPage' subject.id topic.id  %}">
+                                    Anounciments
+                                 </a>
+                               </th>
                             </tr>
                             </thead>                           
                       </table>

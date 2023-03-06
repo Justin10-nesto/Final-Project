@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from schools.models import Department, Subject, SchoolLevel, StudentClass, CourseSubject
-from Student.models import Student,DefaultUsers, Book, Assigment, AssigmentType, Topic
+from Student.models import Student,DefaultUsers,StudentSubject, Book, Assigment, AssigmentType, Topic
 from Student.models import Course
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 def view_schools(request, id):
     school_info = School.objects.filter(id = id).first()
@@ -82,10 +83,30 @@ def SubjectList(request):
     user_id = request.user.id
     user = User.objects.filter(id = user_id).first() 
     student_info = Student.objects.filter(user=user).first()
-    Subjects = Subject.objects.all()
-    # stud_subjects = CourseSubject.objects.filter(course=student_info.course, studentClass = student_info.classCurrent)
+    Subjects = StudentSubject.objects.filter(student=student_info)
     context = {'Subjects':Subjects, }
     return render(request, 'Admin/list-subject.html', context)
+
+def SubjectRegistration(request):
+    if request.method == 'POST':
+        user_id = request.user.id
+        user = User.objects.filter(id = user_id).first() 
+        student_info = Student.objects.filter(user=user).first()
+        stud_subjects = CourseSubject.objects.filter(course=student_info.course, studentClass = student_info.classCurrent)
+        student = Student.objects.filter(user=user).first()
+        
+        for sub_course in stud_subjects:
+            StudentSubject.objects.create(student=student, subject=sub_course.subject)
+        return redirect('Subjectlist')
+    
+    user_id = request.user.id
+    user = User.objects.filter(id = user_id).first() 
+    student_info = Student.objects.filter(user=user).first()
+    stud_subjects = CourseSubject.objects.filter(course=student_info.course, studentClass = student_info.classCurrent)
+    department = student_info.course.department
+    subjects = Subject.objects.filter(department=department)
+    context = {'stud_subjects':stud_subjects, 'subjects':subjects}
+    return render(request, 'Admin/subject registration.html', context)
 
 def SubjectAdd(request):
     if request.method == "POST":

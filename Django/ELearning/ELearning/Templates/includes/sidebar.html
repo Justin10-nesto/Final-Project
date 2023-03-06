@@ -10,6 +10,7 @@
              <a href="index.html" class="logo logo-small">
              <img src="{% static 'admin/dist/img/avatar.png' %}" alt="Logo" width="30" height="30">
              </a>
+             <span>{{student_data.school}}</span>
              
           </div>
           <a href="javascript:void(0);" id="toggle_btn">
@@ -29,8 +30,12 @@
              </li>
              <li class="nav-item dropdown has-arrow">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{request.user.username}}"></span>
-                </a>
+                  {% if student_data.photo %}
+                  <span class="user-img"><img class="rounded-circle" src="{% static student_data.photo.url %}" width="31" alt="{{request.user.username}}"></span>
+                     {% else %} 
+                     <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{request.user.username}}"></span>
+               {% endif %}
+               </a>
                 <div class="dropdown-menu">
                    <div class="user-header">
                       <div class="avatar avatar-sm">
@@ -65,20 +70,39 @@
                    </li>
                    
                    <li class="submenu">
-                     <a href="#"><i class="fas fa-user-graduate"></i> <span> Schools</span> <span class="menu-arrow"></span></a>
+                     <a href="#"><i class="fas fa-user-graduate"></i> <span> Schools Management</span> <span class="menu-arrow"></span></a>
                      <ul>
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Schools</span> <span class="menu-arrow"></span></a>
+                        <ul>
                         <li><a href="{% url 'schoollist' %}">School List</a></li>
                         <li><a href="{% url 'schoolAdd' %}">School Add</a></li>
                      </ul>
+                     <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
+                      <ul>
+                         <li><a href="{% url 'Departmentlist' %}">Department List</a></li>
+                         <li><a href="{% url 'DepartmentAdd' %}">Department Add</a></li>
+                      </ul>
+                      <a href="#"><i class="fas fa-book-reader"></i> <span> Levels</span> <span class="menu-arrow"></span></a>
+                      <ul>
+                         <li><a href="{% url 'SchoolLevellist' %}">Level List</a></li>
+                         <li><a href="{% url 'SchoolLevelAdd' %}">Level Add</a></li>
+                      </ul>
+
+                      <a href="#"><i class="fas fa-book-reader"></i> <span>Class</span> <span class="menu-arrow"></span></a>
+                      <ul>
+                         <li><a href="{% url 'StudentClasslist' %}">Class List</a></li>
+                         <li><a href="{% url 'StudentClassAdd' %}">Class Add</a></li>
+                      </ul>
+                     </ul>
                   </li>
                    <li class="submenu">
+                     <a href="#"><i class="fas fa-user-graduate"></i> <span> User Management</span> <span class="menu-arrow"></span></a>
+                     <ul>
                       <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                       <ul>
                          <li><a href="{% url 'studentlist' %}">Student List</a></li>
                          <li><a href="{% url 'studentAdd' %}">Student Add</a></li>
                       </ul>
-                   </li>
-                   <li class="submenu">
                       <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                       <ul>
                          <li><a href="teachers.html">Teacher List</a></li>
@@ -86,53 +110,73 @@
                          <li><a href="add-teacher.html">Teacher Add</a></li>
                          <li><a href="edit-teacher.html">Teacher Edit</a></li>
                       </ul>
-                   </li>
-                   <li class="submenu">
-                      <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
-                      <ul>
-                         <li><a href="{% url 'Departmentlist' %}">Department List</a></li>
-                         <li><a href="{% url 'DepartmentAdd' %}">Department Add</a></li>
                       </ul>
+                   </li>   
+                   <li class="submenu">
                    </li>
-                   <li class="submenu">
-                     <a href="#"><i class="fas fa-book-reader"></i> <span> Levels</span> <span class="menu-arrow"></span></a>
-                     <ul>
-                        <li><a href="{% url 'SchoolLevellist' %}">Level List</a></li>
-                        <li><a href="{% url 'SchoolLevelAdd' %}">Level Add</a></li>
-                     </ul>
-                  </li>
-              
-                   <li class="submenu">
-                      <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-                      <ul>
-                         <li><a href="{% url 'Subjectlist' %}">Subject List</a></li>
-                         <li><a href="{% url 'SubjectAdd' %}">Subject Add</a></li>
-                      </ul>
-                   </li>
-
-                   <li class="submenu">
-                     <a href="#"><i class="fas fa-book-reader"></i> <span>Class</span> <span class="menu-arrow"></span></a>
-                     <ul>
-                        <li><a href="{% url 'StudentClasslist' %}">Class List</a></li>
-                        <li><a href="{% url 'StudentClassAdd' %}">Class Add</a></li>
-                     </ul>
-                  </li>
 
                   <li class="submenu">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span>E-Learning Platform</span> <span class="menu-arrow"></span></a>
+                        <ul>
                     <a href="#"><i class="fas fa-book-reader"></i> <span>Course</span> <span class="menu-arrow"></span></a>
                     <ul>
                        <li><a href="{% url 'Courselist' %}">Course List</a></li>
                        <li><a href="{% url 'CourseAdd' %}">Course Add</a></li>
                     </ul>
-                 </li>
-                  <li class="submenu">
-                    <a href="#"><i class="fas fa-user-graduate"></i> <span> Results</span> <span class="menu-arrow"></span></a>
+                    <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                     <ul>
-                       <li><a href="Results-details.html">View current Results</a></li>
-                       <li><a href="add-Results.html">View previous Result</a></li>
-                       <li><a href="edit-Results.html">View all Result</a></li>
+                       <li><a href="{% url 'SubjectRegistration' %}">Subject Registration</a></li>
+                       <li><a href="{% url 'Subjectlist' %}">Subject List</a></li>
+                       <li><a href="{% url 'SubjectAdd' %}">Subject Add</a></li>
+                    </ul>
                     </ul>
                  </li>
+                 
+                 <li class="submenu">
+                  <a href="#"><i class="fas fa-user-graduate"></i> <span> Exams Management</span> <span class="menu-arrow"></span></a>
+                  <ul>
+                     
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span>Pass Marks</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'gradeList' %}">Grades</a></li>
+                           <li><a href="{% url 'divisionList' %}">Divisions</a></li>
+                           <li><a href="edit-Results.html">GPA</a></li>
+                        </ul>
+                     </li>
+     
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span>Exams Setting</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="{% url 'examTypeList' %}">Exams list</a></li>
+                           <li><a href="{% url 'divisionList' %}">EXanination Format</a></li>
+                           <li><a href="edit-Results.html">GPA</a></li>
+                        </ul>
+                     </li>
+     
+                     <li>
+                        <a href="{% url 'MakeApointmentAdd' %}"><i class="fas fa-clipboard-list"></i> <span>Create Exam Appointment</span></a>
+                     </li>
+                     <li>
+                        <a href="{% url 'examList' %}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                     </li>
+                     <li>
+                        <a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
+                     </li>
+                     <li>
+                        <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Anounciments</span></a>
+                     </li>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Results</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="Results-details.html">View current Results</a></li>
+                           <li><a href="add-Results.html">View previous Result</a></li>
+                           <li><a href="edit-Results.html">View all Result</a></li>
+                        </ul>
+                     </li>
+     
+                  </ul>
+               </li>
                  <li class="submenu">
                    <a href="#"><i class="fas fa-user-graduate"></i> <span> Reports</span> <span class="menu-arrow"></span></a>
                    <ul>
@@ -142,20 +186,8 @@
                       <li><a href="edit-Results.html">Year</a></li>
                    </ul>
                 </li>
-                   <li class="menu-title">
-                      <span>Management</span>
-                   </li>
                    <li>
-                      <a href="{% url 'examList' %}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
-                   </li>
-                   <li>
-                      <a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
-                   </li>
-                   <li>
-                      <a href="event.html"><i class="fas fa-calendar-day"></i> <span>Anounciments</span></a>
-                   </li>
-                   <li>
-                      <a href="library.html"><i class="fas fa-book"></i><span>User Profile</span></a>
+                      <a href="{% url 'userProfilePage' %}"><i class="fas fa-book"></i><span>Setting</span></a>
                    </li>
                    
              </div>

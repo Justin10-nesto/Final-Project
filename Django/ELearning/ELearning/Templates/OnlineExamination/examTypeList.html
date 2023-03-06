@@ -1,0 +1,113 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Exam Type</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Exam Type</li>
+          </ul>
+        </div>
+        <div class="col-auto text-right float-right ml-auto">
+          <a href="#" class="btn btn-outline-primary mr-2"
+            ><i class="fas fa-download"></i> Download</a
+          >
+          <a href="{% url 'examTypeAdd' %}" class="btn btn-primary"
+            ><i class="fas fa-plus"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-center mb-0 datatable">
+                <thead>
+                  <tr>
+                    <th>Examination Type</th>
+                    <th>Contribution to end of year Exam (%)</th>
+                    <th>Contribution to end of Final Exam (%)</th>
+                    <th>Class</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for examtype in examtypes %}
+                  <tr>
+                    <td>{{examtype.name}}</td>
+                    <td>{{examtype.weight_annual}}</td>
+                    <td>{{examtype.weight_final}}</td>
+                    <td>{{examtype.studentClass.name}}</td>
+                    <td class="text-right">
+                      <div class="actions">
+                        <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_{{examtype.id}}"
+                        href="#edit_personal_details"><i class="fas fa-pen"></i></a>                                     
+                         </a>
+                        <a
+                          href="{% url 'examTypeDelete' examtype.id %}"
+                          class="btn btn-sm bg-danger-light"
+                        >
+                          <i class="fas fa-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <div class="modal fade" id="modal-default_{{examtype.id}}">
+                     <div class="modal-dialog">
+                       <div class="modal-content">
+                         <div class="modal-header">
+                           <h4 class="modal-title">Examination Type Information</h4>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span>
+                           </button>
+                         </div>
+                         <div class="modal-body">
+                            <form action="{% url 'examTypeEdit' examtype.id %}" enctype="multipart/form-data" method="POST">
+                               {% csrf_token %}
+                               
+                          <div class="form-group">
+                             <label>Exam Type</label>
+                             <input type="text" value ="{{examtype.name}}" name="name" class="form-control">
+                          </div>
+                          <div class="form-group">
+                             <label>Contribution to end of year Exam (%)</label>
+                             <input type="number" value ="{{examtype.weight_annual}}" name = "weight_annual" class="form-control">
+                          </div>
+                       
+                          <div class="form-group">
+                             <label>Contribution to end of year Exam (%)</label>
+                                <input type="number" value ="{{examtype.weight_final}}" name="weight_final" class="form-control">
+                          </div>
+                          <div class="form-group">
+                               <label>Level</label>                           
+                               <select class="form-control" name= "studentClass">
+                                  {% for class in studentClass %}
+                                  <option value="{{class.id}}">{{class.name}}</option>
+                                  {% endfor %}
+                               </select>
+                         </div>
+                       
+                    
+                         <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Save changes">
+                          </div>
+                            </form>
+                         </div>
+                       
+                                              {% endfor %}
+                                           </tbody>
+                                        </table>
+                                     </div>
+                                  </div>
+                               </div>
+                               
+                            </div>
+                         </div>
+                      </div>
+                  {% load static %} {% include "includes/footer.html" %}

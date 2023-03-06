@@ -23,10 +23,13 @@
 <br>
 <br>
 <div class="col-auto text-right float-right ml-auto">
-    <a href="add-exam.html" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+    <a href="{% url 'AssigmentSubmision' subject.id topic.id assigments.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
     </div>
 <h1 align = "center">{{assigments.name}}</h1>
 <h2>{{assigments.topic.name}} <b>weight {{assigments.Weight}}marks</b> <small><i>submissions date {{assigments.date}} {{assigments.time}}</i></small></h2>
 <p><i>Instruction: </i> {{assigments.description}}</p>
 <p>{{assigments.task}}</p>
+{% if assigments.file %}
+<p>document <a href="{% static assigments.file.url %}">assigments.file</a></p>
+{% endif %}
 {% include "includes/footer.html" %}

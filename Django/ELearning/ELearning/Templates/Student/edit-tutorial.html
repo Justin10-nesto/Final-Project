@@ -1,0 +1,41 @@
+{% load static %} {% include "includes/elearning-template.html" %} 
+
+<div class="card-body">
+    <form method = "POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+<div class="col-12">
+<h5 class="form-title"><span>Edit Tutorial</span></h5>
+</div>
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label>Tutorial title</label>
+<input type="text" value="{{tutorial.title}}" name="Tutorial_title" class="form-control">
+</div>
+</div>
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label>Description</label>
+<input type="text" value="{{tutorial.description}}" name="Description" class="form-control">
+</div>
+</div>
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label>Video</label>
+<input type="file" name="file" class="form-control">
+</div>
+</div>
+<div class="col-12">
+<button type="submit" class="btn btn-primary">Update</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+{% include "includes/footer.html" %}

@@ -1,6 +1,6 @@
 {% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
 
-<div class="page-wrapper">
+<div class="page-wrapper toastrDefaultSuccess">
     <div class="content container-fluid">
     
     <div class="page-header">
@@ -278,5 +278,18 @@
     </div>
     
     </div>
-    
+    <script>
+        $(function() {
+          var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+      
+          Toast.fire({
+            icon: 'success',
+            title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            
+        </script>      
 {% load static %} {% include "includes/footer.html" %}

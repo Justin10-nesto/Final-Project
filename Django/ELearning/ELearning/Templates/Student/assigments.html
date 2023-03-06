@@ -16,7 +16,7 @@
 <br />
 <div class="col-auto text-right float-right ml-auto">
   <a
-    href="{% url 'marksAssigments' subject.id 1 %}"
+    href="{% url 'marksAssigments' subject.id 1 1 %}"
     class="btn btn-outline-primary mr-2"
     ><i class="fas fa-download"></i> marks</a
   >
@@ -24,28 +24,43 @@
     ><i class="fas fa-plus"></i
   ></a>
 </div>
+<br><br>
 <h1 align="center">Previous Assigments</h1>
 <p>
   <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
   <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023
   <span class="badge badge-danger">not Submitted</span> <b>score: 0</b>
 </p>
+{% if submission %}
 
+<br><br>
 <h1 align="center">Submitted Assigments</h1>
-<p>
-  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
-  <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023
-  <span class="badge badge-success">Submitted</span> <b>score: not weighted</b>
-</p>
+{% for ass in submission %}
 
+<p>
+  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">{{ass.name}}:</a>
+  <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
+  <span class="badge badge-success">Submitted</span> {% if ass.marks != 0 %}<b>score: {{ass.marks}}</b>{% endif %}
+</p>
+{% endfor %}
+{% endif %}
+{% if submission_late %}
+
+<br><br>
 <h1 align="center">Late Submitted Assigments</h1>
+{% for ass in submission_late %}
+
 <p>
   <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
-  <b>introduction to chemistry - types</b> Submitted on 3<sup>rd</sup>March 2023
+  <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
   <span class="badge badge-danger">late submissions</span>
-  <b>score: not weighted</b>
+  {% if ass.marks != 0 %}<b>score: {{ass.marks}}</b>{% endif %}
 </p>
+{% endfor %}
+{% endif %}
+{% if assigment %}
 
+<br><br>
 <h1 align="center">Current Assigment s</h1>
 {% for ass in assigment %}
 <p>
@@ -57,6 +72,7 @@
 </p>
 
 {% endfor %}
+{% endif %}
 <br><br>
 
 <div class="card card-table">

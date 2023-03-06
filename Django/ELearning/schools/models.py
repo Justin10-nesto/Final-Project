@@ -73,3 +73,4 @@ class CourseSubject(models.Model):
     
     def __str__(self):
         return self.course.name + ' '+ self.subject.name
+    

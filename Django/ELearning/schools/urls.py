@@ -14,6 +14,7 @@ urlpatterns = [
     path('DepartmentEdit/<str:id>', views.DepartmentEdit, name ='DepartmentEdit'),
     path('DepartmentDelete/<str:id>', views.DepartmentDelete, name ='DepartmentDelete'),
     
+    path('SubjectRegistration', views.SubjectRegistration, name ='SubjectRegistration'),    
     path('SubjectList', views.SubjectList, name ='Subjectlist'),
     path('SubjectAdd', views.SubjectAdd, name ='SubjectAdd'),
     path('SubjectEdit/<str:id>', views.SubjectEdit, name ='SubjectEdit'),

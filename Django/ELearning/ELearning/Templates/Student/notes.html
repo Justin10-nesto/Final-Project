@@ -1,3 +1,9 @@
 {% load static %} {% include "includes/elearning-template.html" %} 
+<br>
+<br>
 
+<div class="col-auto text-right float-right ml-auto">
+ <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+ <a href="{% url 'NotesAdd' subject.id topic.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+</div>
 {% include "includes/footer.html" %}
