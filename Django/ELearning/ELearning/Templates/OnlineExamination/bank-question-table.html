@@ -1,0 +1,52 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title text-center text-capitalize">Bank of Questions</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-center mb-0">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Class</th>
+                                <th>Corrected Questions</th>
+                                <th>Uncorrected Questions</th>
+                                <th>Action</th>
+                            </tr>
+                            {% for bank_question in bank_questions %}
+                            <tr>
+                                <td>
+                                    {{bank_question.subject}}
+                                </td>
+                                <td>
+                                    {{bank_question.class}}
+                                </td>
+                                <td>
+                                    {{bank_question.Verified}}
+                                </td>
+                                <td>
+                                    {{bank_question.Unverified}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm bg-success-light mr-2" href="{% url 'ViewBankOfQuestions' bank_question.id %}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>{% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% load static %} {% include "includes/footer.html" %}

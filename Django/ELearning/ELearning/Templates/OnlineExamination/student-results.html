@@ -1,0 +1,26 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title text-center">United Republic of Tanzania</h3>
+                    <h3 class="page-title text-center">{{student_data.school}}</h3>
+                    <h3 class="page-title text-center">{{exam_type.name}} Results {{accademic_year}}</h3>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="card-body">
+                    <div class="table-responsive">{% if result_table %}{{result_table|safe}}{% endif %}
+
+                        <div class="table-responsive">{% if table %}{{table|safe}}{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% load static %} {% include "includes/footer.html" %}

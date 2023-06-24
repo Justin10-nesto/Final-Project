@@ -1,0 +1,48 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Registration</h3>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="form-title"><span><b>Admission status</b></span></h3>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <p>Dear {{student_data.name}}, congratulation you have been successfully awarded to join to class of {{student_data.classCurrent}} at {{student_data.school}} for course of {{student_data.course}} </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="form-title"><span><b>Subect Registration</b></span></h3>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <p>Dear successfully Student you are required to verifty and register your subject study so as you can able to access all E-Learning materials and exam belog to this class <a href="{% url 'SubjectRegistration' %}" class="btn btn-primary"> click here to register subjects</a></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% load static %} {% include "includes/footer.html" %}
