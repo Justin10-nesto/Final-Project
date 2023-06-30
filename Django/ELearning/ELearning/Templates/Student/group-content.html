@@ -1,6 +1,6 @@
 {% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
 <style>
-  .margin2{
+  .margin2 {
     margin: 10px 60px;
   }
 </style>
@@ -24,24 +24,21 @@
 
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                  <b>Task assigned</b> <a class="float-right">1</a>
+                  <b>Task assigned</b> <a class="float-right">{{assigment_assigned}}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Task complited</b> <a class="float-right">5</a>
+                  <b>Task complited</b> <a class="float-right">{{assigmentSubmitted}}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>submited Task</b> <a class="float-right">13</a>
+                  <b>submited Task</b> <a class="float-right">{{assigmentSubmitted}}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>group Marks</b> <a class="float-right">13</a>
+                  <b>group Marks</b> <a class="float-right">{{marks}}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Updates</b> <a class="float-right">13</a>
                 </li>
               </ul>
-              {% if group.type_group.name == "Public" %}
-              <a href="#" class="btn btn-primary btn-block"><b>Join</b></a>
-              {% endif %}
             </div>
             <!-- /.card-body -->
           </div>
@@ -78,11 +75,11 @@
             <div class="card-body">
               <div class="tab-content">
                 <div class="active tab-pane" id="activity">
-                    <div class="compose-btn btn">
-                      <a href="{% url 'groupPost' group.id %}" class="btn btn-primary btn-block">
-                        Create Post
-                      </a>
-                    </div>
+                  <div class="compose-btn btn">
+                    <a href="{% url 'groupPost' group.id %}" class="btn btn-primary btn-block">
+                      Create Post
+                    </a>
+                  </div>
                   <!-- Post -->
 
                   {% for post_com in post_comment %}
@@ -103,7 +100,8 @@
                     </p>
                     <p>
                       <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                      <a href="{% url 'groupPostLikes' post_com.post.id %}" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like({{no_likes}})</a>
+                      <a href="{% url 'groupPostLikes' post_com.post.id %}" class="link-black text-sm"><i
+                          class="far fa-thumbs-up mr-1"></i> Like({{no_likes}})</a>
                       <span class="float-right">
                         <a href="#" class="link-black text-sm">
                           <i class="far fa-comments mr-1"></i> Comments ({{post_com.no_comments}})
@@ -116,11 +114,10 @@
                     {% if us.user == comment.sender %}
                     <div class="post margin2">
                       <div class="user-block">
-                        <img class="img-circle img-bordered-sm" {% if us.photo %}
-                          src="{% static us.photo.url %}" {% else %}
-                          src="{% static 'assets/img/profiles/avatar-01.jpg' %}" {% endif %} alt="user image">
-                        
-                          <span class="username">
+                        <img class="img-circle img-bordered-sm" {% if us.photo %} src="{% static us.photo.url %}" {%
+                          else %} src="{% static 'assets/img/profiles/avatar-01.jpg' %}" {% endif %} alt="user image">
+
+                        <span class="username">
                           <a href="#">{{comment.sender.first_name}}</a>
                           <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
                         </span>
@@ -133,7 +130,7 @@
                       <p>
                         <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
                         <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                   </p>  
+                      </p>
                     </div>{% endif %}
                     {% endfor %}
                     {% endfor %}
@@ -151,18 +148,19 @@
                   {% endfor %}
                 </div>
                 <!-- /.tab-pane -->
-                <div class="tab-pane" id="timeline">   
+                <div class="tab-pane" id="timeline">
                   <div class="compose-btn btn">
-                  <a href="{% url 'AddGroupActivities' 1 %}" class="btn btn-primary btn-block">
-                    Create Activities
-                  </a>
-                </div>
+                    <a href="{% url 'AddGroupActivities' 1 %}" class="btn btn-primary btn-block">
+                      Create Activities
+                    </a>
+                  </div>
                   <!-- The timeline -->
+                  {% for task in tasks %}
                   <div class="timeline timeline-inverse">
                     <!-- timeline time label -->
                     <div class="time-label">
                       <span class="bg-danger">
-                        10 Feb. 2014
+                        {{task.date_created}}
                       </span>
                     </div>
                     <!-- /.timeline-label -->
@@ -173,7 +171,7 @@
                       <div class="timeline-item">
                         <span class="time"><i class="far fa-clock"></i> 12:05</span>
 
-                        <h3 class="timeline-header"><a href="#">Team leader</a> working segmentation</h3>
+                        <h3 class="timeline-header"><a href="#">{{task.work.sender.first_name}}</a> working segmentation</h3>
 
                         <div class="timeline-body">
                           Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
@@ -195,8 +193,7 @@
                       <div class="timeline-item">
                         <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
 
-                        <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> to study on a topic and
-                          prepering
+                        <h3 class="timeline-header border-0"><a href="#">{{task.groupStudent.student.name}}</a> {{task.work.task}}
                         </h3>
                       </div>
 
@@ -216,63 +213,64 @@
 
                     </div>
                   </div>
+                  {% endfor %}
                 </div>
                 <!-- /.tab-pane -->
 
                 <div class="tab-pane" id="Members">
- 
+
                   <div class="table-responsive">
                     <table class="table table-hover table-center mb-0 datatable">
-                       <thead>
-                          <tr>
-                             <th>ID</th>
-                             <th>Photo</th>
-                             <th>Name</th>
-                             <th>Mobile Number</th>
-                             <th class="text-right">Action</th>
-                          </tr>
-                       </thead>
-                       <tbody>
-                         {% for st in students_data %}
-                          <tr>
-                             <td>{{st.student.registration_no}}</td>
-                             <td>
-                                <h2 class="table-avatar">
-                                   <a href="student-details.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" 
-                                     {% if st.photo %}
-                                     src="{% static st.student.photo.url %}">
-                                     {% else %}
-                                     src="{% static 'assets/img/profiles/avatar-01.jpg' %}">
-                                     {% endif %}
-                                     </a>
-                                </h2>
-                             </td>
-                             <th>{{st.student.name}}</th>
-                             <td>{{st.student.phone_number}}</td>
-                             <td class="text-right">
-                                <div class="actions">
-                                
-                                   <a href="{% url 'RemoveStudentGroup' group.id st.student.id %}" class="btn btn-sm bg-danger-light">
-                                   <i class="fas fa-trash"></i>
-                                   </a>
-                                </div>
-                             </td>
-                          </tr>
-                          {% endfor %}
-                          <tr>
-                            <td colspan="3">
-                              <div class="actions">
-                                
-                              <a href="{% url 'LeftStudentGroup' group.id %}" class="btn btn-sm bg-danger-light">
-                              <i class="fas fa-trash">Left the group</i>
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Photo</th>
+                          <th>Name</th>
+                          <th>Mobile Number</th>
+                          <th class="text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for st in students_data %}
+                        <tr>
+                          <td>{{st.student.registration_no}}</td>
+                          <td>
+                            <h2 class="table-avatar">
+                              <a href="student-details.html" class="avatar avatar-sm mr-2"><img
+                                  class="avatar-img rounded-circle" {% if st.photo %}
+                                  src="{% static st.student.photo.url %}">
+                                {% else %}
+                                src="{% static 'assets/img/profiles/avatar-01.jpg' %}">
+                                {% endif %}
                               </a>
-                           </div></td>
-                          </tr>
-                       </tbody></table>
-                     </div></div>
-                          
+                            </h2>
+                          </td>
+                          <th>{{st.student.name}}</th>
+                          <td>{{st.student.phone_number}}</td>
+                          <td class="text-right">
+                            <div class="actions">
+
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                          <td colspan="3">
+                            <div class="actions">
+
+                              <a href="{% url 'LeftStudentGroup' group.id %}" class="btn btn-sm bg-danger-light">
+                                <i class="fas fa-trash">Left the group</i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
                 <!-- /.tab-pane -->
-                
+
                 <div class="tab-pane" id="settings">
                   <form method="POST" class="form-horizontal">
                     {% csrf_token %}

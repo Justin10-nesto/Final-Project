@@ -1,12 +1,47 @@
-{% load static %}
-{% include 'includes/adminlite-footer.html' %}
-
-<script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script><script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+{% load static %}{% include "includes/adminlite-footer.html" %}
+<script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'assets/js/popper.min.js' %}"></script>
 <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'assets/js/script.js' %}"></script>
- 
+<script src="{% static 'admin/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script>
+    var startTime = performance.now();
+
+    function calculateElapsedTime() {
+        var endTime = performance.now();
+        var ElapsedTime = endTime - startTime;
+        var ElapsedTimeInSec = ElapsedTime / 1000;
+        console.log('ellapsed time is: ', ElapsedTimeInSec);
+    }
+    window.addEventListener('beforeunload', calculateElapsedTime)
+</script>
+<script>
+    $(function() {
+        $(".table").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+
+    document.addEventListener('contextmenu',
+        event => event.preventDefault());
+    el_down.innerHTML = "Right click disabled";
+    // Get the video element
+    const video = document.querySelector('video');
+
+    // Get the download button element
+    const downloadButton = video.querySelector('[download]');
+
+    // If a download button element is found, remove it from the DOM
+    if (downloadButton) {
+        downloadButton.remove();
+    }
+</script>
 </body>
-   <!-- Mirrored from preschool.dreamguystech.com/html-template/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:39 GMT -->
+
 </html>

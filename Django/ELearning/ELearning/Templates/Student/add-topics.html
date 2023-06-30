@@ -1,42 +1,46 @@
 {% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
 <div class="page-wrapper">
     <div class="content container-fluid">
-    
-    <div class="page-header">
-    <div class="row align-items-center">
-    <div class="col">
-    
-<div class="card-body">
-    <form method="POST">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-12">
-                <h5 class="form-title"><span>Add Topic</span></h5>
-            </div>
-            <div class="col-12 col-sm-6">
-                <div class="form-group">
-                    <label>Topic Name</label>
-                    <input type="text" name="name" class="form-control">
+
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Add Topic</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Topic Name</label>
+                                        <input type="text" name="name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Topic description</label>
+                                        <input type="text" name="description" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Subject</label>
+                                        <input type="text" name="subject" value="{{subject}}" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
-            </div>
-            <div class="col-12 col-sm-6">
-                <div class="form-group">
-                    <label>Topic description</label>
-                    <input type="text" name="description" class="form-control">
-                </div>
-            </div>
-            <div class="col-12 col-sm-6">
-                <div class="form-group">
-                    <label>Subject</label>
-                    <input type="text" name="subject" value="{{subject}}" class="form-control">
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
-    </form>
-</div>
-
+    </div>
 </div>
 {% include "includes/footer.html" %}

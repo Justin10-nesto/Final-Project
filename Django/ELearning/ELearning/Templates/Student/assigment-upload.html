@@ -1,19 +1,21 @@
-{% load static %} {% include "includes/elearning-template.html" %} 
+{% load static %} {% include "includes/elearning-template.html" %}
 <style>
-    h1{
+    h1 {
         text-align: center;
         color: black;
         font-family: 'Times New Roman', Times, serif;
         margin: 10px 0;
         text-transform: capitalize;
     }
-    h2{
+
+    h2 {
         color: black;
         font-family: 'Times New Roman', Times, serif;
         margin: 10px 0;
         text-transform: capitalize;
     }
-    p{
+
+    p {
         font-size: 26px;
         color: black;
         font-family: 'Times New Roman', Times, serif;
@@ -22,14 +24,62 @@
 </style>
 <br>
 <br>
+{% if assigments.status != "Previous assigments" %}
+{% if submission_status %}
 <div class="col-auto text-right float-right ml-auto">
-    <a href="{% url 'AssigmentSubmision' subject.id topic.id assigments.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+    <a class="btn btn-primary" data-toggle="modal"
+        data-target="#modal-default_delete_{{assigments.id}}" href="#edit_personal_details"><i
+            class="fas fa-plus">Resubmit</i></a>
+</div>
+
+<div class="modal fade" id="modal-default_delete_{{assigments.id}}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Resubmit Assigment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action = "{% url 'resubmit' subject.id topic.id assigments.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="form-title"><span>Submit Assigment</span></h5>
+                        </div>
+                        <div class="form-group">
+                            <label>Assigment file</label>
+                            <div>
+                                <input type="file" name="file_submitted" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-<h1 align = "center">{{assigments.name}}</h1>
-<h2>{{assigments.topic.name}} <b>weight {{assigments.Weight}}marks</b> <small><i>submissions date {{assigments.date}} {{assigments.time}}</i></small></h2>
-<p><i>Instruction: </i> {{assigments.description}}</p>
-<p>{{assigments.task}}</p>
-{% if assigments.file %}
-<p>document <a href="{% static assigments.file.url %}">assigments.file</a></p>
-{% endif %}
-{% include "includes/footer.html" %}
+</div>
+
+    {% else %}
+
+    <div class="col-auto text-right float-right ml-auto">
+        <a href="{% url 'AssigmentSubmision' subject.id topic.id assigments.id %}" class="btn btn-primary"><i
+                class="fas fa-plus"></i></a>
+    </div>
+
+    {% endif %}
+    {% endif %}
+    <h1 align="center">{{assigments.name}}</h1>
+    <h2>{{assigments.topic.name}} <b>weight {{assigments.Weight}}marks</b> <small><i>submissions date
+                {{assigments.date}}
+                {{assigments.time}}</i></small></h2>
+    <p><i>Instruction: </i> {{assigments.description}}</p>
+    <p>{{assigments.task}}</p>
+    {% if assigments.file %}
+    <p>document <a href="{% static assigments.file.url %}">assigments.file</a></p>
+    {% endif %}
+    {% include "includes/footer.html" %}

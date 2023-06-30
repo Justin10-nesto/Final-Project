@@ -1,0 +1,6 @@
+Grade,weight,lower point,upper point,Description,Level
+A,1,75,100,EXCELENT,O-Level
+B,2,60,74,VERY GOOD,O-Level
+C,3,40,59,GOOD,O-Level
+D,4,35,39,SARTIFACTORY,O-Level
+F,5,0,34,POOR,O-Level

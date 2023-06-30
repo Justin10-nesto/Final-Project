@@ -1,136 +1,127 @@
 {% load static %} {% include "includes/elearning-template.html" %}
 
 <div class="row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <form>
-                    <div class="row">
-                        <div class="col-12">
-                            <h5 class="form-title"><span>Announcement Information</span></h5>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4">
-                                <div class="compose-btn">
-                                    <a href="{% url 'ComposeAnaunciment' subject.id topic.id  %}"
-                                        class="btn btn-primary btn-block">
-                                        Compose
-                                    </a>
-                                </div>
-                                <ul class="inbox-menu">
-                                    <li class="active">
-                                        <a href="{% url 'anauncementPage' subject.id topic.id %}"><i
-                                                class="fas fa-download"></i> Inbox <span
-                                                class="mail-count">({{inbox_number}})</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'anauncementSentPage' subject.id topic.id %}"><i
-                                                class="far fa-star"></i> Important</a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'anauncementSentPage' subject.id topic.id %}"><i
-                                                class="far fa-paper-plane"></i> Sent Mail</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="far fa-file-alt"></i> Drafts <span
-                                                class="mail-count">(13)</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'anauncementTrashPage' subject.id topic.id %}"><i
-                                                class="far fa-trash-alt"></i> Trash</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-9 col-md-8">
-                                  <div class="card card-primary card-outline">
-                                    <div class="card-header">
-                                      <h3 class="card-title">Inbox</h3>
-                        
-                                      <div class="card-tools">
-                                        <div class="input-group input-group-sm">
-                                          <input type="text" class="form-control" placeholder="Search Mail">
-                                          <div class="input-group-append">
-                                            <div class="btn btn-primary">
-                                              <i class="fas fa-search"></i>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <!-- /.card-tools -->
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body p-0">
-                                      <div class="mailbox-controls">
-                                        <!-- Check all button -->
-                                        <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
-                                        </button>
-                                        <div class="btn-group">
-                                          <button type="button" class="btn btn-default btn-sm">
-                                            <i class="far fa-trash-alt"></i>
-                                          </button>
-                                          <button type="button" class="btn btn-default btn-sm">
-                                            <i class="fas fa-reply"></i>
-                                          </button>
-                                          <button type="button" class="btn btn-default btn-sm">
-                                            <i class="fas fa-share"></i>
-                                          </button>
-                                        </div>
-                                        <!-- /.btn-group -->
-                                        <button type="button" class="btn btn-default btn-sm">
-                                          <i class="fas fa-sync-alt"></i>
-                                        </button>
-                                        <div class="float-right">
-                                          1-50/200
-                                          <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-sm">
-                                              <i class="fas fa-chevron-left"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-default btn-sm">
-                                              <i class="fas fa-chevron-right"></i>
-                                            </button>
-                                          </div>
-                                          <!-- /.btn-group -->
-                                        </div>
-                                        <!-- /.float-right -->
-                                      </div>
-                                            <div class="table-responsive">
-                                                <table class="table table-inbox table-hover">
-                                                    <thead>
-                                                    </thead>
-                                                    <tbody>
-                                                        {% for anaun in anaunciment %}
-                                                        {% if anaun.is_opened == True %}
-                                                        <tr class="read clickable-row">
-                                                            {% endif %}
-
-                                                            {% if  anaun.is_opened == False %}
-                                                        <tr class="unread clickable-row">
-                                                            {% endif %}
-                                                            <td>
-                                                                <input type="checkbox" class="checkmail">
-                                                            </td>
-                                                            <td><span class="mail-important"><i
-                                                                        class="fas fa-star"></i></span></td>
-                                                            <td class="name"><a
-                                                                    href="{% url 'anauncementContentPage' subject.id topic.id anaun.id %}">{{anaun.sender.first_name}}</a>
-                                                            </td>
-                                                            <td class="subject">{{anaun.title}}</td>
-                                                            <td class="mail-date">{{anaun.date_created}}</td>
-                                                        </tr>
-                                                        {% endfor %}
-                                                       </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-12">
+              <h5 class="form-title"><span>Announcement Information</span></h5>
             </div>
 
-        </div>
+            <div class="row">
+              <div class="col-lg-3 col-md-4">
+                <div class="compose-btn">
+                  <a href="{% url 'ComposeAnaunciment' subject.id topic.id  %}" class="btn btn-primary btn-block">
+                    Compose
+                  </a>
+                </div>
+                <ul class="inbox-menu">
+                  <li class="active">
+                    <a href="{% url 'anauncementPage' subject.id topic.id %}"><i class="fas fa-download"></i> Inbox
+                      <span class="mail-count">({{inbox_number}})</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'anauncementSentPage' subject.id topic.id %}"><i class="far fa-paper-plane"></i>
+                      Sent Mail</a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="far fa-file-alt"></i> Drafts <span class="mail-count">(13)</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'anauncementTrashPage' subject.id topic.id %}"><i class="far fa-trash-alt"></i>
+                      Trash</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-9 col-md-8">
+                <div class="card card-primary card-outline">
+                  <div class="card-header">
+                    <h3 class="card-title">Inbox</h3>
 
+                    <div class="card-tools">
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" placeholder="Search Mail">
+                        <div class="input-group-append">
+                          <div class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-tools -->
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body p-0">
+                    <div class="mailbox-controls">
+                      <!-- Check all button -->
+                      <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
+                      </button>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm">
+                          <i class="far fa-trash-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm">
+                          <i class="fas fa-reply"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm">
+                          <i class="fas fa-share"></i>
+                        </button>
+                      </div>
+                      <!-- /.btn-group -->
+                      <button type="button" class="btn btn-default btn-sm">
+                        <i class="fas fa-sync-alt"></i>
+                      </button>
+                      <div class="float-right">
+                        1-50/200
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-default btn-sm">
+                            <i class="fas fa-chevron-left"></i>
+                          </button>
+                          <button type="button" class="btn btn-default btn-sm">
+                            <i class="fas fa-chevron-right"></i>
+                          </button>
+                        </div>
+                        <!-- /.btn-group -->
+                      </div>
+                      <!-- /.float-right -->
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-inbox table-hover">
+                        <thead>
+                        </thead>
+                        <tbody>
+                          {% for anaun in anaunciment %}
+                          {% if anaun.is_opened == True %}
+                          <tr class="read clickable-row">
+                            {% endif %}
 
-        {% include "includes/footer.html" %}
+                            {% if anaun.is_opened == False %}
+                          <tr class="unread clickable-row">
+                            {% endif %}
+                            <td>
+                              <input type="checkbox" class="checkmail">
+                            </td>
+                            <td><span class="mail-important"><i class="fas fa-star"></i></span></td>
+                            <td class="name"><a
+                                href="{% url 'anauncementContentPage' subject.id topic.id anaun.id %}">{{anaun.sender.first_name}}</a>
+                            </td>
+                            <td class="subject">{{anaun.title}}</td>
+                            <td class="mail-date">{{anaun.date_created}}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% include "includes/footer.html" %}

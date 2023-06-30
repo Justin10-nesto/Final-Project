@@ -45,7 +45,9 @@
                 </div>
             </div>
             <form action="{% url 'SubmittingExamination' student_examination.id %}" method="POST">
-                {% csrf_token %} {% if examination_Questions.items %} {% for section, details in examination_Questions.items %}
+                {% csrf_token %} {% if examination_Questions.items %}
+                if {% for section, details in examination_Questions.items %}
+                
                 <h3>Section {{ section }}:</h3>
 
                 {% if details.question_type == 'Essay' %}

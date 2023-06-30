@@ -1,57 +1,53 @@
 {% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
 <div class="page-wrapper">
-<div class="content container-fluid">
+    <div class="content container-fluid">
 
-<div class="page-header">
-<div class="row align-items-center">
-<div class="col">
-<h3 class="page-title">Add Level</h3>
-<ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="Level.html">Post</a></li>
-<li class="breadcrumb-item active">Add Post</li>
-</ul>
-</div>
-</div>
-</div>
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Add Level</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="Level.html">Post</a></li>
+                        <li class="breadcrumb-item active">Add Post</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-<div class="row">
-<div class="col-sm-12">
-<div class="card">
-<div class="card-body">
-
-    <form method = "POST">
-        {% csrf_token %}
         <div class="row">
-<div class="col-12">
-<h5 class="form-title"><span>Post Information</span></h5>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Message</label>
-<input type="text" name="message" class="form-control">
-</div>
-</div>
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Post Information</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Message</label>
+                                        <input type="text" name="message" class="form-control">
+                                    </div>
+                                </div>
 
 
-<div class="col-12 col-sm-6">
-    <div class="form-group">
-    <label>Photo</label>
-    <input type="file" name="file" class="form-control">
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Photo</label>
+                                        <input type="file" name="file" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-<div class="col-12">
-<button type="submit" class="btn btn-primary">Submit</button>
 </div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-
-
 {% load static %} {% include "includes/footer.html" %}

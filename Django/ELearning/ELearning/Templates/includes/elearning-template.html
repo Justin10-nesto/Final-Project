@@ -1,57 +1,52 @@
 {% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
 <div class="page-wrapper">
     <div class="content container-fluid">
-       <div class="page-header">
-          <div class="row align-items-center">
-             <div class="col">
-                <h3 class="page-title">{{subject.subject_code}} {{subject.subject_name}}</h3>
-                <ul class="breadcrumb">
-                   <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                   <li class="breadcrumb-item active">{{subject.subject_code}} {{subject.subject_name}}</li>
-                </ul>
-             </div>
-          </div>
-       </div>
-       <div class="row">
-          <div class="col-sm-12">
-            <h1 align="center">{{topic.name}}</h1>
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{subject.subject_code}} {{subject.subject_name}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{subject.subject_code}} {{subject.subject_name}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 align="center">{{topic.name}}</h1>
 
-             <div class="card card-table">
-                <div class="card-body">
-                   <div class="table-responsive">
-                      <table class="table table-hover table-center mb-0 datatable">
-                         <thead>
-                            <tr>
-                               <th>
-                                <a href="{% url 'NotesPage' subject.id topic.id %}">
-                                 Notes
-                                 </a>
-                               </th>                               
-                               <th>
-                                <a href="{% url 'booksPage' subject.id  topic.id %}">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <a href="{% url 'booksPage' subject.id  topic.id %}">
                                  Books
                                  </a>
-                               </th>                               
-                               <th>
-                                <a href="{% url 'assigmentsPage' subject.id topic.id %}">
+                                        </th>
+                                        <th>
+                                            <a href="{% url 'assigmentsPage' subject.id topic.id %}">
                                  Assigments
                                  </a>
-                               </th>                               
-                               <th>
-                                <a href="{% url 'TutorialPage' subject.id  topic.id %}">
+                                        </th>
+                                        <th>
+                                            <a href="{% url 'TutorialPage' subject.id  topic.id %}">
                                  Tutorials
                                  </a>
-                               </th>                               
-                               <th>
-                                <a href="{% url 'discussionsPage' subject.id topic.id %}">
+                                        </th>
+                                        <th>
+                                            <a href="{% url 'discussionsPage' subject.id topic.id %}">
                                 Q & A
                                 </a>
-                               </th>  
-                               <th>
-                                 <a href="{% url 'anauncementPage' subject.id topic.id  %}">
+                                        </th>
+                                        <th>
+                                            <a href="{% url 'anauncementPage' subject.id topic.id  %}">
                                     Anounciments
                                  </a>
-                               </th>
-                            </tr>
-                            </thead>                           
-                      </table>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>

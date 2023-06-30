@@ -1,123 +1,114 @@
 {% load static %} {% include "includes/elearning-template.html" %}
 <style>
-  h1 {
-    text-align: center;
-    color: blue;
-    font-family: "Times New Roman", Times, serif;
-    margin: 10px 0;
-  }
-
-  p {
-    font-size: 16px;
-    margin: 3px 10px;
-  }
+    h1 {
+        text-align: center;
+        color: blue;
+        font-family: "Times New Roman", Times, serif;
+        margin: 10px 0;
+    }
+    
+    p {
+        font-size: 16px;
+        margin: 3px 10px;
+    }
 </style>
 <br />
 <br />
 <div class="col-auto text-right float-right ml-auto">
-  <a
-    href="{% url 'marksAssigments' subject.id 1 1 %}"
-    class="btn btn-outline-primary mr-2"
-    ><i class="fas fa-download"></i> marks</a
+    <a href="{% url 'marksAssigments' subject.id 1 1 %}" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> marks</a
   >
   <a href="{% url 'AddAssigment' subject.id topic.id %}" class="btn btn-primary"
     ><i class="fas fa-plus"></i
   ></a>
 </div>
-<br><br>
+
+<br><br> {% if previous %}
 <h1 align="center">Previous Assigments</h1>
+{% for ass in previous %}
 <p>
-  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
-  <b>introduction to chemistry - types</b> due to 3<sup>rd</sup>March 2023
-  <span class="badge badge-danger">not Submitted</span> <b>score: 0</b>
+    <a href="#">{{ass.name}}:</a>
+    <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
+    <span class="badge badge-danger">not Submitted</span> <b>score: 0</b>
 </p>
-{% if submission %}
+{% endfor %} {% endif %} {% if submission %}
 
 <br><br>
 <h1 align="center">Submitted Assigments</h1>
 {% for ass in submission %}
 
 <p>
-  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">{{ass.name}}:</a>
-  <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
-  <span class="badge badge-success">Submitted</span> {% if ass.marks != 0 %}<b>score: {{ass.marks}}</b>{% endif %}
+    <a href="#">{{ass.assigniment.name}}:</a>
+    <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
+    <span class="badge badge-success">Submitted</span> {% if ass.marks != 0 %}<b>score: {{ass.marks}}</b>{% endif %}
 </p>
-{% endfor %}
-{% endif %}
-{% if submission_late %}
+{% endfor %} {% endif %} {% if submission_late %}
 
 <br><br>
 <h1 align="center">Late Submitted Assigments</h1>
 {% for ass in submission_late %}
 
 <p>
-  <a href="{% url 'UploadAssigments' subject.id topic.id 1 %}">Assigment 1:</a>
-  <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
-  <span class="badge badge-danger">late submissions</span>
-  {% if ass.marks != 0 %}<b>score: {{ass.marks}}</b>{% endif %}
+    <a href="#">{{ass.assigniment.name}}:</a>
+    <b>{{ass.topic.name}}</b> Submitted on {{ass.assigniment.date}} {{ass.assigniment.time}}
+    <span class="badge badge-danger">late submissions</span> {% if ass.marks != 0 %}<b>score: {{ass.marks}}</b>{% endif %}
 </p>
-{% endfor %}
-{% endif %}
-{% if assigment %}
+{% endfor %} {% endif %} {% if assigment %}
 
-<br><br>
+<br>
 <h1 align="center">Current Assigment s</h1>
 {% for ass in assigment %}
-<p>
-  <a href="{% url 'UploadAssigments' subject.id topic.id ass.id %}"
-    >{{ass.name}} :
-  </a>
-  <b>{{ass.topic.name}} </b> {{ass.description}} to be Submitted on {{ass.date}}
-  at {{ass.time}}
-</p>
+<div class="card card-primary card-outline">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'UploadAssigments' subject.id topic.id ass.id %}">{{ass.name}} :
+    </a></h5>
 
-{% endfor %}
-{% endif %}
-<br><br>
+        <p class="card-text">
+            <b>{{ass.topic.name}} </b> {{ass.description}} to be Submitted on {{ass.date}} at {{ass.time}}
+        </p>
 
-<div class="card card-table">
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-hover table-center mb-0 datatable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Assigment Name</th>
-            <th>Description</th>
-            <th>Time</th>
-            <th>Submissions</th>
-            <th>Marked</th>
-            <th class="text-right">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for ass in assigment %}
-          <tr>
-            <td>{{ass.id}}</td>
-            <td>{{ass.name}}</td>
-            <td>{{ass.description}}</td>
-            <td>{{ass.date}} {{ass.time}}</td>
-            <td></td>
-            <td></td>
-            <td class="text-right">
-              <div class="actions">
-                <a
-                  href="{% url 'AssigmentsEdit' subject.id topic.id ass.id %}"
-                  class="btn btn-sm bg-success-light mr-2"
-                >
-                  <i class="fas fa-pen"></i>
-                </a>
-                <a href="{% url 'AssigmentsDelete' subject.id ass.id %}" class="btn btn-sm bg-danger-light">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </td>
-          </tr>
-
-          {% endfor %}
-        </tbody>
-      </table>
+        <a href="{% url 'AssigmentsEdit' subject.id topic.id ass.id %}" class="card-link">
+            <i class="fas fa-pen"></i>Edit</a>
+        <a href="{% url 'AssigmentsDelete' subject.id ass.id %}" class="card-link"><i class="fas fa-trash"></i>Delete</a>
     </div>
-  </div>
+</div>
+{% endfor %} {% endif %}
+<br><br> {% if submission_ass %}
+<div class="card card-table">
+    <div class="table-responsive">
+        <table class="table table-hover table-center mb-0 datatable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Assigment Name</th>
+                    <th>Time</th>
+                    <th>Submissions</th>
+                    <th>Marked</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ass in submission_ass %}
+                <tr>
+                    <td>{{ass.assigniment.id}}</td>
+                    <td>{{ass.assigniment.name}}</td>
+                    <td>{{ass.assigniment.date}} {{ass.assigniment.time}}</td>
+                    <td>{{ass.marks}}</td>
+                    <td>{{ass.remark}}</td>
+                </tr>
+
+                {% endfor %} {% for ass in submission %}
+                <tr>
+                    <td>{{ass.assigniment.id}}</td>
+                    <td>{{ass.assigniment.name}}</td>
+                    <td>{{ass.assigniment.date}} {{ass.assigniment.time}}</td>
+                    <td>{{ass.marks}}</td>
+                    <td>{{ass.remark}}</td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
 </div>
 {% include "includes/footer.html" %}

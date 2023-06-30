@@ -13,13 +13,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env_path = os.path.join(BASE, '.env')
+load_dotenv(dotenv_path=env_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -30,11 +33,10 @@ SECRET_KEY = 'django-insecure--8!v&ne0#k05zf8k9-$qciyk*4qmmu8hkw(iymkmi@j-i!c6^8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.43.94','ea06-41-222-179-16.ngrok-free.app', 'https://ea06-41-222-179-16.ngrok-free.app']
 
 
 INSTALLED_APPS = [
@@ -44,9 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Student',
-    'schools',
-    'OnlineExamination'
+    'OnlineLearning.apps.OnlineLearningConfig',
+    'schools.apps.SchoolsConfig',
+    'OnlineExamination.apps.OnlineexaminationConfig',
+    'RecommendationAndAnalysis.apps.RecommendationandanalysisConfig',
+    'django_apscheduler',
 ]
 
 
@@ -69,7 +73,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'Student.processor.student',
+                'OnlineLearning.processor.student',
                 'django.template.context_processors.media',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -88,11 +92,15 @@ WSGI_APPLICATION = 'ELearning.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'NAME': 'elearning'
+        'ENGINE':os.getenv('ENGINE'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST':os.getenv('HOST'),
+        'NAME': os.getenv('NAME'),
+        'PORT':os.getenv('PORT')
+        
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -143,3 +151,44 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 
 MEDIA_ROOT = os.path.join(BASE, 'static/media')
+
+AUTOCOMMIT = True
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert alert-info',
+    messages.INFO: 'alert alert-info',
+    messages.SUCCESS: 'alert alert-success',
+    messages.WARNING: 'alert alert-warning',
+    messages.ERROR: 'alert alert-danger',
+}
+
+
+# settings.py
+
+# Celery configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# import os
+# import django
+# from apscheduler.schedulers.background import BackgroundScheduler
+# from django_apscheduler.jobstores import DjangoJobStore
+# from django_apscheduler.models import DjangoJobExecution
+
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ELearning.settings')
+# django.setup()
+# scheduler = BackgroundScheduler()
+# scheduler.add_jobstore(DjangoJobStore(), "default")
+# scheduler.add_job(testingFile, 'interval', seconds=60)
+# scheduler.start()
+
