@@ -21,13 +21,6 @@ def studentVerification(request):
 
 @login_required(login_url='/')
 def gradeList(request):
-    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\grades.csv'
-    data = pd.read_csv(csv_path)
-    for row in data.index:
-        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
-
-        Grade.objects.create(name=data.iloc[row]['Grade'], lower_marks=data.iloc[row]['lower point'], upper_marks=data.iloc[row]['upper point'],
-                             weight=data.iloc[row]['weight'], description=data.iloc[row]['Description'], level=level_obj)
     Grades = Grade.objects.all()
     levels = SchoolLevel.objects.all()
     context = {'levels': levels, 'Grades': Grades}
@@ -592,41 +585,47 @@ def ExaminationMarking(request):
 
 
 def examRegulation(request):
-    context = []
-    UserLog.objects.create(
-        task='Viewing examination Regulations', user=request.user)
+    context = {}
+    UserLog.objects.create(task='Viewing examination Regulations', user=request.user)
     return render(request, 'OnlineExamination/examination-regulation.html', context)
 
 def GeneratingStudentResult(request):
-    UserLog.objects.create(task='Viewing Student Results', user=request.user)
-    exam = StudentExam.objects.all().order_by('date_created')[0]
-    grade = Grade.objects.all()
-    student = {'student': [], 'exam': [], 'subject': []}
-    student_info = exam.student
-    exam_done = exam.exam
-    marks = []
-    stud_marks = StudentExam.objects.filter(
-        exam=exam_done, student=student_info)
-    for st_mark in stud_marks:
-        marks.append(st_mark.marks)
-        result_one_suject = results.getting_points(grade, [st_mark.marks])
-        grade_scored = Grade.objects.filter(
-            name=result_one_suject['grade'][0]).first()
-        exam.grade = grade_scored
-        exam.save()
-    result = results.getting_points(grade, marks)
+    # UserLog.objects.create(task='Viewing Student Results', user=request.user)
+    students = Student.objects.all()
+    for student_info in students:
+        student_exams = StudentExam.objects.filter(student = student_info, is_result_generated = False, is_submitted = True)
+        if student_exams.exists():
+            for exam in student_exams:
+                division, total_points, average, grade = 0,0,0,''
+                grade = Grade.objects.all()
+                student = {'student': [], 'exam': [], 'subject': []}
+                exam_done = exam.exam
+                marks = []
+                stud_marks = StudentExam.objects.filter(examination_identity = exam.examination_identity)
+                for st_mark in stud_marks:
+                    marks.append(st_mark.marks)
+                    result_one_suject = results.getting_points(grade, [st_mark.marks])
+                    grade_scored = Grade.objects.filter(
+                        name=result_one_suject['grade'][0]).first()
+                    exam.grade = grade_scored
+                    exam.save()
+                result = results.getting_points(grade, marks)
+                
+                if student_info.classCurrent.level.name == 'O-Level':
+                    divisions = Division.objects.filter(name='O-Level')
+                    total_points = results.getting_pass_subject(points=result['point'], level=student_info.classCurrent.level.name)
+                    division = results.checking_division(total_points=total_points, divisions=divisions)
+                    print(division)
 
-    if student_info.classCurrent.level.name == 'O-Level':
-        divisions = Division.objects.filter(name='O-Level')
-        total_points = results.getting_pass_subject(result['point'])
-        division = results.checking_division(divisions, total_points)
-
-    if student_info.classCurrent.level.name == 'A-Level':
-        divisions = Division.objects.filter(name='A-Level')
-        total_points = results.getting_pass_subject(result['point'])
-        division = results.checking_division(divisions, total_points)
-        print(division)
-
+                if student_info.classCurrent.level.name == 'A-Level':
+                    divisions = Division.objects.filter(name='A-Level')
+                    total_points = results.getting_pass_subject(result['point'])
+                    division = results.checking_division(total_points=total_points, divisions=divisions)
+                average = results.getting_average(marks)
+                grade_obtained = results.gettingGrade(grades=grade, mark=average)
+                StudentResult.objects.create(point= total_points,grade = grade_obtained, average= int(average), division= division, exam =exam, student = student_info)
+                student_info.is_result_generated = True
+                student_info.save()
     return render(request, 'OnlineExamination/student-results.html')
 
 def Checking_student_Results(request):
@@ -684,7 +683,7 @@ def CurrentStudentResult(request):
         results_arrs = StudentResult.objects.filter(exam = student_exam.first(), student = student.first())
         if results_arrs.exists():
             result_arr = results_arrs.first()
-            result_arr_dict = {'student':student.first().name, 'exam':result_arr.exam.name, 'points':result_arr.points, 'point':result_arr.point, 'status':result_arr.status, }
+            result_arr_dict = {'student':[student.first().name], 'exam':[result_arr.exam.name], 'points':[result_arr.point], 'division':[result_arr.division], 'average':[result_arr.average]}
             result_data = pd.DataFrame(result_arr_dict)
             result_table = result_data.to_html(classes='table table-stripped table-center', index=False)
             # print(student_result_dict)

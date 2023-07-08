@@ -1,10 +1,11 @@
 import nltk
 from nltk.tokenize import sent_tokenize
 import random
+
+from textblob import TextBlob
 from exam_generator import ExamGerator
-path = r'C:/Users/CTS/Documents/DIT/ssmister VIII/project realization/Student_Course_Guidance_Admission_System_Project_Proposal_Book_Allan Thomas.pdf'
-# path = r'C:\Users\CTS\Downloads\ELearning\static\models\Qns Generation\new.txt'
-hist = ExamGerator('history', [path])
+path = r'E:\Final-Project\Django\ELearning\STATIC\media\Books\Entrepreneurship_25May.pdf'
+hist = ExamGerator([path])
 doc =hist.doc_opening()
 
 def generate_true_false_questions(text, num_questions):
@@ -19,7 +20,7 @@ def generate_true_false_questions(text, num_questions):
 
         # Generate a True or False question by using the first part of the sentence as the statement
         statement = sentence.split(',')[0].strip()
-        question, answer = create_question(statement)
+        question, answer = chenging_sentence(statement)
         qa_pairs.append((question, answer))
 
     # Randomly select the desired number of questions
@@ -37,13 +38,29 @@ def create_question(statement):
 
     # Create a true or false question using the chosen keyword
     if keyword in ["not", "never", "unlike", "in contrast to", "instead of", "without", "except", "but"]:
-        question = f"Does {statement} {keyword}?"
+        question = f"{statement} {keyword}?"
         answer = False
     else:
-        question = f"Does {statement} {keyword}?"
+        question = f"{statement} {keyword}?"
         answer = True
 
     return question, answer
+
+def chenging_sentence(sentence):
+    sentense_formed = ''
+    answer = True
+    text = TextBlob(doc)
+    tags = text.tags
+    no_words = len(tags)
+    for i in range(no_words):
+        if tags[i][1] == 'NN' or tags[i][1] == 'NNS' or tags[i][1] == 'VB':
+            new_word_arr = list(hist.opposite_words(tags[i][0]))
+            
+            if new_word_arr:
+                sentense_formed = sentence.replace(tags[i][0], new_word_arr[0])
+                answer = False
+    print(sentense_formed, answer)
+    return sentense_formed, answer
 
 # Example usage
 text =doc

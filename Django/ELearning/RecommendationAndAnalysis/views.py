@@ -8,12 +8,13 @@ import joblib
 import io
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
+from OnlineExamination.ExamsDoc import results
 from OnlineLearning.models import Student,AnnouncimentType ,StudentGroupManyToMany,GroupPost,GroupPostComent,GroupPostLike,StudentSubject,Announciment,Notes,DefaultUsers,Tutorial,GroupDiscussionsMessage,GroupDiscussionReply,Book,Assigment,StudentGroup,StudentGroupType,AssigmentType,Topic, AssigmentSubmission,StudentClassManyToMany,GroupWorkDivision,StudentTask,TutorialTimeTacking
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.models import User, Group, Permission
 from schools.models import Department, Course, Subject, SchoolLevel, StudentClass, CourseSubject, UserLog
-from OnlineExamination.models import GPAClasses, Grade, Division, ExamType, QuestionsType, ExamFormat, StudentExam, StudentResult
+from OnlineExamination.models import GPAClasses, Grade, Division, ExamType, QuestionsType, ExamFormat, StudentAnswer, StudentExam, StudentResult
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -156,40 +157,110 @@ def studentMarksPrediction(request):
     marks_list =  [mark for mark in marks]
     return {'data':marks_list, 'subject':suject}
     # return redirect('examList')
+    
 def concate_columns(row):
     return str(row["CIV"])+str(row["HIST"])+str(row["GEO"])+str(row["KISW"])+str(row["ENGL"])+str(row["LIT ENG"])+str(row["PHY"])+str(row["CHEM"])+str(row["BIO"])+str(row["B/MATH"])
 
 def studentCourseRecomendation(request):
     student = Student.objects.filter(user = request.user)
-    grade = Grade.objects.filter(level__name__gt='O-Level')
-    student_subjects = {'CIV': [], 'HIST': [], 'GEO': [], 'KISW': [], 'ENGL': [], 'LIT ENG': [], 'PHY': [], 'CHEM': [], 'BIO': [], 'B/MATH': []}
+    level = SchoolLevel.objects.filter(name = 'O-Level').first()
+    grade = Grade.objects.filter(level = level)
+    student_data = {'CIV': [], 'HIST': [], 'GEO': [], 'KISW': [], 'ENGL': [], 'LIT ENG': [], 'PHY': [], 'CHEM': [], 'BIO': [], 'B/MATH': [], 'division':[], 'points':[]}
+    course_subjects = {'CIV': [], 'HIST': [], 'GEO': [], 'KISW': [], 'ENGL': [], 'LIT ENG': [], 'PHY': [], 'CHEM': [], 'BIO': [], 'B/MATH': [], 'Capacity':[]}
     class_mapping_all_subjects = {'Civics':'CIV', 'Basic Mathematics': 'B/MATH', 'History':'HIST', 'Geography':'GEO', 'Kiswahili':'KISW', 'English Language':'ENGL',  'Chemistry':'CHEM', 'Bilogy':'BIO', 'Physics':'PHY', 'Literature in English':'LIT ENG'}
     class_mapping_grade= {'A':5, 'B':4, 'C':3, 'D':2, 'F':1, "not-done":0}
-
+    subjects_arr = []
     if student.exists():
         studentInfo = student.first()
         current_class = studentInfo.classCurrent.name
-        if current_class == 'Form Four':
-            student_marks = StudentExam.objects.filter(student=studentInfo, exam__is_final__gt = True).first()
+        if current_class == 'Form One':
+            student_marks = StudentExam.objects.filter(student=studentInfo)
             for marks in student_marks:
-                subject_name = marks.subject.subject_name
-                marks_scored = marks.marks
-                points_exam = results.getting_points(grades=grade, marks=[marks_scored, marks_scored])
-                marks_grade =points_exam['grade'][0]
-                for key, value in class_mapping_all_subjects():
-                    if key == subject_name:
-                        for grade_name, point in class_mapping_grade.items():
-                            if marks_grade == grade_name:
-                                student_subjects[value] = point
-            for key, value in student_subjects.items():
-                if len(student_subjects[key])<1:
-                    student_subjects[key] = 'not-done'
-            subject_data = pd.DataFrame(student_subjects)
-            subject_data["minAdmissionRequirement"]=subject_data.apply(concate_columns,axis=1)
-            subjects=["CIV","HIST","GEO","KISW","ENGL","LIT ENG","PHY","CHEM","BIO","B/MATH"]
-            subject_data.drop(subjects,axis=1,inplace=True)
-            return JsonResponse({'data':subject_data})
-    return JsonResponse({'data':{}})
+                if marks.exam.is_final == False:
+                    subjects_arr.append(marks.subject)
+
+        if request.method == 'POST':
+            capacity = request.POST.get('capacity')
+            course_subjects['Capacity'].append(capacity)
+            for sub in subjects_arr:
+                text = 'subject_' + str(sub.id)
+                marks_for_college = request.POST.get(text)
+                for key, value in class_mapping_all_subjects.items():
+                    if key == sub.subject_name:
+                        course_subjects[value].append(int(marks_for_college))
+                                                  
+            studentInfo = student.first()
+            current_class = studentInfo.classCurrent.name
+            if current_class == 'Form One':
+                student_marks = StudentExam.objects.filter(student=studentInfo)
+                for marks in student_marks:
+                    if marks.exam.is_final == False:
+                        subject_name = marks.subject.subject_name
+                        subjects_arr.append(marks.subject)
+                        marks_scored = marks.marks
+                        points_exam = results.getting_points(grades=grade, marks=[marks_scored, marks_scored])
+                        marks_grade =points_exam['grade'][0]
+                        for key, value in class_mapping_all_subjects.items():
+                            if key == subject_name:
+                                for grade_name, point in class_mapping_grade.items():
+                                    if marks_grade == grade_name:
+                                        student_data[value].append(point)
+
+                for key, value in student_data.items():
+                    if len(student_data[key])<1:
+                        student_data[key] = 0
+                        
+                for key, value in course_subjects.items():
+                    if len(course_subjects[key])<1:
+                        course_subjects[key] = 0
+                        
+                subject_data = pd.DataFrame(student_data)
+                subject_data["minAdmissionRequirement"]=subject_data.apply(concate_columns,axis=1)
+                print(subject_data)
+                subjects=["CIV","HIST","GEO","KISW","ENGL","LIT ENG","PHY","CHEM","BIO","B/MATH"]
+                for index ,row  in subject_data.iterrows():
+                    sum=row["CIV"]+row["HIST"]+row["GEO"]+row["KISW"]+row["ENGL"]+row["LIT ENG"]+row["PHY"]+row["CHEM"]+row["BIO"]+row["B/MATH"]
+                
+                    subject_data.at[index,"SAPG"]=sum
+                    
+                subject_data["SARG"]=subject_data.apply(concate_columns,axis=1)
+                cag = pd.DataFrame(course_subjects)
+                            
+                for index ,row  in cag.iterrows():
+                    sum=row["CIV"]+row["HIST"]+row["GEO"]+row["KISW"]+row["ENGL"]+row["LIT ENG"]+row["PHY"]+row["CHEM"]+row["BIO"]+row["B/MATH"]
+                
+                    cag.at[index,"Min Admition Point"]=sum   
+
+                cag["minAdmissionRequirement"]=cag.apply(concate_columns,axis=1)
+                for i in subjects:
+                    subject_data.drop(i,axis=1,inplace=True)
+                    cag.drop(i,axis=1,inplace=True)
+                fdf = pd.concat([subject_data, cag], axis=1)
+                print(fdf)
+                fdf=fdf[['division', 'points', 'SAPG', 'SARG','Min Admition Point', 'minAdmissionRequirement','Capacity',]]
+                # for index, row in fdf.iterrows():
+                #     item_joined =''
+                #     new_item = row['SARG'].split('.')
+                #     for item in new_item:
+                #         a = str(int(item))
+                #         item_joined +=a
+                #         fdf.at[index,"SARG"]=int(item_joined)
+                #         item_joined =''
+                #         new_item = row['minAdmissionRequirement'].split('.')
+                #         for item in new_item:
+                #             a = str(int(item))
+                #             item_joined +=a
+                #         fdf.at[index,"minAdmissionRequirement"]=int(item_joined)
+                x = fdf[['points', 'SAPG', 'SARG','Min Admition Point', 'minAdmissionRequirement','Capacity']]
+                print(x)
+                marks_model = model_path + '\Course Recomendation System.pkl'
+                loaded_moddel = joblib.load(open(marks_model, 'rb'))
+                marks = loaded_moddel.predict(x)
+                marks = np.abs(marks)
+            
+                return JsonResponse({'data':marks})
+    context = {'subjects_arr':subjects_arr}
+    return render(request, 'RecommendationAndAnalysis/Srudent-course-recommendation.html', context)
 
 def studentResults(request):
     try:
@@ -326,3 +397,52 @@ def convert_html_to_pdf(request):
         return response
 
     return HttpResponse('Error generating PDF')
+
+def TopicRecommendations(request):
+    context = {}
+    if request.method == "POST":
+        UserLog.objects.create(task='Viewing Making an Topic recommendations', user=request.user)
+        subject_id = request.POST.get('subject')
+
+        subject_obj = Subject.objects.filter(id = subject_id).first()
+        student = Student.objects.filter(user=request.user).first()
+        student_exams = StudentExam.objects.filter(student=student, subject = subject_obj, is_result_generated=True, is_submitted=True)
+        
+        if student_exams.exists():
+            topic_dataset = {'subject': [], 'topic': [], 'mark scored': [], 'total marks': [], 'difference': []}
+            for exam in student_exams:
+                responses = StudentAnswer.objects.filter(studentExam=exam)
+                if responses.exists():
+                    for response in responses:
+                        subject = response.studentExam.subject.subject_name
+                        marks_scored = response.marks_scored
+                        total_marks = response.generated_question.exam_format.gettingMarks
+                        topic = response.generated_question.topic.name
+                        difference = (marks_scored-total_marks)//100
+                        
+                        topic_dataset['subject'].append(subject)
+                        topic_dataset['topic'].append(topic)
+                        topic_dataset['mark scored'].append(marks_scored)
+                        topic_dataset['total marks'].append(total_marks)
+                        topic_dataset['difference'].append(difference)
+                        
+            data = pd.DataFrame(topic_dataset)
+            grouped_data = data.groupby(['subject', 'topic']).sum()
+            grouped_data = grouped_data.reset_index()  # Reset index for further processing
+            
+            # Find the subjects with the lowest marks
+            lowest_subjects = grouped_data.groupby('subject')['difference'].sum().nsmallest(3).index.tolist()
+            
+            # Generate recommendations for the low-scoring topics
+            recommendations = {}
+            for subject in lowest_subjects:
+                topics = grouped_data[grouped_data['subject'] == subject]['topic'].tolist()
+                recommendations['topics'] = topics        
+            context = {'recommendations': recommendations}
+        return render(request, 'RecommendationAndAnalysis/student-topic-recommendation.html', context)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def StudentProgress(request):
+    context ={}
+    return render(request, 'RecommendationAndAnalysis/student-progress.html', context)

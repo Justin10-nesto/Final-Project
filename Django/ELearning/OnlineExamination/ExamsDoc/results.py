@@ -9,6 +9,13 @@ def getting_points(grades, marks):
                 point_exam['grade'].append(grade.name)
     return point_exam
 
+def gettingGrade(grades, mark):
+    grade_obtained = ''
+    for grade in grades:
+        if grade.upper_marks >= mark and grade.lower_marks <= mark:
+            grade_obtained = grade.name
+    return grade_obtained
+
 def getting_pass_subject(points, level):
     if level  == 'O-Level':
         points.sort()
@@ -19,9 +26,11 @@ def getting_pass_subject(points, level):
     return total_points
 
 def checking_division(total_points, divisions):
+    name = ''
     for division in divisions:
         if division.upper_point >= total_points  and division.lower_point <= total_points:
-            return division.name
+            name = division.name
+    return name
 
 def getting_average(marks):
     markss_arr = np.array(marks)

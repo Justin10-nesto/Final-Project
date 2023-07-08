@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
 import pandas as pd
+from OnlineExamination.models import Division, Grade
 from OnlineLearning.models import OtpCode, Student,AnnouncimentType ,StudentGroupManyToMany,GroupPost,GroupPostComent,GroupPostLike,StudentSubject,Announciment,Notes,DefaultUsers, Teacher,Tutorial,GroupDiscussionsMessage,GroupDiscussionReply,Book,Assigment,StudentGroup,StudentGroupType,AssigmentType,Topic, AssigmentSubmission,StudentClassManyToMany,GroupWorkDivision,StudentTask, TutorialTimeTacking
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group, Permission
@@ -62,6 +63,19 @@ def UploadSelectedStudentPage(request):
         generated_date = random_date(start_date, end_date)
         Department.objects.create(name = i, department_Hod = 'Not Known', start_date = generated_date)
 
+    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\divisions.csv'
+    data = pd.read_csv(csv_path)
+    for row in data.index:
+        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
+        Division.objects.create(name=data.iloc[row]['Grade'], lower_point=data.iloc[row]['lower point'], upper_point=data.iloc[row]['upper point'],
+                                 description=data.iloc[row]['Description'], level=level_obj)
+        
+    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\grades.csv'
+    data = pd.read_csv(csv_path)
+    for row in data.index:
+        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
+        Grade.objects.create(name=data.iloc[row]['Grade'], lower_marks=data.iloc[row]['lower point'], upper_marks=data.iloc[row]['upper point'],
+                                weight=data.iloc[row]['weight'], description=data.iloc[row]['Description'], level=level_obj)
     courses = data['course'].unique()
     for i in courses:
         depart =data[data['course'] == i]['Department'].iloc[0]

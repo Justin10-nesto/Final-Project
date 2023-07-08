@@ -111,6 +111,7 @@ class Generated_exam(models.Model):
     examination_identity = models.BigIntegerField(default=0)
     is_generated = models.BooleanField(default=False)
     subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete = models.CASCADE)
     exam_format = models.ForeignKey(ExamFormat, on_delete = models.CASCADE)
     exam_type = models.ForeignKey(ExamType, on_delete = models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -123,7 +124,7 @@ class Generated_exam(models.Model):
     def status(self):
         current_time = datetime.datetime.now()
         exam_date = self.date_created
-        ending_validity = datetime.datetime.combine(exam_date, self.start_time) + datetime.timedelta(hours=5)
+        ending_validity = datetime.datetime(exam_date.year, exam_date.month, exam_date.day, exam_date.hour +5, exam_date.minute, exam_date.second)
 
         if (current_time > ending_validity):
             return 'Invalid'
@@ -145,6 +146,8 @@ class StudentExam(models.Model):
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     is_notified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+    is_result_generated = models.BooleanField(default=False)
     examination_identity = models.BigIntegerField(default=0)
     subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
     grade = models.ForeignKey(Grade, on_delete = models.CASCADE, null=True)

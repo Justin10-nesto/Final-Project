@@ -30,6 +30,14 @@ def ShowUserApi(request):
     user = request.user
     return JsonResponse({'data':user})
 
+def GettingSubject(request, id):
+    dataset = []
+    obj= Subject.objects.filter(id = id).first()
+    
+    dataset.append(obj.subject_name)
+
+    return JsonResponse({'data':dataset})
+
 
 def tracking(request, tuid, time, full_length):
     dataset = []
@@ -146,7 +154,7 @@ def generatingExams(request):
                         try:
                             question_selected = random.choice(QuestionPerTopic[format.type_questions.name])
                             generated_question_fromDump=ExaminationDump.objects.filter(id = question_selected).first()
-                            Generated_exam.objects.create(question =generated_question_fromDump.questions, answers=generated_question_fromDump.answers, examination_identity = student_examination.examination_identity, is_generated = True, subject= student_examination.subject, exam_format =format, exam_type =student_examination.exam)
+                            Generated_exam.objects.create(question =generated_question_fromDump.questions, answers=generated_question_fromDump.answers, examination_identity = student_examination.examination_identity, is_generated = True, subject= student_examination.subject, topic = generated_question_fromDump.topic, exam_format =format, exam_type =student_examination.exam)
                         except:
                             pass
     return JsonResponse({'data':''})

@@ -44,12 +44,12 @@
 
                                 <div class="d-flex flex-row justify-content-end">
                                     <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This Week
-                    </span>
+                                        <i class="fas fa-square text-primary"></i> This Week
+                                    </span>
 
                                     <span>
-                      <i class="fas fa-square text-gray"></i> Last Week
-                    </span>
+                                        <i class="fas fa-square text-gray"></i> Last Week
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -61,13 +61,14 @@
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title">Relation ship between exam and student of performance</h3>
-                                    <a href="javascript:void(0);"><select name="subject" id="subject-data"  oninput="updategraph()">
+                                    <a href="javascript:void(0);"><select name="subject" id="subject-data"
+                                            oninput="updategraph()">
 
-                                        {% for subject in subjects %}
+                                            {% for subject in subjects %}
                                             <option value="{{subject.id}}">{{subject.subject.subject_name}}</option>
-                                        {% endfor %}
+                                            {% endfor %}
 
-                                    </select></a>
+                                        </select></a>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -89,24 +90,23 @@
                         <div class="card">
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="card-title">Student self studying report</h3>
-                                    <a href="javascript:void(0);">View Report</a>
+                                    <h3 class="card-title">Student Topic Recommendations</h3>
                                 </div>
                             </div>
                             <div class="card-body">
+                                <h1 id="subject-name"></h1>
+                                <div id="topic-recomendation">
 
-                                <div class="position-relative mb-4">
-                                    <canvas id="visitors-chart" height="200"></canvas>
                                 </div>
 
                                 <div class="d-flex flex-row justify-content-end">
                                     <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This Week
-                    </span>
+                                        <i class="fas fa-square text-primary"></i> This Week
+                                    </span>
 
                                     <span>
-                      <i class="fas fa-square text-gray"></i> Last Week
-                    </span>
+                                        <i class="fas fa-square text-gray"></i> Last Week
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -118,13 +118,14 @@
                             <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
                                     <h3 class="card-title">Relation ship between exam and student of performance</h3>
-                                    <a href="javascript:void(0);"><select name="subject" id="subject-data"  oninput="updategraph()">
+                                    <a href="javascript:void(0);"><select name="subject" id="subject-data"
+                                            oninput="updategraph()">
 
-                                        {% for subject in subjects %}
+                                            {% for subject in subjects %}
                                             <option value="{{subject.id}}">{{subject.subject.subject_name}}</option>
-                                        {% endfor %}
+                                            {% endfor %}
 
-                                    </select></a>
+                                        </select></a>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -150,7 +151,8 @@
 </div>
 {% load static %} {% include 'includes/adminlite-footer.html' %}
 
-<script data-cfasync="false" src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+<script data-cfasync="false"
+    src="{% static 'cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
 <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'assets/js/popper.min.js' %}"></script>
 <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -180,7 +182,7 @@
 
     function drawgraph(x_data, y_data, tye_graph, doc_id) {
 
-        $(function() {
+        $(function () {
             'use strict'
 
             var ticksStyle = {
@@ -192,7 +194,7 @@
             var intersect = true
 
             var $salesChart = $(doc_id)
-                // eslint-disable-next-line no-unused-vars
+            // eslint-disable-next-line no-unused-vars
             var salesChart = new Chart($salesChart, {
                 type: tye_graph,
                 data: {
@@ -201,7 +203,7 @@
                         backgroundColor: '#007bff',
                         borderColor: '#007bff',
                         data: y_data
-                    }, ]
+                    },]
                 },
                 options: {
                     maintainAspectRatio: false,
@@ -241,10 +243,31 @@
     }
 
     function updategraph() {
+        var subject_h2 = document.getElementById('subject-name')
         var select_btn = document.getElementById('subject-data')
+        var topic_recomendation_div = document.getElementById('topic-recomendation')
         var subject_id = select_btn.value
-        var url = window.location.host
+        var subject_url = 'GettingSubject/' + subject_id
+        fetch(subject_url)
+            .then(response => response.json())
+            .then(data => {
+                subject_h2.innerHTML = data.data[0]
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
         var new_url = 'analyzing_studentPeformance/' + subject_id
+        fetch(new_url)
+            .then(response => response.json())
+            .then(data => {
+                drawgraph(data.data['x_data'], data.data['y_data'], 'bar', '#sales-chart')
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+        var new_url = 'TopicRecommendations/' + subject_id
         fetch(new_url)
             .then(response => response.json())
             .then(data => {

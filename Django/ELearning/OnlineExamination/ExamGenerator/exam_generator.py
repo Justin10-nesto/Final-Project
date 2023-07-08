@@ -13,6 +13,7 @@ from nltk.corpus import wordnet
 from nltk.tokenize import word_tokenize, sent_tokenize
 from sklearn.feature_extraction.text import  TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from multiprocessing import pool
 
 class ExamGerator():
     def __init__(self, path):

@@ -1,0 +1,65 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<style>
+    .page-title {
+        text-align: center;
+    }
+
+    .same-col {
+        display: inline-block;
+    }
+</style>
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="header-right">
+                        <div class="d-flex flex-row-reverse bd-highlight">
+                            <p id="examination-time" data-endtime="{{formatted_end_time}}">
+                                {{student_examination.getting_fully_endtime |timeuntil}} remaining</p>
+                        </div>
+                    </div>
+                    <h3 class="page-title">{{student_data.school}}</h3>
+                    <h3 class="page-title">{{student_data.name}}</h3>
+                    <h3 class="page-title">Student Progress</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-sm-12 ">
+                <div class="card card-table ">
+                    <div class="card-body ">
+                        <h3>Tutorials</h3>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar" role="progressbar"
+                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 45%"></div>
+                        </div>
+                        <h3>Notes Reading</h3>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar" role="progressbar"
+                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        </div>
+                        <h3>Participations in group</h3>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar" role="progressbar"
+                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        </div>
+                        <h3>Assigmnents</h3>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar" role="progressbar"
+                                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                        </div>
+                        <ol>
+                            <li>All exams can be done by student if and only if student makes an appointment one week
+                                before.</li>
+                            <li>Exam may be councelled if student report to the administration with aproved resons.</li>
+                            <li>Written of name in any where of the exam </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% load static %} {% include "includes/footer.html " %}
