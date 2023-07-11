@@ -1,7 +1,8 @@
+from OnlineExamination.ExamGenerator.exam_generator import ExamGerator
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.conf import settings
 import pandas as pd
-from OnlineExamination.models import Division, Grade
+from OnlineExamination.models import Division, ExamType, Grade
 from OnlineLearning.models import OtpCode, Student,AnnouncimentType ,StudentGroupManyToMany,GroupPost,GroupPostComent,GroupPostLike,StudentSubject,Announciment,Notes,DefaultUsers, Teacher,Tutorial,GroupDiscussionsMessage,GroupDiscussionReply,Book,Assigment,StudentGroup,StudentGroupType,AssigmentType,Topic, AssigmentSubmission,StudentClassManyToMany,GroupWorkDivision,StudentTask, TutorialTimeTacking
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group, Permission
@@ -141,7 +142,19 @@ def UploadSelectedStudentPage(request):
     #     classes = StudentClass.objects.filter(level=level)
     #     for k in classes:
     #         CourseSubject.objects.create(course = course, subject=subject, studentClass=k)
-
+    Exams_list =[{'name':'Terminal', 'weight_annual':50, 'weight_final':10},{'name':'Annual', 'weight_annual':50, 'weight_final':10},{'name':'Mid-term', 'weight_annual':10, 'weight_final':5},{'name':'Mock', 'weight_annual':70, 'weight_final':30},{'name':'Necta', 'weight_annual':50, 'weight_final':50},]
+    for exm in Exams_list:
+        level = SchoolLevel.objects.filter(name = 'O-Level').first()
+        stclass = StudentClass.objects.filter(level = level)
+        
+        for st in stclass:
+            is_final = False
+            not_excuted = True
+            if exm['name'] == 'Necta' or exm['name'] == 'Mock':
+                if st.get_final_class:
+                    is_final = True
+            ExamType.objects.create(name = exm['name'], weight_annual = exm['weight_annual'], weight_final= exm['weight_final'], is_final = is_final, studentClass =st )
+    
     roles = ['Student', 'Admin', 'Teachers', 'GroupLeader', 'CR']
     for role in roles:
         Group.objects.create(name = role)
@@ -151,7 +164,7 @@ def UploadSelectedStudentPage(request):
     for per in permissions:
         admin_group = Group.objects.filter(name = 'Admin').first()
         admin_group.permissions.add(per)
-    student_permisions = student = [9,10,11,12, 28, 36, 141,42,43,44,45,46,47,48,49,50,51,52,53,54,54, 72,76,77,87,91,95,99,100,101,102,111,118,122,123,126,138,139,141,142,143,144,148,149,150,154,172,176,186,188,192,192,204,212,216,201]
+    student_permisions = [9,10,11,12, 28, 36, 141,42,43,44,45,46,47,48,49,50,51,52,53,54,54, 72,76,77,87,91,95,99,100,101,102,111,118,122,123,126,138,139,141,142,143,144,148,149,150,154,172,176,186,188,192,192,204,212,216,201]
     for per in student_permisions:
         permision = Permission.objects.filter(id = per).first()
         student_group.permissions.add(permision)
@@ -294,7 +307,7 @@ def changePassword(request):
 def foggotenPassword(request):
     user = request.user
     if request.method == "POST":
-        email = request.POST.get('email')
+        email = request.POST.get('username')
         is_user_exists = User.objects.filter(email=email).exists()
         opt_generated = ''
         status = True
@@ -317,26 +330,26 @@ def foggotenPassword(request):
             header = 'Resset Password'
             message = f"dear {user.first_name},\n we are heard that you lost your password account. Don't worry you can reset your password by returning to your browser and use the following code.\n {opt_generated}"
             email_from = settings.EMAIL_HOST_USER
-            send_mail(header, message, email_from, email)
+            send_mail(header, message, email_from, [email])
             return redirect(f'../opt_sent/{user.id}')
-        return redirect(f'../opt_sent/{user.id}')
     return render(request, 'UAA/foggotpassword.html')
 
 def resend_password(request, id):
     user = User.objects.filter(id=id).first()
-    opt = random.randint(100000,999999)
-    opt_generated = 'E-' + str(opt)
-    OtpCode.objects.create(code = opt_generated, user = user)
+    otp = OtpCode.objects.filter(user = user).first()
+    opt_generated =otp.code
     header = 'Resset Password'
     message = f"dear {user.first_name},\n we are heard that you lost your password account. Don't worry you can reset your password by returning to your browser and use the following code.\n {opt_generated}"
     email_from = settings.EMAIL_HOST_USER
-    send_mail(header, message, email_from, email_from)
+    email_to = otp.user.email
+    send_mail(header, message, email_from, [email_to])
     return redirect(f'../opt_sent/{user.id}')
 
 def opt_sent(request, id):
     if request.method == "POST":
         code = request.POST.get('code')
-        opts = OtpCode.objects.filter(user__id__gt = id, is_used=False)
+        user = User.objects.filter(id=id).first()
+        opts = OtpCode.objects.filter(user = user, is_used=False)
         for opt in opts:
             if opt == code:
                 if opt.get_status == 'Valid':
@@ -565,7 +578,25 @@ def userProfilePage(request):
 @login_required(login_url='/')
 def DashboardPage(request):
     UserLog.objects.create(task='Viewing Dashboard Page', user= request.user)
-    return render(request, 'Admin/dashboard.html')
+    teacher_class = 0
+    no_student = 0
+    user =User.objects.filter(id = request.user.id).first()
+    role_exist = user.groups.exists()
+    if role_exist:
+        role = user.groups.first().name
+        if user.is_superuser:
+            no_student = Student.objects.all().count()
+        elif user.is_staff:
+            teacher = Teacher.objects.filter(user = user)
+            if teacher.exists():
+                teacher_obj = teacher.first()
+                teacher_class = teacher_obj.classSubject.all().count()
+        elif Student.objects.filter(user= user).exists():
+            student = Student.objects.filter(user= user).first()
+            no_student = Student.objects.filter(classCurrent = student.classCurrent).count()
+        context = {'role':role, 'teacher_class':teacher_class, 'no_student':no_student}
+    context = {}
+    return render(request, 'Admin/dashboard.html', context)
 
 def Admision_statusPage(request):
     return render(request, 'Student/admission_status.html')
@@ -574,15 +605,40 @@ def Admision_statusPage(request):
 def studentList(request):
 # try:
     UserLog.objects.create(task='Viewing Student List', user= request.user)
-    stud = Student.objects.all()
-    users = User.objects.all()
-    group = Group.objects.all()
+    student_list = []
+    teachers_list = []
+    users = []
+    user =User.objects.filter(id = request.user.id).first()
+    if user.is_superuser:
+        student_list = Student.objects.all()
+        teachers_list = Teacher.objects.all()
+        users = User.objects.all()
+
+    elif user.is_staff:
+        teacher = Teacher.objects.filter(user = user)
+        if teacher.exists():
+            teacher_obj = teacher.first()
+            teacher_class = teacher_obj.classSubject.all()
+            for t_class in teacher_class:
+                students = Student.objects.filter(classCurrent = t_class.studentClass)
+                for dtud in students:
+                    student_list.append(student_list)
+        else:
+            teachers_list = Teacher.objects.all()
+            student_list = Student.objects.all()
+            users = User.objects.all()
+
+    elif Student.objects.filter(user= user).exists():
+        student = Student.objects.filter(user= user).first()
+        student_list  =Student.objects.filter(classCurrent = student.classCurrent)
+
 
     users_groups = []
-    for user in users:
-        groups = user.groups.all()
-        users_groups.append({'user':user, 'groups':groups})
-    context = {'users_groups':users_groups, 'group':group}
+    if users:
+        for user in users:
+            groups = user.groups.all()
+            users_groups.append({'user':user, 'groups':groups})
+    context = {'users_groups':users_groups, 'student_list':student_list, 'teachers_list':teachers_list}
     return render(request, 'Admin/list-student.html', context)
 
     # except:
@@ -646,18 +702,42 @@ def studentDelete(request, id):
 @login_required(login_url='/')
 def TopicList(request, sid):
     # try:
+
         UserLog.objects.create(task='Viewing topic List', user= request.user)
         subject =Subject.objects.filter(id = sid).first()
         user_id = request.user.id
         user_data = User.objects.filter(id = user_id).first()
-        student_data = Student.objects.filter(user = user_data).first()
-        subject_class =SubjectClass.objects.filter( studentClass =student_data.classCurrent, subject = subject).first()
-        Topic_info = Topic.objects.filter(subject = subject_class)
-        groups = StudentGroup.objects.filter(subject=subject)
-        users_groups = StudentGroupManyToMany.objects.filter(student = student_data)
-        is_student_present =[]
-        context = {'Topic_info':Topic_info, 'subject':subject, 'users_groups':users_groups, 'groups':groups, 'is_student_present':is_student_present}
-        return render(request, 'Student/topics.html', context)
+        student = Student.objects.filter(user = user_data)
+        teacher =Teacher.objects.filter(user = user_data)
+        status = False
+        subject_class = {}
+        users_groups = []
+        if student.exists():
+            student_data = Student.objects.filter(user = user_data).first()
+            subject_class =SubjectClass.objects.filter( studentClass =student_data.classCurrent, subject = subject).first()
+            users_groups = StudentGroupManyToMany.objects.filter(student = student_data)
+
+            status = True
+
+        elif teacher.exists():
+            teacher_data = teacher.first()
+            teacher_subjects_class = teacher_data.classSubject.all()
+            for teacher_subject_class in teacher_subjects_class:
+                if subject == teacher_subject_class.subject:
+                    teacher_class =SubjectClass.objects.filter( studentClass =teacher_subject_class.studentClass, subject = subject)
+                    if teacher_class.exists():
+                        status = True
+                        subject_class  = teacher_class.first()
+        if status:
+            Topic_info = Topic.objects.filter(subject = subject_class)
+            groups = StudentGroup.objects.filter(subject=subject)
+            is_student_present =[]
+            context = {'Topic_info':Topic_info, 'subject':subject, 'users_groups':users_groups, 'groups':groups, 'is_student_present':is_student_present}
+            return render(request, 'Student/topics.html', context)
+        else:
+            messages.error(request,'You have not access previllage to this page')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
     # except:
     #     messages.error(request,'Something went wrong')
     #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -1006,19 +1086,22 @@ def AssigmentSubmision(request, sid, tid, aid):
             user_id = request.user.id
             user_data = User.objects.filter(id = user_id).first()
             submission = AssigmentSubmission.objects.create(doc = file_submitted, subject=subject, topic=topic, assigniment=assigments, user=user_data)
-            assigments_submited = AssigmentSubmission.objects.filter(subject=subject, topic=topic).exists()
-            if assigments_submited:
-                doc_url_gt = str(submission.doc.url)
-                new_url = doc_url_gt.split(r'/')
-                new_doc_url_gt = doc_url_gt.join(r'\\')
-                print(new_doc_url_gt)
-                # similarity= check_file_similarity(new_doc_url_gt)
-                similarity = 0.5
-                print(similarity)
-                if similarity >0.7:
-                    submission.delete()
-                    messages.info(request,f'Assigment is similar with another assimment in {similarity*100}' )
-
+            assigments_submited = AssigmentSubmission.objects.filter(subject=subject, topic=topic)
+            if assigments_submited.exists():
+                previous_marks = 0
+                for docs in assigments_submited:
+                    url_org = str(submission.doc.url)
+                    hist = ExamGerator( [url_org])
+                    doc1 =hist.doc_opening()
+                    hist = ExamGerator( [file_submitted])
+                    doc2 =hist.doc_opening()
+                    similarity = hist.documment_similarity(doc1, doc2)
+                    if similarity >previous_marks:
+                        previous_marks = similarity
+                    if similarity >0.7:
+                        messages.info(request,f'Assigment is similar with another assimment in {similarity*100}' )
+            submission.parlagrims =previous_marks
+            submission.save()
             messages.success(request,'Assigment is Submitted  successful')
             return redirect(f'../../../assigmentsPage/{sid}/{tid}')
             # except:
@@ -1117,7 +1200,7 @@ def AssigmentsEdit(request, sid, tid, id):
             topic = Topic.objects.filter(id = tid).first()
             type_assigment = AssigmentType.objects.filter(id = Category).first()
             assigment = Assigment.objects.filter(id = id).first()
-            assign_url = settings.STATICFILES_DIRS[0] +assign.file.url
+            assign_url = settings.STATICFILES_DIRS[0] +assigment.file.url
             assigment.name = Assigment_number
             assigment.description=Description
             assigment.task = task
@@ -1204,47 +1287,36 @@ def groupAdd(request, sid):
         logo = request.FILES['logo']
         description = request.POST.get('description')
         type_group = request.POST.get('type_group')
-        participants = request.POST.get('participants')
+        participants = [request.user.id]
 
-        print(sid)
-        try:
-            grouptype = StudentGroupType.objects.filter(id = type_group).first()
-            if grouptype.name == 'Public':
-                subject = Subject.objects.filter(id = int(sid)).first()
-                for user_id in participants:
-                    user_data = User.objects.filter(id = user_id).first()
-                    student_data = Student.objects.filter(user = user_data).first()
-                    group =StudentGroup.objects.create(name = name, description= description, file = logo, type_group= grouptype, subject = subject)
-                    StudentGroupManyToMany.objects.create(student = student_data, group=group)
-                    messages.success(request,'group is created sacessfull')
-                return redirect(f'../../TopicList/{sid}')
+        grouptype = StudentGroupType.objects.filter(name = type_group).first()
+        if grouptype.name == 'Public':
+            subject = Subject.objects.filter(id = int(sid)).first()
+            for user_id in participants:
+                user_data = User.objects.filter(id = user_id).first()
+                student_data = Student.objects.filter(user = user_data).first()
+                group =StudentGroup.objects.create(name = name, description= description, file = logo, type_group= grouptype, subject = subject)
+                StudentGroupManyToMany.objects.create(student = student_data, group=group)
+                messages.success(request,'group is created sacessfull')
+            return redirect(f'../../TopicList/{sid}')
 
-            else:
-                subject = Subject.objects.filter(id = sid).first()
-                for user_id in participants:
-                    user_data = User.objects.filter(id= user_id).first()
-                    token = ''
-                    letter = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'l', 'k', 'j', 'h', 'g', 'f', 'd', 's', 'a', 'z', 'x', 'c', 'v', 'b', 'n', 'm']
-                    random_number = str(random.randint(1000, 9999))
-                    genereted_letter = ''
-                    for i in range(3):
-                        index_letter = random.randint(0, len(letter)-1)
-                        letter_selected = letter[index_letter]
-                        genereted_letter += letter_selected + random_number[i]
-                    group = StudentGroup.objects.create(name = name, description= description, token=genereted_letter, file = logo, type_group= grouptype, subject = subject)
-                    StudentGroupManyToMany.objects.create(user = user_data, group=group, user_isaccept='Accepted')
-                    messages.success(request,'group is created sacessfull')
-                return redirect(f'../../TopicList/{sid}')
-        except:
-            messages.error(request,'Something went wrong')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            subject = Subject.objects.filter(id = sid).first()
+            for user_id in participants:
+                user_data = User.objects.filter(id= user_id).first()
+                token = ''
+                letter = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'l', 'k', 'j', 'h', 'g', 'f', 'd', 's', 'a', 'z', 'x', 'c', 'v', 'b', 'n', 'm']
+                random_number = str(random.randint(1000, 9999))
+                genereted_letter = ''
+                for i in range(3):
+                    index_letter = random.randint(0, len(letter)-1)
+                    letter_selected = letter[index_letter]
+                    genereted_letter += letter_selected + random_number[i]
+                group = StudentGroup.objects.create(name = name, description= description, token=genereted_letter, file = logo, type_group= grouptype, subject = subject)
+                StudentGroupManyToMany.objects.create(user = user_data, group=group)
+                messages.success(request,'group is created sacessfull')
+            return redirect(f'../../TopicList/{sid}')
 
-    try:
-        groups_dtype = ['Public', 'Private']
-        for i in groups_dtype:
-            StudentGroupType.objects.create(name=i)
-    except:
-        pass
 
     UserLog.objects.create(task='add group Discussion Page', user= request.user)
     user_id = request.user.id

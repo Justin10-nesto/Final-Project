@@ -75,7 +75,7 @@ class StudentClass(models.Model):
         return self.name
 
     def get_final_class(self):
-        if self.name == 'Form Four' or self.name == 'Form Six':
+        if self.name == 'Form Four' or self.name == 'Form Two' or self.name == 'Form Six':
             return True
         else:
             return False

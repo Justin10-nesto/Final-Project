@@ -32,28 +32,28 @@
                     <tbody>
                         {% for subject in Subjects %}
                         <tr>
-                            <td>{{subject.subject.subject_code}}
+                            <td>{{subject.subject_code}}
                             </td>
                             <td>
-                                <a href="{% url 'Topiclist' subject.subject.id %}">
-                                    <h2>{{subject.subject.subject_name}}</h2>
+                                <a href="{% url 'Topiclist' subject.id %}">
+                                    <h2>{{subject.subject_name}}</h2>
                                 </a>
                             </td>
-                            <td>{{subject.subject.department}}</td>
+                            <td>{{subject.department}}</td>
                             <td class="text-right">
                                 <div class="actions">
-                                    <a href="{% url 'SubjectEdit' subject.subject.id %}" class="btn btn-sm bg-success-light mr-2">
+                                    <a href="{% url 'SubjectEdit' subject.id %}" class="btn btn-sm bg-success-light mr-2">
                                         <i class="fas fa-pen"></i>
                                     </a>
 
-                                    <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_delete_{{subject.subject.id}}" href="#edit_personal_details">
+                                    <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_delete_{{subject.id}}" href="#edit_personal_details">
                                         <i class="fas fa-trash"></i>
                                     </a>
 
                             </td>
                         </tr>
 
-                        <div class="modal fade" id="modal-default_delete_{{subject.subject.id}}">
+                        <div class="modal fade" id="modal-default_delete_{{subject.id}}">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -64,9 +64,9 @@
                                     </div>
                                     <div class="modal-body">
                                         <h3>Are you sure you want to delete subject of
-                                            <b>{{subject.subject.subject_name}}</b>
+                                            <b>{{subject.subject_name}}</b>
                                         </h3>
-                                        <a href="{% url 'SubjectDelete' subject.subject.id %}" class="btn btn-sm bg-danger-light text-right">
+                                        <a href="{% url 'SubjectDelete' subject.id %}" class="btn btn-sm bg-danger-light text-right">
                                             Delete
                                         </a>
                                     </div>

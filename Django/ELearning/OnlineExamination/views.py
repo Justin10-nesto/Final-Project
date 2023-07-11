@@ -615,7 +615,6 @@ def GeneratingStudentResult(request):
                     divisions = Division.objects.filter(name='O-Level')
                     total_points = results.getting_pass_subject(points=result['point'], level=student_info.classCurrent.level.name)
                     division = results.checking_division(total_points=total_points, divisions=divisions)
-                    print(division)
 
                 if student_info.classCurrent.level.name == 'A-Level':
                     divisions = Division.objects.filter(name='A-Level')

@@ -19,34 +19,30 @@
                 <div class="card card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example1" class="table table-hover table-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            <a href="{% url 'booksPage' subject.id  topic.id %}">
-                                 Books
-                                 </a>
-                                        </th>
-                                        <th>
-                                            <a href="{% url 'assigmentsPage' subject.id topic.id %}">
-                                 Assigments
-                                 </a>
-                                        </th>
-                                        <th>
-                                            <a href="{% url 'TutorialPage' subject.id  topic.id %}">
-                                 Tutorials
-                                 </a>
-                                        </th>
-                                        <th>
-                                            <a href="{% url 'discussionsPage' subject.id topic.id %}">
-                                Q & A
-                                </a>
-                                        </th>
-                                        <th>
-                                            <a href="{% url 'anauncementPage' subject.id topic.id  %}">
-                                    Anounciments
-                                 </a>
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </table>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="{% url 'booksPage' subject.id  topic.id %}">
+                                        Books
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'assigmentsPage' subject.id topic.id %}">
+                                        Assigments
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'TutorialPage' subject.id  topic.id %}">
+                                        Tutorials
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'discussionsPage' subject.id topic.id %}">
+                                        Q & A
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'anauncementPage' subject.id topic.id  %}">
+                                        Anounciments
+                                    </a>
+                                </div>
+                            </div>

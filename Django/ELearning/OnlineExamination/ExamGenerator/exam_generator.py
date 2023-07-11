@@ -1,4 +1,7 @@
+
+import docx2txt
 import pandas as pd
+import numpy as np
 import nltk
 from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
@@ -57,6 +60,8 @@ class ExamGerator():
                 for index, page in enumerate(pdf.pages):
                     page = pdf.pages[index]
                     self.raw_doc1 += page.extract_text()
+            elif extenstion == 'docx':
+                self.raw_doc1 = docx2txt.process(pth)
             else:
                 self.raw_doc1 = ''
         return self.raw_doc1
@@ -116,6 +121,21 @@ class ExamGerator():
             robol_response = robol_response + self.sent_tokens[idx]
             self.sent_tokens.remove(self.sent_tokens[idx])
             return robol_response
+        
+    def documment_similarity(self, document1, document2):
+
+        # Create vector representations using TF-IDF
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(document1)
+        tfidf_matrix1 = vectorizer.fit_transform(document2)
+
+        # Calculate cosine similarity
+        similarity_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix1)
+        arr_np = np.array(similarity_matrix)
+        # Print the similarity matrix
+        similarity_mean = arr_np.mean()
+
+        return similarity_mean
 
     def chicking_doc_tags(self):
         print('checking tags')

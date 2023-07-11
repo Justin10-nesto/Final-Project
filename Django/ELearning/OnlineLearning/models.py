@@ -274,7 +274,7 @@ class AssigmentSubmission(models.Model):
         # deadline = datetime.strptime('1/1/2024', '%d/%m/%Y')
         deadline_time = self.assigniment.time
         deadline_complete = datetime.datetime(deadline.year, deadline.month, deadline.day, deadline_time.hour, deadline_time.minute, deadline_time.second)
-        previous_complete = datetime.datetime(deadline.year, deadline.month, deadline.day+10, deadline_time.hour, deadline_time.minute, deadline_time.second)
+        previous_complete = datetime.datetime(deadline.year, deadline.month, deadline.day+5, deadline_time.hour, deadline_time.minute, deadline_time.second)
         current_time = datetime.datetime.now()
 
         if deadline_complete >= current_time:

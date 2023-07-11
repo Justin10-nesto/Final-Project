@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from schools.models import Department, Course, Subject, SchoolLevel, StudentClass, CourseSubject, SubjectClass, UserLog
-from OnlineLearning.models import Student,DefaultUsers,StudentSubject, Book, Assigment, AssigmentType, Topic
+from OnlineLearning.models import Student,DefaultUsers, StudentGroupType,StudentSubject, Book, Assigment, AssigmentType, Teacher, Topic
 from OnlineLearning.models import Course
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -113,10 +113,35 @@ def DepartmentDelete(request, id):
 
 @login_required(login_url='/')
 def SubjectList(request):
+        
+    try:
+        groups_dtype = ['Public', 'Private']
+        for i in groups_dtype:
+            StudentGroupType.objects.create(name=i)
+    except:
+        pass
+
     user_id = request.user.id
     user = User.objects.filter(id = user_id).first()
-    student_info = Student.objects.filter(user=user).first()
-    Subjects = StudentSubject.objects.filter(student=student_info, classCurrent = student_info.classCurrent)
+    student = Student.objects.filter(user = user)
+    teacher =Teacher.objects.filter(user = user)
+    status = False
+    Subjects = []
+    if student.exists():
+        student_info = Student.objects.filter(user=user).first()
+        Subjects_arr = StudentSubject.objects.filter(student=student_info, classCurrent = student_info.classCurrent)
+        for sub in Subjects_arr:
+            Subjects.append(sub.subject)
+    
+    elif teacher.exists():
+        teacher_data = teacher.first()
+        teacher_subjects_class = teacher_data.classSubject.all()
+        for teacher_subject_class in teacher_subjects_class:
+            Subjects.append(teacher_subject_class.subject)
+            
+    elif user.is_superuser:
+        Subjects = Subject.objects.all()
+
     context = {'Subjects':Subjects}
     UserLog.objects.create(task='Viewing Subject List', user= request.user)
     return render(request, 'Admin/list-subject.html', context)
@@ -195,7 +220,7 @@ def SubjectEdit(request, id):
         Subject_obj.subject_code = subject_code
         Subject_obj.subject_name = subject_name
         Subject_obj.department = department_selected
-        subect_obj.save()
+        Subject_obj.save()
         UserLog.objects.create(task='Edit Subjects', user= request.user)
         return redirect('Subjectlist')
 

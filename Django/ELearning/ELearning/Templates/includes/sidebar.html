@@ -65,16 +65,9 @@
                         <li class="menu-title">
                             <span>Main Menu</span>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span
-                                    class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="{% url 'DashboardPage' %}">Admin Dashboard</a></li>
-                                <li><a href="{% url 'DashboardPage' %}">Teacher Dashboard</a></li>
-                                <li><a href="{% url 'DashboardPage' %}">Student Dashboard</a></li>
-                            </ul>
+                        <li>
+                            <a href=" {% url 'DashboardPage' %} "><i class=" fas fa-user-graduate"></i><span>Dashboard</span></a>
                         </li>
-
                         {% if student_data.admision_time_status == 'NEW' %}
                         <li>
                             <a href="{% url 'Admision_statusPage' %} "><i class="fas fa-book "></i><span>Admission
@@ -188,8 +181,6 @@
                                         <li><a href="{% url 'gradeList' %}">Grades</a></li>
                                         {% endif %} {% if perms.OnlineExamination.view_division %}
                                         <li><a href="{% url 'divisionList' %}">Divisions</a></li>
-                                        {% endif %} {% if perms.OnlineExamination.view_gpaclasses %}
-                                        <li><a href="edit-Results.html">GPA</a></li>
                                         {% endif %}
                                     </ul>
                                 </li>
@@ -237,25 +228,18 @@
 
                             </ul>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Reports</span> <span
-                                    class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="{% url 'student_reults_progress' %}">Daily</a></li>
-                                <li><a href=" {% url 'student_reults_progress' %} ">Weekly</a></li>
-                                <li><a href=" edit-Results.html ">Month</a></li>
-                                <li><a href=" edit-Results.html ">Year</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href=" {% url 'userProfilePage' %} "><i class=" fas fa-book "></i><span>Setting</span></a>
-                        </li>
-                        <li>
+                        
                             <li>
-                                <a href=" {% url 'userProfilePage' %} "><i class=" fas fa-book "></i><span>Student Analysis</span></a>
+                                <a href=" {% url 'student_reults_progress' %} "><i class=" fas fa-book "></i><span>Student Analysis</span></a>
                             </li>
                             <li>
-                                <a href=" {% url 'StudentProgress' %} "><i class=" fas fa-book "></i><span>Student Progress</span></a>
+                                <a href=" {% url 'studentRecomendation' %} "><i class=" fas fa-book "></i><span>Student Recomendation</span></a>
+                            </li>
+                            <li>
+                                <a href=" {% url 'StudentProgress' 0 %} "><i class=" fas fa-book "></i><span>Student Progress</span></a>
+                            </li>
+                            <li>
+                                <a href=" {% url 'userProfilePage' %} "><i class=" fas fa-book "></i><span>Setting</span></a>
                             </li>
                             <li>
                             <a class=" dropdown-item " href=" {% url 'logoutPage' %} ">Logout</a>

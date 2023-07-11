@@ -7,6 +7,7 @@ urlpatterns = [
     path('convert/', views.convert_html_to_pdf, name='convert_html_to_pdf'),
     path('studentMarksPrediction', views.studentMarksPrediction, name ='studentMarksPrediction'),
     path('student_reults_progress', views.student_reults_progress, name ='student_reults_progress'),
+    path('studentRecomendation', views.studentRecomendation, name ='studentRecomendation'),
     path('studentCourseRecomendation', views.studentCourseRecomendation, name ='studentCourseRecomendation'),
     path('TopicRecommendations', views.TopicRecommendations, name ='TopicRecommendations'),
     
@@ -15,5 +16,5 @@ urlpatterns = [
     path('analyzingStudentFactorByMl', views.analyzingStudentFactorByMl, name= 'analyzingStudentFactorByMl'),
     path('api/studentResults', views.studentResults, name = 'studentResultsApi'),
     
-    path('StudentProgress', views.StudentProgress, name = "StudentProgress"),
+    path('StudentProgress/<int:sid>', views.StudentProgress, name = "StudentProgress"),
     ]
