@@ -1,6 +1,7 @@
 from django.contrib import admin
-from OnlineLearning.models import Student,AnnouncimentType,StudentGroupManyToMany,GroupPost,GroupPostComent,GroupPostLike,StudentSubject,Announciment,Notes,DefaultUsers,Tutorial,GroupDiscussionsMessage,GroupDiscussionReply,Book,Assigment,StudentGroup,StudentGroupType,AssigmentType,Topic, AssigmentSubmission,StudentClassManyToMany, StudentTask
+from OnlineLearning.models import Teacher,  Student,AnnouncimentType,StudentGroupManyToMany,GroupPost,GroupPostComent,GroupPostLike,StudentSubject,Announciment,Notes,DefaultUsers,Tutorial,GroupDiscussionsMessage,GroupDiscussionReply,Book,Assigment,StudentGroup,StudentGroupType,AssigmentType,Topic, AssigmentSubmission,StudentClassManyToMany, StudentTask
 
+admin.site.register(Teacher)
 admin.site.register(Student)
 admin.site.register(AnnouncimentType)
 admin.site.register(GroupPost)

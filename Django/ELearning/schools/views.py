@@ -131,13 +131,13 @@ def SubjectList(request):
         student_info = Student.objects.filter(user=user).first()
         Subjects_arr = StudentSubject.objects.filter(student=student_info, classCurrent = student_info.classCurrent)
         for sub in Subjects_arr:
-            Subjects.append(sub.subject)
+            Subjects.append(sub)
     
     elif teacher.exists():
         teacher_data = teacher.first()
         teacher_subjects_class = teacher_data.classSubject.all()
         for teacher_subject_class in teacher_subjects_class:
-            Subjects.append(teacher_subject_class.subject)
+            Subjects.append(teacher_subject_class)
             
     elif user.is_superuser:
         Subjects = Subject.objects.all()

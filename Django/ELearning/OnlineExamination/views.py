@@ -204,7 +204,7 @@ def examTypeDelete(request, id):
 @login_required(login_url='/')
 def QuestionsTypeList(request):
     questions_type = ['Essay', 'Short Note', 'fill the blanks',
-                      'True', 'Match item', 'multiple_coice', 'Short Answers']
+                      'Questions found']
     for question_type in questions_type:
         checking_qn_existance = QuestionsType.objects.filter(
             name=question_type).exists()
@@ -532,20 +532,19 @@ def Exam(request, id):
     examination_Questions = {
         'A': {'question_type': '', 'others': []},
         'B': {'question_type': '', 'others': []},
-        'C': {'question_type': '', 'others': []},
-        'D': {'question_type': '', 'others': []},
-        'E': {'question_type': '', 'others': []},
-        'F': {'question_type': '', 'others': []},
-        'G': {'question_type': '', 'others': []},
-        'H': {'question_type': '', 'others': []},
-        'I': {'question_type': '', 'others': []}
+        'C': {'question_type': '', 'others': []}
     }
 
     exams_generated = Generated_exam.objects.filter(exam_type=student_examination.exam, subject=student_examination.subject)
     i = 1
     for exam_generated in exams_generated:
-        section = exam_generated.exam_format.section
-        examination_Questions[section]['question_type'] = exam_generated.exam_format.type_questions.name
+        if exam_generated.exam_format:
+            section = exam_generated.exam_format.section
+            examination_Questions[section]['question_type'] = exam_generated.exam_format.type_questions.name
+
+        else:
+            format = ExamFormat.objects.all()[0]
+            examination_Questions[section]['question_type'] = format.type_questions.name
         examination_Questions[section]['others'].append({'Sn':i, 'id': exam_generated.id, 'question': exam_generated.question})
         i+=1
     context = {
@@ -782,7 +781,7 @@ def ExaminationDone(request):
             for teacher_subject_class in teacher_subjects_class:
                 no_student = 0
                 student_detail ={}
-                student_exams = StudentExam.objects.filter(subject = teacher_subject_class.subject, is_submitted = 1)
+                student_exams = StudentExam.objects.filter(subject = teacher_subject_class.subject)
                 for student_exam in student_exams:
                     if student_exam.student.classCurrent == teacher_subject_class.studentClass:
                         no_student += 1
@@ -907,7 +906,7 @@ def ViewBankOfQuestions(request, id):
         if topics.exists():
             for topic in topics:
                 qn_per_topic = {'topic':'', 'Questions':[]}
-                Unverified_questions = ExaminationDump.objects.filter(topic = topic, is_generated_Model = False)
+                Unverified_questions = ExaminationDump.objects.filter(topic = topic, is_generated_Model = True)
                 for qns in Unverified_questions:
                     qn_per_topic['topic']= topic
                     qn_per_topic['Questions'].append(qns)

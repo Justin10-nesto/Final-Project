@@ -8,10 +8,13 @@
 </style>
 <br>
 <br>
+{% if perms.OnlineLearning.add_tutorial %}
 
 <div class="col-auto text-right float-right ml-auto">
     <a href="{% url 'TutorialAdd' subject.id topic.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
 </div>
+{% endif %}
+
 <p class="col-12 float-right">
     <h5 class="form-title"><span>{{tutorial.title}}</span></h5>
 </p>
@@ -30,12 +33,17 @@
 {% endif %}
 <div class="col-auto text-right float-center ml-auto">
     <div class="actions">
+        {% if perms.OnlineLearning.change_tutorial %}
+
         <a href="{% url 'TutorialEdit' subject.id topic.id tutorial.id %}" class="btn btn-sm bg-success-light mr-2">
             <i class="fas fa-pen"></i>
         </a>
+        {% endif %}
+        {% if perms.OnlineLearning.delete_tutorial %}
         <a href="#" class="btn btn-sm bg-danger-light">
             <i class="fas fa-trash"></i>
         </a>
+        {% endif %}
     </div>
 
 </div>

@@ -58,7 +58,7 @@
                                         <label>Exam Type</label>
                                         <select name="exam_type" class="form-control">
                                             {% for extype in examTpe %}
-                                            <option value="{{extype.id}}">{{extype.name}}</option>
+                                            <option value="{{extype.id}}">{{extype.name}} {{extype.studentClass.name}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>

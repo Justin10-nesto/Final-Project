@@ -554,13 +554,16 @@ class Teacher(models.Model):
     name = models.CharField(max_length=50)
     gender = models.CharField(max_length=20)
     date_of_birth = models.DateField()
-    phone_number = models.CharField(max_length=15, null=True)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
     school = models.CharField(max_length=255)
-    photo = models.FileField(upload_to='Photos', null = True)
+    photo = models.FileField(upload_to='Photos', null = True, blank=True)
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     department = models.ForeignKey(Department, on_delete = models.CASCADE)
-    group = models.ForeignKey(StudentGroup, on_delete= models.CASCADE, null=True)
-    anaunciment =  models.ForeignKey(Announciment, on_delete= models.CASCADE, null=True)
+    group = models.ForeignKey(StudentGroup, on_delete= models.CASCADE, null=True, blank=True)
+    anaunciment =  models.ForeignKey(Announciment, on_delete= models.CASCADE, null=True, blank=True)
     classSubject = models.ManyToManyField(SubjectClass)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

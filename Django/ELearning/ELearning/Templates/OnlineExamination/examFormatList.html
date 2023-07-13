@@ -27,6 +27,7 @@
                             <th>Weight</th>
                             <th>Number of questions</th>
                             <th>Exam Type</th>
+                            <th>Class</th>
                             <th>Type Questions</th>
                             <th class="text-right">Action</th>
                         </tr>
@@ -39,6 +40,7 @@
                             <td>{{exam.weight}}</td>
                             <td>{{exam.number_of_questions}}</td>
                             <td>{{exam.exam_type.name}}</td>
+                            <td>{{exam.exam_type.studentClass.name}}</td>
                             <td>{{exam.type_questions.name}}</td>
                             <td class="text-right">
                                 <div class="actions">

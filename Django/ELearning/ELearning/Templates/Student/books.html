@@ -3,11 +3,13 @@
     <div class="table-responsive">
         <br>
         <br>
+        {% if perms.OnlineLearning.add_book %}
 
         <div class="col-auto text-right float-right ml-auto">
             <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
             <a href="{% url 'BooksAdd' subject.id topic.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
         </div>
+        {% endif %}
         <h1 align="center">Books Available</h1>
         <div class="table-responsive">
             <table id="example1" class="table table-hover table-center mb-0">
@@ -27,16 +29,21 @@
                         <td>{{book.type}}</td>
                         <td class="text-right">
                             <div class="actions">
+
                                 <a href="{{book.file.url}}">
                                     <i class="fas fa-download"></i>
                                 </a>
+                                {% if perms.OnlineLearning.change_book %}
                                 <a href="{% url 'BooksEdit' subject.id topic.id book.id %}">
                                     <i class="fas fa-pen"></i>
                                 </a>
+                                {% endif %}
+                                {% if perms.OnlineLearning.delete_book %}
+
                                 <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_delete_{{book.id}}" href="#edit_personal_details">
                                     <i class="fas fa-trash"></i>
                                 </a>
-
+        {% endif %}
                         </td>
                     </tr>
 

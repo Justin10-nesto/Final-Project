@@ -10,11 +10,14 @@
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Topics</li>
                     </ul>
-                </div>
+                </div>                                    
+                {% if perms.OnlineLearning.add_topic %}
+
                 <div class="col-auto text-right float-right ml-auto">
                     <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
                     <a href="{% url 'TopicAdd' subject.id %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -42,13 +45,16 @@
                                 <td></td>
                                 <td class="text-right">
                                     <div class="actions">
-
+                                        {% if perms.OnlineLearning.change_topic %}
                                         <a href="{% url 'TopicEdit' subject.id tp.id %}" class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
+                                        {% endif %}
+                                        {% if perms.OnlineLearning.delete_topic %}
                                         <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_delete_{{tp.id}}" href="#edit_personal_details">
                                             <i class="fas fa-trash"></i>
                                         </a>
+                                        {% endif %}
 
                                 </td>
                             </tr>

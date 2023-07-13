@@ -225,13 +225,7 @@ class ExamGerator():
         while flag:
             if no_questions_generated == no_questions:
                 flag = False
-            if type_exam == 'multiple_coice':
-                print('ok')
-            elif type_exam == 'Match item':
-                print('ok')
-            elif type_exam == 'True':
-                print('ok')
-            elif type_exam == 'fill the blanks':
+            if type_exam == 'fill the blanks':
                 text = ""
                 solution = ""
                 status = False

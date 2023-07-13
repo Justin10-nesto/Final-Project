@@ -8,8 +8,8 @@ cache_responses = {}
 
 AfricanTakingUsername = 'justin-nesto10'
 AfricanTakingApi = '1084e65964494de4ab714e045fa2757d9c77a214637f674bea0080925c872a24'
-AfricanTakingUsername = 'ArfajaFajanz'
-AfricanTakingApi = '8ac94f43546dfd263d67bed7b87c93d2accfb25e409b6f3cf5de3b523023f9bf'
+# AfricanTakingUsername = 'ArfajaFajanz'
+# AfricanTakingApi = '8ac94f43546dfd263d67bed7b87c93d2accfb25e409b6f3cf5de3b523023f9bf'
 
 # Initialize Africa's Talking
 username = AfricanTakingUsername

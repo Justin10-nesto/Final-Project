@@ -14,12 +14,19 @@
 </style>
 <br />
 <br />
+{% if perms.OnlineLearning.can_assign_marks %}
+
 <div class="col-auto text-right float-right ml-auto">
     <a href="{% url 'marksAssigments' subject.id 1 1 %}" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> marks</a
   >
+  {% endif %}
+  {% if perms.OnlineLearning.add_assigment %}
+
   <a href="{% url 'AddAssigment' subject.id topic.id %}" class="btn btn-primary"
     ><i class="fas fa-plus"></i
   ></a>
+  {% endif %}
+
 </div>
 
 <br><br> {% if previous %}
@@ -59,16 +66,24 @@
 {% for ass in assigment %}
 <div class="card card-primary card-outline">
     <div class="card-body">
+        {% if perms.OnlineLearning.can_submit_assigment %}
         <h5 class="card-title"><a href="{% url 'UploadAssigments' subject.id topic.id ass.id %}">{{ass.name}} :
-    </a></h5>
+    </a></h5>                                {% endif %}
 
-        <p class="card-text">
+    {% if perms.OnlineLearning.change_assigment %}
+    <p class="card-text">
             <b>{{ass.topic.name}} </b> {{ass.description}} to be Submitted on {{ass.date}} at {{ass.time}}
         </p>
+        {% endif %}
+        {% if perms.OnlineLearning.change_assigment %}
 
         <a href="{% url 'AssigmentsEdit' subject.id topic.id ass.id %}" class="card-link">
             <i class="fas fa-pen"></i>Edit</a>
+            {% endif %}
+
+            {% if perms.OnlineLearning.delete_assigment %}
         <a href="{% url 'AssigmentsDelete' subject.id ass.id %}" class="card-link"><i class="fas fa-trash"></i>Delete</a>
+        {% endif %}
     </div>
 </div>
 {% endfor %} {% endif %}

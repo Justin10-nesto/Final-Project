@@ -10,7 +10,7 @@
                 <a href="index.html" class="logo logo-small">
                     <img src="{% static 'admin/dist/img/avatar.png' %}" alt="Logo" width="30" height="30">
                 </a>
-                <span>{{student_data.school}}</span>
+                <span>{{teacher_data.name}}{{student_data.name}}</span>
 
             </div>
             <a href="javascript:void(0);" id="toggle_btn">
@@ -117,18 +117,22 @@
                             <a href="#"><i class="fas fa-user-graduate"></i> <span> User Management</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
+                                {% if request.user.is_super_user %}
                                 <a href="#"><i class="fas fa-user-graduate"></i> <span> Roles</span> <span
                                         class="menu-arrow"></span></a>
-                                <ul>
 
+                                <ul>
                                     <li><a href="{% url 'manageroles' %}">Roles List</a></li>
                                     <li><a href="{% url 'addroles' %}">Role Add</a></li>
                                 </ul>
+                                {%endif %}
                                 <a href="#"><i class="fas fa-user-graduate"></i> <span> Users</span> <span
                                         class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="{% url 'studentlist' %}">Users List</a></li>
+                                    {% if perms.auth.add_user %}
                                     <li><a href="{% url 'studentAdd' %}">Users Add</a></li>
+                                    {% endif %}
                                 </ul>
                             </ul>
                         </li>
@@ -155,7 +159,7 @@
                                         class="menu-arrow"></span></a>
                                 <ul>
 
-                                    {% if perms.schools.register_subject %}
+                                    {% if student_data %}
                                     <li><a href="{% url 'SubjectRegistration' %}">Subject Registration</a></li>
                                     {% endif %} {% if perms.schools.view_subject %}
                                     <li><a href="{% url 'Subjectlist' %}">Subject List</a></li>
@@ -198,34 +202,38 @@
                                         {% endif %}
                                     </ul>
                                 </li>
+                                {% if perms.OnlineExamination.view_grade %}
                                 <li>
                                     <a href="{% url 'MakeApointmentAdd' %}"><i class="fas fa-clipboard-list"></i>
                                         <span>Create Exam Appointment</span></a>
                                 </li>
+                                {% endif %}
+                                {% if perms.OnlineExamination.view_studentexam %}
+
                                 <li>
                                     <a href="{% url 'examList' %}"><i class="fas fa-clipboard-list"></i> <span>Exam Time
                                             Table</span></a>
                                 </li>
+                                {% endif %}
+                                {% if perms.OnlineExamination.change_examinationdump %}
+
                                 <li>
                                     <a href="{% url 'BankQuestionTable' %}"><i class="fas fa-book-open"></i><span>Bank of Questions</span></a>                                        
                                 </li>
+                                {% endif %}
+                                {% if perms.OnlineExamination.view_generated_exam %}
+
                                 <li>
                                     <a href="{% url 'ExaminationDone' %}"><i class="fas fa-book-reader"></i><span>EXanination Verification </span></a>                                        
                                 </li>
+                                {% endif %}
                                 <li>
                                     <a href="{% url 'examRegulation' %}"><i class="fas fa-calendar-day"></i> <span>Exam
                                             Regulations</span></a>
                                 </li>
-
-                                <li class="submenu">
-                                    <a href="#"><i class="fas fa-user-graduate"></i> <span> Results</span> <span
-                                            class="menu-arrow"></span></a>
-                                    <ul>
-                                        <li><a href="{% url 'CurrentStudentResult' %}">View current Results</a></li>
-                                        <li><a href="{% url 'FullStudentResult' %}">View all Result</a></li>
-                                    </ul>
-                                </li>
-
+                                {% if perms.OnlineExamination.view_studentresult %}
+                                <li><a href="{% url 'CurrentStudentResult' %}">View current Results</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                         

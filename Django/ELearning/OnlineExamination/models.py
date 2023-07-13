@@ -112,7 +112,7 @@ class Generated_exam(models.Model):
     is_generated = models.BooleanField(default=False)
     subject = models.ForeignKey(Subject, on_delete = models.CASCADE)
     topic = models.ForeignKey(Topic, on_delete = models.CASCADE)
-    exam_format = models.ForeignKey(ExamFormat, on_delete = models.CASCADE)
+    exam_format = models.ForeignKey(ExamFormat, on_delete = models.CASCADE, null=True)
     exam_type = models.ForeignKey(ExamType, on_delete = models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)

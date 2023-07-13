@@ -94,9 +94,13 @@ def generatingQuestions(request):
         books = Book.objects.filter(topic = topic, is_questions_exacted = False)
         if books.exists():
             for book in books:
+                book.is_questions_exacted =True
+                book.save()
                 notes_paths.append(settings.STATICFILES_DIRS[0] +book.file.url)
         if notes.exists():
             for note in notes:
+                note.is_questions_exacted =True
+                note.save()
                 notes_paths.append(settings.STATICFILES_DIRS[0] +note.file.url)
         if len(notes_paths)>0:
             path = notes_paths
@@ -107,56 +111,51 @@ def generatingQuestions(request):
                 questions, answers= hist.generate_exams(qntype.name)
                 for index, qust in enumerate(questions):
                     if qust != '':
-                        ExaminationDump.objects.create(questions=qust, answers=answers, is_generated_Model=True, questionType=qntype, topic=topic)
+                        ExaminationDump.objects.get_or_create(questions=qust, answers=answers[index], is_generated_Model=True, questionType=qntype, topic=topic)
                         print(' question generates sucessfully')
-        if books.exists():
-            for book in books:
-                book.is_questions_exacted =True
-                book.save()
-        if notes.exists():
-            for note in notes:
-                note.is_questions_exacted =True
-                note.save()
                 
         return JsonResponse({'data':'data is generated sucessfully'})
     return JsonResponse({'data':''})
 
 
-def generatingExams(request):
-    student_exams = StudentExam.objects.all()
-    if student_exams.exists():
-    # Assuming `end_time` is a datetime object
-        for student_examination in student_exams:
-            status = True
-            if student_examination.status == 'INITIAL PREPARATION':
-                examinatingene =Generated_exam.objects.filter(exam_type=student_examination.exam)
-                if examinatingene.exists():
-                    exam_generated_previous = examinatingene.first()
-                    if exam_generated_previous.status == 'Valid':
-                        status = False
-            if status:
-                format_exam = ExamFormat.objects.filter(exam_type=student_examination.exam)
-                studentClass = student_examination.student.classCurrent
-                subjectClass_obj =SubjectClass.objects.filter(studentClass = studentClass, subject =student_examination.subject).first()
-                topics =Topic.objects.filter(subject = subjectClass_obj)
-                QuestionPerTopic = {'Essay':[], 'Short Note':[], 'fill the blanks':[], 'True':[], 'Match item':[], 'multiple_coice':[], 'Short Answers':[]}
+def fakeGenerator(request):
+    SubjectClasses =SubjectClass.objects.all()
+    for subjClass in SubjectClasses:
+        topics = Topic.objects.filter(subject = subjClass)
+        if topics.exists():
+            for topic in topics:
+                questionsList = ExaminationDump.objects.filter(topic = topic, is_generated_Model = False)
+                students = Student.objects.filter(classCurrent = subjClass.studentClass)
+                status = True
+                for student in students:    
+                    student_exams = StudentExam.objects.filter(student = student)
+                    for student_examination in student_exams:
+                        status = Generated_exam.objects.filter(examination_identity = student_examination.examination_identity).exists()
+                        format_exam = ExamFormat.objects.filter(exam_type=student_examination.exam)
 
-                for topic in topics:
-                    for format in format_exam:
-                        dump_qns=ExaminationDump.objects.filter(topic =topic, questionType =format.type_questions)
-                        if dump_qns.exists():
-                            for dump_qn in dump_qns:
-                                QuestionPerTopic[format.type_questions.name].append(dump_qn.id)
-                question_number = 0
-                for format in format_exam:
-                    if question_number <=format.number_of_questions:
-                        
-                        try:
-                            question_selected = random.choice(QuestionPerTopic[format.type_questions.name])
-                            generated_question_fromDump=ExaminationDump.objects.filter(id = question_selected).first()
-                            Generated_exam.objects.create(question =generated_question_fromDump.questions, answers=generated_question_fromDump.answers, examination_identity = student_examination.examination_identity, is_generated = True, subject= student_examination.subject, topic = generated_question_fromDump.topic, exam_format =format, exam_type =student_examination.exam)
-                        except:
-                            pass
+                        if student_examination.status == 'INITIAL PREPARATION' or student_examination.status == "PENDING":
+                            examinatingene =Generated_exam.objects.filter(exam_type=student_examination.exam)
+                            if examinatingene.exists():
+                                exam_generated_previous = examinatingene.first()
+                                if exam_generated_previous.status == 'Invalid':
+                                    status = False
+                                    
+                        if status:
+                            i = 0
+                            if questionsList:
+                                previous = []
+                                random_qn = random.choice(questionsList)
+                                questionType = random_qn.questionType.name
+                                random_number = random_qn.questionType.number_of_questions
+                                if questionType not in previous:
+                                    
+                                    for i in range(random_number):
+                                        random_qn = random.choice(questionsList)
+                                        format_exam_obj = ExamFormat.objects.filter(type_questions = random_qn.questionType).first()
+                                        generated_question_fromDump=ExaminationDump.objects.filter(id = random_qn.id).first()
+                                        Generated_exam.objects.create(question =generated_question_fromDump.questions, answers=generated_question_fromDump.answers, examination_identity = student_examination.examination_identity, is_generated = True, subject= student_examination.subject, topic = generated_question_fromDump.topic, exam_format =format_exam_obj, exam_type =student_examination.exam)
+                                        previous.append(questionType)
+                                
     return JsonResponse({'data':''})
 
 def StudentPromotin(request):
@@ -553,3 +552,8 @@ def studentAnalysisByExam(request, id):
 
     final_data_returned = {'x_data':x_data, 'y_data':y_data}
     return JsonResponse({'data':final_data_returned})
+
+def examinationMarking(request):
+    student_exam = StudentExam.objects.filter(is_submitted = 1, is_verified = False)
+    if student_exam.exists():
+        print('oo')

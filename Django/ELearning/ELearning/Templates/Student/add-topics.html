@@ -27,8 +27,18 @@
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
+                                        <label>Subject class</label>
+                                        <select name="subject_class_detail"  class="form-control">
+                                            {% for subj in teacher_class %}
+                                            <option value="{{subj.id}}">{{subj.subject.subject_name}} {{sub.studentClass.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
                                         <label>Subject</label>
-                                        <input type="text" name="subject" value="{{subject}}" class="form-control">
+                                        <input type="text" name="subject" value="{{subject}}" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="col-12">

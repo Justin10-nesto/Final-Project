@@ -64,19 +64,6 @@ def UploadSelectedStudentPage(request):
         generated_date = random_date(start_date, end_date)
         Department.objects.create(name = i, department_Hod = 'Not Known', start_date = generated_date)
 
-    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\divisions.csv'
-    data = pd.read_csv(csv_path)
-    for row in data.index:
-        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
-        Division.objects.create(name=data.iloc[row]['Grade'], lower_point=data.iloc[row]['lower point'], upper_point=data.iloc[row]['upper point'],
-                                 description=data.iloc[row]['Description'], level=level_obj)
-        
-    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\grades.csv'
-    data = pd.read_csv(csv_path)
-    for row in data.index:
-        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
-        Grade.objects.create(name=data.iloc[row]['Grade'], lower_marks=data.iloc[row]['lower point'], upper_marks=data.iloc[row]['upper point'],
-                                weight=data.iloc[row]['weight'], description=data.iloc[row]['Description'], level=level_obj)
     courses = data['course'].unique()
     for i in courses:
         depart =data[data['course'] == i]['Department'].iloc[0]
@@ -102,7 +89,7 @@ def UploadSelectedStudentPage(request):
                     SubjectClass.objects.create(studentClass = k, subject = subject)
             except:
                 pass
-    OLevel_subject = ['Civics', 'Basic Mathematics', 'History', 'Geography', 'Kiswahili', 'English Language',  'Chemistry', 'Biology' 'Physics', 'Literature in English']
+    OLevel_subject = ['Civics', 'Geography',  'Chemistry', 'Biology']
     Olevel = SchoolLevel.objects.filter(name = 'O-Level').first()
     OLevel_classes = StudentClass.objects.filter(level=Olevel)
     loaded_subjects_path =  settings.STATICFILES_DIRS[0] +r'\csv files\configurations\olevel-department.csv'
@@ -154,7 +141,20 @@ def UploadSelectedStudentPage(request):
                 if st.get_final_class:
                     is_final = True
             ExamType.objects.create(name = exm['name'], weight_annual = exm['weight_annual'], weight_final= exm['weight_final'], is_final = is_final, studentClass =st )
-    
+    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\grades.csv'
+    data = pd.read_csv(csv_path)
+    for row in data.index:
+        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
+        Grade.objects.create(name=data.iloc[row]['Grade'], lower_marks=data.iloc[row]['lower point'], upper_marks=data.iloc[row]['upper point'],
+                                weight=data.iloc[row]['weight'], description=data.iloc[row]['Description'], level=level_obj)
+   
+    csv_path = settings.STATICFILES_DIRS[0] +r'\csv files\divisions.csv'
+    data = pd.read_csv(csv_path)
+    for row in data.index:
+        level_obj =SchoolLevel.objects.filter(name=data.iloc[row]['Level']).first()
+        Division.objects.create(name=data.iloc[row]['Grade'], lower_point=data.iloc[row]['lower point'], upper_point=data.iloc[row]['upper point'],
+                                 description=data.iloc[row]['Description'], level=level_obj)
+        
     roles = ['Student', 'Admin', 'Teachers', 'GroupLeader', 'CR']
     for role in roles:
         Group.objects.create(name = role)
@@ -677,8 +677,8 @@ def AddTeacher(request):
             subject_class_id = i
             subject_class_obj = SubjectClass.objects.filter(id = subject_class_id).first()
             teacher.classSubject.add(subject_class_obj)
-            group =Group.objects.filter(name = 'Teachers').first()
-            user.groups.add(group)
+        group =Group.objects.filter(name = 'Teachers').first()
+        user.groups.add(group)
 
         messages.success(request,'Teacher is created successful')
         return redirect('studentlist')
@@ -701,8 +701,8 @@ def studentDelete(request, id):
 
 @login_required(login_url='/')
 def TopicList(request, sid):
-    # try:
-
+    # try
+    
         UserLog.objects.create(task='Viewing topic List', user= request.user)
         subject =Subject.objects.filter(id = sid).first()
         user_id = request.user.id
@@ -715,6 +715,7 @@ def TopicList(request, sid):
         if student.exists():
             student_data = Student.objects.filter(user = user_data).first()
             subject_class =SubjectClass.objects.filter( studentClass =student_data.classCurrent, subject = subject).first()
+            
             users_groups = StudentGroupManyToMany.objects.filter(student = student_data)
 
             status = True
@@ -746,26 +747,39 @@ def TopicList(request, sid):
 @login_required(login_url='/')
 def TopicAdd(request, sid):
     if request.method == "POST":
-        try:
+        # try:
             UserLog.objects.create(task='adding topic', user= request.user)
             name = request.POST.get('name')
             description = request.POST.get('description')
             subject = request.POST.get('subject')
-            subject =Subject.objects.filter(id = sid).first()
-            subject_class =SubjectClass.objects.filter(subject = subject).first()
+            subject_class_detail = request.POST.get('subject_class_detail')
+            
+            subject_class =SubjectClass.objects.filter(id = subject_class_detail).first()
 
-            depart = Topic(name=name, description=description, subject=subject_class)
-            depart.save()
+            Topic.objects.create(name=name, description=description, subject=subject_class)
             messages.success(request,'Topic is added successful')
             return redirect(f'../TopicList/{sid}')
-        except:
-            messages.error(request,'Something went wrong')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        # except:
+        #     messages.error(request,'Something went wrong')
+        #     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     try:
+        
         UserLog.objects.create(task='add topic page', user= request.user)
-        subject =Subject.objects.filter(id = sid).first()
-        context = {'subject':subject}
+        subject =Subject.objects.filter(id = sid).first()  
+        teacher =Teacher.objects.filter(user = request.user)
+        status = False
+
+        if teacher.exists():
+            teacher_data = teacher.first()
+            teacher_subjects_class = teacher_data.classSubject.all()
+            for teacher_subject_class in teacher_subjects_class:
+                if subject == teacher_subject_class.subject:
+                    teacher_class =SubjectClass.objects.filter( studentClass =teacher_subject_class.studentClass, subject = subject)
+                    if teacher_class.exists():
+                        status = True
+                        subject_class  = teacher_class.first()
+        context = {'subject':subject, 'teacher_class':teacher_class}
         return render(request, 'Student/add-topics.html', context)
     except:
         messages.error(request,'Something went wrong')
@@ -796,11 +810,24 @@ def TopicEdit(request, sid, id):
         UserLog.objects.create(task='edit topic page', user= request.user)
         subject =Subject.objects.filter(id = sid).first()
         topic = Topic.objects.filter(id=id).first()
-        context = {'topic':topic, 'subject':subject}
+        
+        teacher =Teacher.objects.filter(user = request.user)
+        status = False
+
+        if teacher.exists():
+            teacher_data = teacher.first()
+            teacher_subjects_class = teacher_data.classSubject.all()
+            for teacher_subject_class in teacher_subjects_class:
+                if subject == teacher_subject_class.subject:
+                    teacher_class =SubjectClass.objects.filter( studentClass =teacher_subject_class.studentClass, subject = subject)
+                    if teacher_class.exists():
+                        status = True
+                        subject_class  = teacher_class.first()
+        context = {'topic':topic, 'subject':subject, 'teacher_class':teacher_class}
         return render(request, 'Student/edit-Topic.html', context)
 
     except:
-        messages.error(request,'Something went wrong')
+        messages.error(request,'no acess to this page')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/')

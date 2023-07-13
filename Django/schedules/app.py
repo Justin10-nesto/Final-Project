@@ -16,10 +16,10 @@ app.config.from_object(Config())
 scheduler = APScheduler()
 scheduler.init_app(app)
 
-@scheduler.task('interval', id='send_sms', minutes=1)
+@scheduler.task('interval', id='send_sms', seconds = 30)
 def send_sms():
     print("generating an exam")
-    url_exam = url+r'/generating_exam'
+    url_exam = url+r'/generatingExams_API'
     response =requests.get(url_exam)
     
 @scheduler.task('interval', id='generate_questions', seconds=45)
@@ -50,6 +50,12 @@ def student_promotion():
 def generateResults():
     print("generating results")
     url_exam = url+r'/GeneratingStudentResult'
+    response =requests.get(url_exam)
+    
+@scheduler.task('interval', id='training_model', minutes=3)
+def training_model():
+    print("generating results")
+    url_exam = url+r'/training_model_marks_prediction'
     response =requests.get(url_exam)
 
 scheduler.start()
