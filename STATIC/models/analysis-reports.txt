@@ -1,0 +1,11 @@
+ANALYSIS PART
+-analyzing student performance with respect to marks prediction factors.
+-analyzing student subjects that do not doing well.
+- analyzing student gramary and correctness
+- analyzing areas of weakness and strength based on exam
+
+STUDENT PROGRESS TACKING & PROMOTION
+- checking if all assigments are done(75%).
+- watcking all videos on its particular level
+- checking if he done all exams in its level and passing sucessfuly based on school requirments
+- ability to work independently and gramar cheking
