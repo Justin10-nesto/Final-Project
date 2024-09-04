@@ -1,7 +1,4 @@
-Here’s a more detailed version of the project proposal, tailored for potential investors:
-
----
-
+## Project PITCH TECH
 **Project Title:**  
 Student Learning Platform Based on Knowledge and Experience Using Artificial Intelligence
 
@@ -44,38 +41,36 @@ To develop a student learning platform that utilizes AI to provide personalized,
 **Scope of the Project:**  
 The platform will focus on non-mathematical subjects that can be assessed online. For subjects involving complex mathematics, the system will use multiple-choice questions to ensure accuracy in grading. The platform will compare student answers with those stored in the database and award marks accordingly.
 
-**Market Potential and Investment Opportunity:** 
-### **Estimated Cost Breakdown (USD)**
+**Market Potential and Investment Opportunity:**### **Estimated Cost Breakdown (USD)**
 
 | **Phase**                  | **Description**                                          | **Estimated Cost (USD)** |
 |----------------------------|----------------------------------------------------------|--------------------------|
 | **1. Research and Planning**     | Market research, educational needs assessment, and AI feasibility study. | $500  |
 | **2. Design**              | UI/UX design, system architecture, and prototype development. | $700  |
-| **3. Development**         | - Backend Development (AI, databases, APIs)<br>- Frontend Development (web and mobile apps)<br>- User Management, Online Learning, AI-powered Exam Subsystems | $3000 |
+| **3. Development**         | - Backend Development (AI, databases, APIs)<br>- Frontend Development (web and mobile apps)<br>- User Management, Online Learning, AI-powered Exam Subsystems | $3,000 |
 | **4. Testing**             | - Unit Testing<br>- Integration Testing<br>- User Acceptance Testing (UAT) | $400  |
 | **5. Deployment**          | - Cloud Hosting Setup (AWS, Azure, or equivalent)<br>- Initial Launch and Server Setup | $300  |
 | **6. Marketing and Outreach** | - Digital Marketing<br>- Educational Institution Partnerships<br>- Social Media Campaigns | $500  |
 | **7. Maintenance and Support (1 year)** | - Technical Support<br>- Regular Updates and Bug Fixes | $600  |
 
-**Total Estimated Cost:** **$6000**
+**Total Estimated Cost:** **$6,000**
 
 ### **Estimated Revenue Generation (USD)**
 
 | **Revenue Source**        | **Description**                                                                  | **Estimated Revenue (USD/year)** |
 |---------------------------|----------------------------------------------------------------------------------|-----------------------------------|
-| **1. Subscription Fees**  | Charging a subscription fee for access to the platform by students and schools.<br>- Estimated number of users: 20O0<br>- Subscription fee: $10/month | $24000/year |
-| **2. Institutional Licensing** | Selling licenses to educational institutions.<br>- Estimated institutions: 20<br>- Licensing fee: $2000/year per institution | $4000/year |
-| **3. Advertising and Partnerships** | Revenue from educational content providers and partners.<br>- Estimated partnerships: 5<br>- Revenue per partner: $500/year | $2500/year |
-| **4. Additional Services** | Offering premium services such as personalized tutoring and advanced analytics.<br>- Estimated users: 500<br>- Fee: $100/year | $5000/year |
+| **1. Subscription Fees**  | Charging a subscription fee for access to the platform by students and schools.<br>- Estimated number of users: 2,000<br>- Subscription fee: $10/month | $24,000/year |
+| **2. Institutional Licensing** | Selling licenses to educational institutions.<br>- Estimated institutions: 20<br>- Licensing fee: $2,000/year per institution | $40,000/year |
+| **3. Advertising and Partnerships** | Revenue from educational content providers and partners.<br>- Estimated partnerships: 5<br>- Revenue per partner: $500/year | $2,500/year |
+| **4. Additional Services** | Offering premium services such as personalized tutoring and advanced analytics.<br>- Estimated users: 50<br>- Fee: $100/year | $5,000/year |
 
-**Total Estimated Revenue:** **$3550-0/year**
+**Total Estimated Revenue:** **$71,500/year**
 
 ### **Summary**
 
-- **Total Investment Required:** **$6000**
-- **Total Estimated Annual Revenue:** **$35500**
-- **Return on Investment (ROI):** With the initial investment of $6000, the project is expected to generate $35500 in revenue annually, providing a significant return on investment within the first year of operation.
-
+- **Total Investment Required:** **$6,000**
+- **Total Estimated Annual Revenue:** **$71,500**
+- **Return on Investment (ROI):** With the initial investment of $6,000, the project is expected to generate $71,500 in revenue annually, providing a substantial return on investment within the first year of operation.
 
 **Team:**  
 - **Justin Lasway** (Full-Stack Developer)  
