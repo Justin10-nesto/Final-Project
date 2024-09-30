@@ -1,0 +1,121 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Exam Format</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Exam Format</li>
+                    </ul>
+                </div>
+                <div class="col-auto text-right float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                    <a href="{% url 'examFormatAdd' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table id="example1" class="table table-hover table-center mb-0">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Section</th>
+                            <th>Weight</th>
+                            <th>Number of questions</th>
+                            <th>Exam Type</th>
+                            <th>Class</th>
+                            <th>Type Questions</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exam in examFormats %}
+                        <tr>
+                            <td>{{exam.subject.subject_name}}</td>
+                            <td>Section {{exam.section}}</td>
+                            <td>{{exam.weight}}</td>
+                            <td>{{exam.number_of_questions}}</td>
+                            <td>{{exam.exam_type.name}}</td>
+                            <td>{{exam.exam_type.studentClass.name}}</td>
+                            <td>{{exam.type_questions.name}}</td>
+                            <td class="text-right">
+                                <div class="actions">
+                                    <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_{{exam.id}}" href="#edit_personal_details"><i
+                      class="fas fa-pen"></i></a>
+                                    </a>
+                                    <a href="{% url 'examFormatDelete' exam.id %}" class="btn btn-sm bg-danger-light">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <div class="modal fade" id="modal-default_{{exam.id}}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">exam Format Information</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'examFormatEdit' exam.id %}" enctype="multipart/form-data" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label>Subject</label>
+                                                <select name="subject" class="form-control">
+                          {% for sub in subject %}
+                          <option value="{{sub.id}}">{{sub.subject_name}}</option>
+                          {% endfor %}
+                        </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Section</label>
+                                                <input type="text" value="{{exam.section}}" name="section" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Weight</label>
+                                                <input type="text" value="{{exam.weight}}" name="weight" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Number of questions</label>
+                                                <input type="text" value="{{exam.number_of_questions}}" name="number_of_questions" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Exam Type</label>
+                                                <select name="exam_type" class="form-control">
+                          {% for extype in examTpe %}
+                          <option value="{{extype.id}}">{{extype.name}}</option>
+                          {% endfor %}
+                        </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Type Questions</label>
+                                                <select name="type_questions" class="form-control">
+                          {% for type in type_questions %}
+                          <option value="{{type.id}}">{{type.name}}</option>
+                          {% endfor %}
+                        </select>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <input type="submit" class="btn btn-primary" value="Save changes">
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% load static %} {% include "includes/footer.html" %}

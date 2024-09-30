@@ -1,0 +1,70 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Exam Format</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Exam Format</li>
+                    </ul>
+                </div>
+                <div class="col-auto text-right float-right ml-auto">
+                    <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                    <a href="{% url 'examFormatAdd' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <video id="video" width="640" height="480" autoplay></video>
+            <button id="capture-btn">Capture Image</button>
+            <canvas id="canvas" style="display:none;"></canvas>
+        </div>
+
+    </div>
+</div>
+</div>
+<script>
+    // Access the video and canvas elements
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureButton = document.getElementById('capture-btn');
+    const context = canvas.getContext('2d');
+
+    // Check for browser support
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Get user permission to access the camera
+        navigator.mediaDevices.getUserMedia({
+                video: true
+            })
+            .then(function(stream) {
+                // Set the video source to the stream from the camera
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(error) {
+                console.error('Error accessing the camera:', error);
+            });
+    }
+
+    // Capture button click event
+    captureButton.addEventListener('click', function() {
+        // Set the canvas dimensions to match the video
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        // Draw the current video frame onto the canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert the canvas image to a data URL
+        const dataURL = canvas.toDataURL('image/jpeg');
+
+        // Display the captured image
+        const imageElement = document.createElement('img');
+        imageElement.src = dataURL;
+        document.body.appendChild(imageElement);
+    });
+</script>
+{% load static %} {% include "includes/footer.html" %}

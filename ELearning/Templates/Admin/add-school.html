@@ -1,0 +1,82 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+       <div class="page-header">
+          <div class="row align-items-center">
+             <div class="col">
+                <h3 class="page-title">Add School</h3>
+                <ul class="breadcrumb">
+                   <li class="breadcrumb-item"><a href="schSchool.html">School</a></li>
+                   <li class="breadcrumb-item active">Add School</li>
+                </ul>
+             </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-sm-12">
+             <div class="card">
+                <div class="card-body">
+                   <form method = "POST">
+                     {% csrf_token %}
+                      <div class="row">
+                         <div class="col-12">
+                            <h5 class="form-title"><span>School Information</span></h5>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>School Name</label>
+                               <input type="text" name = "school_name" class="form-control">
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>School Logo</label>
+                               <input type="text" name = "schoo_logo" class="form-control">
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>School Level</label>
+                               <select name ="school_level" class="form-control">
+                                 <option>Select level</option>
+                                 <option value = "O-Level">O-Level</option>
+                                 <option value = "A-Level">A-Level</option>
+                                 <option value = "O-Diploma">O-Diploma</option>
+                              </select>
+                              </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>School Adress</label>
+                               <div>
+                                  <input type="text" name ="school_adress" class="form-control">
+                               </div>
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>School Domain</label>
+                               <div>
+                                  <input type="text" name ="school_domain" class="form-control">
+                               </div>
+                            </div>
+                         </div>
+                         <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                               <label>Head of School</label>
+                               <input type="text" name = "head_of_school" class="form-control">
+                            </div>
+                         <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                         </div>
+                      </div>
+                   </form>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+</div>
+
+{% load static %} {% include "includes/footer.html" %}

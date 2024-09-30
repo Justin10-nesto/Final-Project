@@ -1,0 +1,48 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{subject.subject_code}} {{subject.subject_name}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{subject.subject_code}} {{subject.subject_name}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 align="center">{{topic.name}}</h1>
+
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <a href="{% url 'booksPage' subject.id  topic.id %}">
+                                        Books
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'assigmentsPage' subject.id topic.id %}">
+                                        Assigments
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'TutorialPage' subject.id  topic.id %}">
+                                        Tutorials
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'discussionsPage' subject.id topic.id %}">
+                                        Q & A
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="{% url 'anauncementPage' subject.id topic.id  %}">
+                                        Anounciments
+                                    </a>
+                                </div>
+                            </div>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Webcam Analysis</title>
+</head>
+
+<body>
+    <h1>Webcam Analysis</h1>
+    <video id="videoElement" width="640" height="480" autoplay></video>
+    <button id="analyzeButton">Analyze</button>
+
+    <script>
+        // Access the webcam stream
+        navigator.mediaDevices.getUserMedia({
+                video: true
+            })
+            .then(function(stream) {
+                var videoElement = document.getElementById('videoElement');
+                videoElement.srcObject = stream;
+                videoElement.play();
+            })
+            .catch(function(error) {
+                console.log('Error accessing webcam:', error);
+            });
+
+        // Function to capture and analyze frames
+        function captureAndAnalyzeFrames() {
+            var canvas = document.createElement('canvas');
+            var videoElement = document.getElementById('videoElement');
+            var context = canvas.getContext('2d');
+            var frameData = null;
+
+            // Capture the current frame from the video element
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            frameData = canvas.toDataURL('image/jpeg');
+
+            // Send the captured frame to the Django view for analysis
+            fetch('/webcam-analysis/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        frame_data: frameData
+                    }),
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    // Handle the analysis result
+                    console.log(result);
+                })
+                .catch(function(error) {
+                    console.log('Error analyzing frame:', error);
+                });
+        }
+
+        // Attach the captureAndAnalyzeFrames function

@@ -1,0 +1,156 @@
+{% load static %} {% include "includes/header.html" %} {% include
+"includes/sidebar.html" %}
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Add Group</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="schGroup.html">Group</a></li>
+            <li class="breadcrumb-item active">Add Group</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-lg-3 col-md-4">
+            <div class="compose-btn">
+              <a
+                href="{% url 'Addgroup' subject.id %}"
+                class="btn btn-primary btn-block"
+              >
+                Create Group
+              </a>
+            </div>
+            <ul class="inbox-menu">
+              <li class="active">
+                <a href="#"
+                  ><i class="fas fa-download"></i> Group One
+                  <span class="mail-count">(5)</span></a
+                >
+              </li>
+              <li>
+                <a href="#"><i class="far fa-star"></i> Group Two</a>
+              </li>
+              <li>
+                <a href="#"><i class="far fa-paper-plane"></i> Group Two</a>
+              </li>
+              <li>
+                <a href="#"
+                  ><i class="far fa-file-alt"></i> Group Two
+                  <span class="mail-count">(13)</span></a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-9 col-md-8">
+            <div class="card">
+              <div class="card-body">
+                <div class="email-header">
+                  <div class="row">
+                    <div class="card-body">
+                      <form
+                        method="POST"
+                        action="{% url 'Addgroup' subject.id %}"
+                        enctype="multipart/form-data"
+                      >
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-12">
+                            <h5 class="form-title">
+                              <span>Add Group Information</span>
+                            </h5>
+                          </div>
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Group Name</label>
+                              <input
+                                type="text"
+                                name="name"
+                                class="form-control"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Description</label>
+                              <input
+                                type="text"
+                                name="description"
+                                class="form-control"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Group Logo</label>
+                              <input
+                                type="file"
+                                name="logo"
+                                class="form-control"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>Type</label>
+                              <select name="type_group" class="form-control">
+                                <option>Select type</option>
+                                {% for typ in Grouptype %}
+                                <option value="{{typ.id}}">{{typ.name}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                              <label>participants</label>
+                              <select
+                                name="participants"
+                                multiple
+                                class="form-control"
+                              >
+                                <option>Select participants</option>
+                                {% for user in users %}
+                                <option value="{{user.id}}">
+                                  {{user.name}}
+                                </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+
+                      <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                          <label>Description</label>
+                          <input
+                            type="text"
+                            name="description"
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% load static %} {% include "includes/footer.html" %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

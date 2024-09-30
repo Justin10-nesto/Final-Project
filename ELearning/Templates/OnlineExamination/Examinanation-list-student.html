@@ -1,0 +1,59 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title text-center text-capitalize">Examination Verification</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-center mb-0">
+                            <tr>
+                                <td>S/N</td>
+                                <td>Name of Student</td>
+                                <td>Verification Status</td>
+                                <td>Marks</td>
+                                <td>Examination Type</td>
+                                <td>Action</td>
+                            </tr>
+                            
+                            {% for st_detail in Student_details %}
+                            <tr>
+                                
+                                <td>
+                                    {{st_detail.index}}
+                                </td>
+                                
+                                <td>
+                                    {{st_detail.name}}
+                                </td>
+                                <td>
+                                    {{st_detail.status}}
+                                </td>
+                                <td>
+                                    {{st_detail.marks}}
+                                </td>
+                                <td>
+                                    {{st_detail.Exam_type}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm bg-success-light mr-2" href="{% url 'TeacherMarking' st_detail.id %}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>{% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% load static %} {% include "includes/footer.html" %}

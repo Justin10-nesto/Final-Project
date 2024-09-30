@@ -1,0 +1,71 @@
+{% load static %} {% include "includes/elearning-template.html" %}
+
+<div class="card-body">
+   <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+         <div class="col-12">
+            <h5 class="form-title"><span>Add Assigment</span></h5>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>Assigment Number</label>
+               <input type="text" name="Assigment_number" class="form-control">
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>Description</label>
+               <input type="text" name="Description" class="form-control">
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>Task</label>
+               <input type="text" name="Task" class="form-control">
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>Weight</label>
+               <input type="text" name="Weight" class="form-control">
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>Submissions Date</label>
+               <input type="date" name="date" class="form-control">
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>time</label>
+               <input type="time" name="time" class="form-control">
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>Category</label>
+               <select name="Category" class="form-control">
+                  <option>Select Category</option>
+                  {% for ass in assigment %}
+                  <option value="{{ass.id}}">{{ass.name}}</option>
+                  {% endfor %}
+               </select>
+            </div>
+         </div>
+         <div class="col-12 col-sm-6">
+            <div class="form-group">
+               <label>File(.docx, .pdf)</label>
+               <div>
+                  <input type="file" name="file" class="form-control">
+               </div>
+            </div>
+         </div>
+         <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+      </div>
+   </form>
+</div>
+{% include "includes/footer.html" %}

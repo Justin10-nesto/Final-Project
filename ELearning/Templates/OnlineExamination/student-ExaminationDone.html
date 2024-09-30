@@ -1,0 +1,53 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title text-center text-capitalize">Examination Verification</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-center mb-0">
+                            <tr>
+                                <td>Subject</td>
+                                <td>Class</td>
+                                <td>Number of student</td>
+                                <td>Examination Type</td>
+                                <td>Action</td>
+                            </tr>
+                            
+                            {% for examination_dat in examination_data %}
+                            <tr>
+                                <td>
+                                    {{examination_dat.subject}}
+                                </td>
+                                <td>
+                                    {{examination_dat.class}}
+                                </td>
+                                <td>
+                                    {{examination_dat.no_students}}
+                                </td>
+                                <td>
+                                    {{examination_dat.examination_type}}
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm bg-success-light mr-2" href="{% url 'UserSubmittedExamList' examination_dat.id examination_dat.stusent_examination %}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>{% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% load static %} {% include "includes/footer.html" %}

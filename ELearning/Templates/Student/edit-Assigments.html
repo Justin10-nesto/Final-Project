@@ -1,0 +1,74 @@
+{% load static %} {% include "includes/elearning-template.html" %}
+
+<div class="card-body">
+        <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                        <div class="col-12">
+                                <h5 class="form-title"><span>Edit Assigment</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>Assigment Number</label>
+                                        <input type="text" value="{{assigments.name}}" name="Assigment_number"
+                                                class="form-control">
+                                </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>Description</label>
+                                        <input type="text" value="{{assigments.description}}" name="Description"
+                                                class="form-control">
+                                </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>Task</label>
+                                        <input type="text" value="{{assigments.task}}" name="Task" class="form-control">
+                                </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>Weight</label>
+                                        <input type="text" value="{{assigments.Weight}}" name="Weight"
+                                                class="form-control">
+                                </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>Submissions Date</label>
+                                        <input type="date" value="{{assigments.date}}" name="date" class="form-control">
+                                </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>time</label>
+                                        <input type="time" value="{{assigments.time}}" name="time" class="form-control">
+                                </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                        <label>Category</label>
+                                        <select name="Category" class="form-control">
+                                                <option>Select Category</option>
+                                                {% for dep in assigment %}
+                                                <option value="{{dep.id}}">{{dep.name}}</option>
+                                                {% endfor %}
+                                        </select>
+                                </div>
+                        </div>
+                        <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                </div>
+        </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+{% include "includes/footer.html" %}

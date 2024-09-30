@@ -1,0 +1,111 @@
+{% load static %} {% include "includes/header.html" %} {% include "includes/sidebar.html" %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Subjects</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Subjects</li>
+                    </ul>
+                </div>
+                {% if perms.schools.add_subject %}
+                <div class="col-auto text-right float-right ml-auto">
+
+                    <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_upload_csv" href="#edit_personal_details"><i class="fas fa-plus"></i> Uplod Sylubuss</a>
+                    <a href="{% url 'SubjectAdd' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table id="example1" class="table table-hover table-center mb-0">
+                    <thead>
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Subject Name</th>
+                            <th>Department</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in Subjects %}
+                        <tr>
+                            <td>{{subject.subject.subject_code}}
+                            </td>
+                            <td>
+                                <a href="{% url 'Topiclist' subject.subject.id %}">
+                                    <h2>{{subject.subject.subject_name}} {% if teacher_data %} {{subject.studentClass.name}} {% endif %}</h2>
+                                </a>
+                            </td>
+                            <td>{{subject.subject.department}}</td>
+                            <td class="text-right">
+                                <div class="actions">
+                                    {% if perms.schools.edit_subject %}
+                                    <a href="{% url 'SubjectEdit' subject.subject.id %}" class="btn btn-sm bg-success-light mr-2">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if perms.schools.delete_subject %}
+                                    <a class="btn btn-sm bg-success-light mr-2" data-toggle="modal" data-target="#modal-default_delete_{{subject.subject.id}}" href="#edit_personal_details">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    {% endif %}
+                            </td>
+                        </tr>
+
+                        <div class="modal fade" id="modal-default_delete_{{subject.subject.id}}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Info</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3>Are you sure you want to delete subject of
+                                            <b>{{subject.subject.subject_name}}</b>
+                                        </h3>
+                                        <a href="{% url 'SubjectDelete' subject.subject.id %}" class="btn btn-sm bg-danger-light text-right">
+                                            Delete
+                                        </a>
+                                    </div>
+                                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                <div class="modal fade" id="modal-default_upload_csv">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Curriculum Content Information</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'Curruculum' %}" enctype="multipart/form-data" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>Upload CSV</label>
+                                        <input type="file" name="file" class="form-control">
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <input type="submit" class="btn btn-primary" value="Save changes">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+                </div>
+
+                {% load static %} {% include "includes/footer.html" %}

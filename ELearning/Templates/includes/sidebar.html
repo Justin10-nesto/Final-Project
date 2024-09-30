@@ -1,0 +1,259 @@
+{% load static %}
+
+<body>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <img src="{% static 'admin/dist/img/avatar.png' %}" alt="Logo">
+                </a>
+                <a href="index.html" class="logo logo-small">
+                    <img src="{% static 'admin/dist/img/avatar.png' %}" alt="Logo" width="30" height="30">
+                </a>
+                <span>{{teacher_data.name}}{{student_data.name}}</span>
+
+            </div>
+            <a href="javascript:void(0);" id="toggle_btn">
+                <i class="fas fa-align-left"></i>
+            </a>
+            <div class="top-nav-search">
+                <form>
+                    <input type="text" class="form-control" placeholder="Search here">
+                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <a class="mobile_btn" id="mobile_btn">
+                <i class="fas fa-bars"></i>
+            </a>
+            <ul class="nav user-menu">
+                <li class="nav-item dropdown noti-dropdown">
+                </li>
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        {% if student_data.photo %}
+                        <span class="user-img"><img class="rounded-circle" src="{% static student_data.photo.url %}"
+                                width="31" alt="{{request.user.username}}"></span>
+                        {% else %}
+                        <span class="user-img"><img class="rounded-circle"
+                                src="{% static 'admin/img/user.jpg' %}" width="31"
+                                alt="{{request.user.username}}"></span>
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="user-header">
+                            <div class="avatar avatar-sm">
+                                <img src="{% static 'admin/img/user.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                            </div>
+                            <div class="user-text">
+                                <h6>{{request.user.username}}</h6>
+                                <p class="text-muted mb-0">Administrator</p>
+                            </div>
+                        </div>
+                        <a class="dropdown-item" href="profile.html">My Profile</a>
+                        <a class="dropdown-item" href="inbox.html">Inbox</a>
+                        <a class="dropdown-item" href="{% url 'logoutPage' %}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            {% include "includes/messages.html" %}
+
+        </div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">
+                            <span>Main Menu</span>
+                        </li>
+                        <li>
+                            <a href=" {% url 'DashboardPage' %} "><i class=" fas fa-user-graduate"></i><span>Dashboard</span></a>
+                        </li>
+                        {% if student_data.admision_time_status == 'NEW' %}
+                        <li>
+                            <a href="{% url 'Admision_statusPage' %} "><i class="fas fa-book "></i><span>Admission
+                                    Status</span></a>
+                        </li>
+                        {% endif %} {% if perms.schools.add_department %}
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Schools Management</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <!-- <a href="#"><i class="fas fa-user-graduate"></i> <span> Schools</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                        <li><a href="{% url 'schoollist' %}">School List</a></li>
+                        <li><a href="{% url 'schoolAdd' %}">School Add</a></li>
+                     </ul> -->
+                                <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+                                    {% if perms.schools.view_department %}
+                                    <li><a href="{% url 'Departmentlist' %}">Department List</a></li>
+                                    {% endif %} {% if perms.schools.add_department %}
+                                    <li><a href="{% url 'DepartmentAdd' %}">Department Add</a></li>
+                                    {% endif %}
+                                </ul>
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Levels</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+                                    {% if perms.schools.view_schoolLevel %}
+                                    <li><a href="{% url 'SchoolLevellist' %}">Level List</a></li>
+                                    {% endif %} {% if perms.schools.add_schoolLevel %}
+                                    <li><a href="{% url 'SchoolLevelAdd' %}">Level Add</a></li>
+                                    {% endif %}
+                                </ul>
+
+                                <a href="#"><i class="fas fa-book-reader"></i> <span>Class</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+                                    {% if perms.schools.view_studentclass %}
+                                    <li><a href="{% url 'StudentClasslist' %}">Class List</a></li>
+                                    {% endif %} {% if perms.schools.add_studentclass %}
+                                    <li><a href="{% url 'StudentClassAdd' %}">Class Add</a></li>
+                                    {% endif %}
+                                </ul>
+                            </ul>
+                        </li> {% endif %}
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> User Management</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                {% if request.user.is_super_user %}
+                                <a href="#"><i class="fas fa-user-graduate"></i> <span> Roles</span> <span
+                                        class="menu-arrow"></span></a>
+
+                                <ul>
+                                    <li><a href="{% url 'manageroles' %}">Roles List</a></li>
+                                    <li><a href="{% url 'addroles' %}">Role Add</a></li>
+                                </ul>
+                                {%endif %}
+                                <a href="#"><i class="fas fa-user-graduate"></i> <span> Users</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="{% url 'studentlist' %}">Users List</a></li>
+                                    {% if perms.auth.add_user %}
+                                    <li><a href="{% url 'studentAdd' %}">Users Add</a></li>
+                                    {% endif %}
+                                </ul>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-book-reader"></i> <span>E-Learning Platform</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <a href="#"><i class="fas fa-book-reader"></i> <span>Course</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+
+                                    {% if perms.schools.view_course %}
+                                    <li><a href="{% url 'Courselist' %}">Course List</a></li>
+                                    {% endif %} {% if perms.schools.add_course %}
+                                    <li><a href="{% url 'CourseAdd' %}">Course Add</a></li>
+                                    {% endif %}
+
+
+                                </ul>
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul>
+
+                                    {% if student_data %}
+                                    <li><a href="{% url 'SubjectRegistration' %}">Subject Registration</a></li>
+                                    {% endif %} {% if perms.schools.view_subject %}
+                                    <li><a href="{% url 'Subjectlist' %}">Subject List</a></li>
+                                    {% endif %} {% if perms.schools.add_subject %}
+                                    <li><a href="{% url 'SubjectAdd' %}">Subject Add</a></li>
+                                    {% endif %}
+
+                                </ul>
+                            </ul>
+
+                        </li>
+
+                        <li class="submenu">
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Exams Management</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+
+                                <li class="submenu">
+                                    <a href="#"><i class="fas fa-user-graduate"></i> <span>Pass Marks</span> <span
+                                            class="menu-arrow"></span></a>
+                                    <ul>
+                                        {% if perms.OnlineExamination.view_grade %}
+                                        <li><a href="{% url 'gradeList' %}">Grades</a></li>
+                                        {% endif %} {% if perms.OnlineExamination.view_division %}
+                                        <li><a href="{% url 'divisionList' %}">Divisions</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+
+                                <li class="submenu">
+                                    <a href="#"><i class="fas fa-user-graduate"></i> <span>Exams Setting</span> <span
+                                            class="menu-arrow"></span></a>
+                                    <ul>
+                                        {% if perms.OnlineExamination.view_examtype %}
+                                        <li><a href="{% url 'examTypeList' %}">Exams list</a></li>
+                                        {% endif %} {% if perms.OnlineExamination.view_questionstype %}
+                                        <li><a href="{% url 'QuestionsTypeList' %}">Questions Type</a></li>
+                                        {% endif %} {% if perms.OnlineExamination.view_examformat %}
+                                        <li><a href="{% url 'examFormatList' %}">EXanination Format</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                                {% if perms.OnlineExamination.view_grade %}
+                                <li>
+                                    <a href="{% url 'MakeApointmentAdd' %}"><i class="fas fa-clipboard-list"></i>
+                                        <span>Create Exam Appointment</span></a>
+                                </li>
+                                {% endif %}
+                                {% if perms.OnlineExamination.view_studentexam %}
+
+                                <li>
+                                    <a href="{% url 'examList' %}"><i class="fas fa-clipboard-list"></i> <span>Exam Time
+                                            Table</span></a>
+                                </li>
+                                {% endif %}
+                                {% if perms.OnlineExamination.change_examinationdump %}
+
+                                <li>
+                                    <a href="{% url 'BankQuestionTable' %}"><i class="fas fa-book-open"></i><span>Bank of Questions</span></a>                                        
+                                </li>
+                                {% endif %}
+                                {% if perms.OnlineExamination.view_generated_exam %}
+
+                                <li>
+                                    <a href="{% url 'ExaminationDone' %}"><i class="fas fa-book-reader"></i><span>EXanination Verification </span></a>                                        
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <a href="{% url 'examRegulation' %}"><i class="fas fa-calendar-day"></i> <span>Exam
+                                            Regulations</span></a>
+                                </li>
+                                {% if perms.OnlineExamination.view_studentresult %}
+                                <li><a href="{% url 'CurrentStudentResult' %}">View current Results</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        
+                            <li>
+                                <a href=" {% url 'student_reults_progress' %} "><i class=" fas fa-book "></i><span>Student Analysis</span></a>
+                            </li>
+                            <li>
+                                <a href=" {% url 'studentRecomendation' %} "><i class=" fas fa-book "></i><span>Student Recomendation</span></a>
+                            </li>
+                            <li>
+                                <a href=" {% url 'StudentProgress' 0 %} "><i class=" fas fa-book "></i><span>Student Progress</span></a>
+                            </li>
+                            <li>
+                                <a href=" {% url 'userProfilePage' %} "><i class=" fas fa-book "></i><span>Setting</span></a>
+                            </li>
+                            <li>
+                            <a class=" dropdown-item " href=" {% url 'logoutPage' %} ">Logout</a>
+                        </li>
+                        <li></li>
+
+                </div>
+            </div>
+        </div>
