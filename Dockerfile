@@ -1,5 +1,5 @@
-# Use the lightweight Python 3.9 Alpine image
-FROM python:3.9-alpine
+# Use the lightweight Python 11 Alpine image
+FROM python:11-alpine
 
 # Environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
